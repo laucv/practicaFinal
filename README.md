@@ -1,9 +1,9 @@
-TDW-UPM: Usuarios y Cuestiones REST API
+TDW-UPM: Proyecto Final
 ======================================
 
 [![MIT license](http://img.shields.io/badge/license-MIT-brightgreen.svg)](http://opensource.org/licenses/MIT)
 [![Minimum PHP Version](https://img.shields.io/badge/php-%5E7.2-blue.svg)](http://php.net/)
-> Desarrollo de una API REST con el framework Slim3 para la gestión de usuarios y cuestiones.
+> Desarrollo de un sistema web completo que permite la gestión completa de cuestiones y soluciones.
 
 Esta aplicación implementa una interfaz de programación [REST][rest] desarrollada como ejemplo de
 utilización del framework [Slim 3][slim]. La aplicación proporciona las operaciones
@@ -36,11 +36,11 @@ $ composer install
 ```
 Para lanzar el servidor con la aplicación en desarrollo se debe ejecutar el comando: 
 ```
-$ composer start
+$ php -S 127.0.0.1:8000 -t public
 ```
 o bien:
 ```
-$ php -S 127.0.0.1:8000 -t public
+$ php -S localhost:8000 -t public
 ```
 Y realizar una petición con el navegador a la dirección [http://localhost:8000/][lh]
 
@@ -86,19 +86,6 @@ o bien:
 ```
 $ ./bin/phpunit [--testdox]
 ```
-
-## Generación de la especificación OpenApi 3.0
-
-El código fuente incluye las anotaciones necesarias para generar la especificación [OpenAPI 3.0][openapi] en formato [YAML][yaml].
-Para generar dicha especificación se deberá ejecutar el comando:
-```
-$ ./bin/openapi ./src --output ./public/api-docs/models/openapi.yaml
-```
-
-Como resultado de la ejecución de este comando se generará el fichero `openapi.yaml` en el
-subdirectorio `./public/api-docs/models`, que es el directorio donde buscará la especificación 
-el cliente de Swagger.
-
 
 [dataMapper]: http://martinfowler.com/eaaCatalog/dataMapper.html
 [doctrine]: http://docs.doctrine-project.org/projects/doctrine-orm/en/latest/
