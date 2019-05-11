@@ -368,7 +368,7 @@ class Cuestion implements \JsonSerializable
             ? new ArrayCollection()
             : $this->getSoluciones()->map(
                 function (Solucion $solucion) {
-                    return $solucion->getId();
+                    return $solucion->getIdSolucion();
                 }
             );
 

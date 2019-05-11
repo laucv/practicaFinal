@@ -128,7 +128,15 @@ class Solucion implements \JsonSerializable
         $this->textoSolucion = $textoSolucion;
         return $this;
     }
-
+    /**
+     * @param bool $disponible
+     * @return Cuestion
+     */
+    public function setSolucionCorrecta(bool $correcta): Solucion
+    {
+        $this->solucionCorrecta = $correcta;
+        return $this;
+    }
     /**
      * @return bool
      */
@@ -195,7 +203,7 @@ class Solucion implements \JsonSerializable
                 'idSolucion' => $this->getIdSolucion(),
                 'textoSolucion' => $this->getTextoSolucion(),
                 'solucionCorrecta' => $this->isSolucionCorrecta(),
-                'cuestion' => $this->getCuestion(),
+                'cuestion' => $this->getCuestion()->getIdCuestion(),
             ]
         ];
     }

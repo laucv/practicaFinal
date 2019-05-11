@@ -251,12 +251,18 @@ class Razonamiento implements \JsonSerializable
  *          format      = "int64",
  *          type        = "integer"
  *      ),
+ *      @OA\Property(
+ *          property    = "textoError",
+ *          description = "Error",
+ *          type        = "string"
+ *      ),
  *      example = {
  *          "razonamiento" = {
  *              "idRazonamiento"           = 805,
  *              "textoRazonamiento" = "Solution description",
  *              "razonamientoJustificado"  = true,
  *              "solucion"              = 1,
+ *              "error"                 = "Error description"
  *          }
  *     }
  * )
@@ -283,10 +289,16 @@ class Razonamiento implements \JsonSerializable
  *          format      = "int64",
  *          type        = "integer"
  *      ),
+ *      @OA\Property(
+ *          property    = "textoError",
+ *          description = "Error description",
+ *          type        = "string"
+ *      ),
  *      example = {
  *          "textoRazonamiento" = "Solution description",
  *          "razonamientoJustificacion"  = true,
- *          "solucion"              = 1
+ *          "solucion"              = 1,
+ *          "error"                = "Error description"
  *      }
  * )
  */

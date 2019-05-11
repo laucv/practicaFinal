@@ -34,6 +34,10 @@ use OpenApi\Annotations as OA;
  *     name="Questions",
  *     description="Question management"
  * )
+ * @OA\Tag(
+ *     name="Solutions",
+ *     description="Solution management"
+ * )
  */
 
 /**
@@ -75,6 +79,16 @@ use OpenApi\Annotations as OA;
  *      name        = "questionId",
  *      in          = "path",
  *      description = "ID of question",
+ *      required    = true,
+ *      @OA\Schema(
+ *          format  = "int64",
+ *          type    = "integer"
+ *      )
+ * )
+ * @OA\Parameter(
+ *      name        = "solutionId",
+ *      in          = "path",
+ *      description = "ID of solution",
  *      required    = true,
  *      @OA\Schema(
  *          format  = "int64",

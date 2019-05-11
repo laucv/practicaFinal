@@ -10,6 +10,7 @@ use Slim\Http\StatusCode;
 use TDW\GCuest\Controller\CuestionController;
 use TDW\GCuest\Controller\LoginController;
 use TDW\GCuest\Controller\UsuarioController;
+use TDW\GCuest\Controller\SolutionController;
 
 /**
  * @var \Slim\App $app
@@ -126,3 +127,44 @@ $app->put(
     $_ENV['RUTA_API'] . '/questions/{id:[0-9]+}',
     CuestionController::class . ':put'
 )->setName('tdw_put_questions');
+/**
+ * ############################################################
+ * Solucion routes
+ * ############################################################
+ */
+
+// CGET: Returns all solutions
+$app->get(
+    $_ENV['RUTA_API'] . '/solutions',
+    SolutionController::class . ':cget'
+)->setName('tdw_cget_solutions');
+
+// GET: Returns a solutions based on a single ID
+$app->get(
+    $_ENV['RUTA_API'] . '/solutions/{id:[0-9]+}',
+    SolutionController::class . ':get'
+)->setName('tdw_get_solutions');
+
+// DELETE: Deletes a solutions
+$app->delete(
+    $_ENV['RUTA_API'] . '/solutions/{id:[0-9]+}',
+    SolutionController::class . ':delete'
+)->setName('tdw_delete_solutions');
+
+// OPTIONS: Provides the list of HTTP supported methods
+$app->options(
+    $_ENV['RUTA_API'] . '/solutions[/{id:[0-9]+}]',
+    SolutionController::class . ':options'
+)->setName('tdw_options_solutions');
+
+// POST: Creates a new solutions
+$app->post(
+    $_ENV['RUTA_API'] . '/solutions',
+    SolutionController::class . ':post'
+)->setName('tdw_post_solutions');
+
+// PUT: Updates a solutions
+$app->put(
+    $_ENV['RUTA_API'] . '/solutions/{id:[0-9]+}',
+    SolutionController::class . ':put'
+)->setName('tdw_put_solutions');

@@ -189,6 +189,183 @@ paths:
               description: 'List of HTTP supported methods'
               schema:
                 type: string
+  /solutions:
+    get:
+      tags:
+        - Solutions
+      summary: 'Returns all solutions'
+      description: 'Returns all solutions from the system that the user has access to.'
+      operationId: tdw_cget_solutions
+      responses:
+        '200':
+          description: 'Array of solutions'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SolutionsArray'
+        '401':
+          $ref: '#/components/responses/401_Standard_Response'
+        '403':
+          $ref: '#/components/responses/403_Forbidden_Response'
+        '404':
+          $ref: '#/components/responses/404_Resource_Not_Found_Response'
+      security:
+        -
+          TDWApiSecurity: []
+    post:
+      tags:
+        - Solutions
+      summary: 'Creates a new solution'
+      description: 'Creates a new solution'
+      operationId: tdw_post_solutions
+      requestBody:
+        description: '`Solution` properties to add to the system'
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SolutionData'
+      responses:
+        '201':
+          description: '`Created`: solution created'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Solution'
+        '401':
+          $ref: '#/components/responses/401_Standard_Response'
+        '403':
+          $ref: '#/components/responses/403_Forbidden_Response'
+        '409':
+          description: '`Conflict`: the question does not exist.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Message'
+              example:
+                code: 409
+                message: '`Conflict`: the question does not exist.'
+      security:
+        -
+          TDWApiSecurity: []
+    options:
+      tags:
+        - Solutions
+      summary: 'Provides the list of HTTP supported methods'
+      description: 'Return a `Allow` header with a comma separated list of HTTP supported methods.'
+      operationId: tdw_options_solutions
+      responses:
+        '200':
+          description: '`Allow` header &lt;Response body is empty&gt;'
+          headers:
+            Allow:
+              description: 'List of HTTP supported methods'
+              schema:
+                type: string
+  '/solutions/{solutionId}':
+    get:
+      tags:
+        - Solutions
+      summary: 'Returns a solution based on a single ID'
+      description: 'Returns the solution identified by `solutionId`.'
+      operationId: tdw_get_solutions
+      parameters:
+        -
+          $ref: '#/components/parameters/solutionId'
+      responses:
+        '200':
+          description: Solution
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Solution'
+        '401':
+          $ref: '#/components/responses/401_Standard_Response'
+        '403':
+          $ref: '#/components/responses/403_Forbidden_Response'
+        '404':
+          $ref: '#/components/responses/404_Resource_Not_Found_Response'
+      security:
+        -
+          TDWApiSecurity: []
+    put:
+      tags:
+        - Solutions
+      summary: 'Updates a solution'
+      description: 'Updates the solution identified by `solutionId`.'
+      operationId: tdw_put_solutions
+      parameters:
+        -
+          $ref: '#/components/parameters/solutionId'
+      requestBody:
+        description: '`Solution` data to update'
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SolutionData'
+      responses:
+        '209':
+          description: '`Content Returned`: solution previously existed and is now updated'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Solution'
+        '401':
+          $ref: '#/components/responses/401_Standard_Response'
+        '403':
+          $ref: '#/components/responses/403_Forbidden_Response'
+        '404':
+          $ref: '#/components/responses/404_Resource_Not_Found_Response'
+        '409':
+          description: '`Conflict`: the question does not exist.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Message'
+              example:
+                code: 409
+                message: '`Conflict`: the question does not exist.'
+      security:
+        -
+          TDWApiSecurity: []
+    delete:
+      tags:
+        - Solutions
+      summary: 'Deletes a solution'
+      description: 'Deletes the solution identified by `solutionId`.'
+      operationId: tdw_delete_solutions
+      parameters:
+        -
+          $ref: '#/components/parameters/solutionId'
+      responses:
+        '204':
+          description: 'Solution deleted &lt;Response body is empty&gt;'
+        '401':
+          $ref: '#/components/responses/401_Standard_Response'
+        '403':
+          $ref: '#/components/responses/403_Forbidden_Response'
+        '404':
+          $ref: '#/components/responses/404_Resource_Not_Found_Response'
+      security:
+        -
+          TDWApiSecurity: []
+    options:
+      tags:
+        - Solutions
+      summary: 'Provides the list of HTTP supported methods'
+      description: 'Return a `Allow` header with a comma separated list of HTTP supported methods.'
+      operationId: tdw_options_solutions_id
+      parameters:
+        - $ref: '#/components/parameters/solutionId'
+      responses:
+        '200':
+          description: '`Allow` header &lt;Response body is empty&gt;'
+          headers:
+            Allow:
+              description: 'List of HTTP supported methods'
+              schema:
+                type: string
   /login:
     post:
       tags:
@@ -491,6 +668,56 @@ components:
           items:
             $ref: '#/components/schemas/Question'
       type: object
+    Solution:
+      required:
+        - idSolucion
+      properties:
+        idSolucion:
+          description: 'Solution Id'
+          type: integer
+          format: int64
+        textoSolucion:
+          description: 'Solution description'
+          type: string
+        solucionCorrecta:
+          description: 'Denotes if solution is correct'
+          type: boolean
+        cuestion:
+          description: 'Cuestion''s id'
+          type: integer
+          format: int64
+      type: object
+      example:
+        solucion:
+          idSolucion: 805
+          textoSolucion: 'Solution description'
+          solucionCorrecta: true
+          cuestion: 7
+    SolutionData:
+      properties:
+        textoSolucion:
+          description: 'Solution description'
+          type: string
+        solucionCorrecta:
+          description: 'Denotes if solucion is correct'
+          type: boolean
+        Cuestion:
+          description: 'Cuestion''s id '
+          type: integer
+          format: int64
+      type: object
+      example:
+        textoSolucion: 'Solution description'
+        solucionCorrecta: true
+        cuestion: 501
+    SolutionsArray:
+      properties:
+        cuestiones:
+          description: 'Solutions array'
+          type: array
+          items:
+            $ref: '#/components/schemas/Solution'
+      type: object
     User:
       required:
         - id
@@ -630,6 +857,14 @@ components:
       schema:
         type: integer
         format: int64
+    solutionId:
+      name: solutionId
+      in: path
+      description: 'ID of solution'
+      required: true
+      schema:
+        type: integer
+        format: int64
   securitySchemes:
     TDWApiSecurity:
       type: http
@@ -645,3 +880,6 @@ tags:
   -
     name: Questions
     description: 'Question management'
+  -
+    name: Solutions
+    description: 'Solution management'
