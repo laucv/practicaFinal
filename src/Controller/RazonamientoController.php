@@ -19,8 +19,7 @@ use TDW\GCuest\Utils;
 /**
  * Class RazonamientoController
  */
-class RazonamientoController
-{
+class RazonamientoController{
     /** @var string ruta api gestión razonamiento  */
     public const PATH_USUARIOS = '/reasons';
 

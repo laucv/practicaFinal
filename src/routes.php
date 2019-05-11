@@ -140,13 +140,13 @@ $app->get(
     SolutionController::class . ':cget'
 )->setName('tdw_cget_solutions');
 
-// GET: Returns a solutions based on a single ID
+// GET: Returns a solution based on a single ID
 $app->get(
     $_ENV['RUTA_API'] . '/solutions/{id:[0-9]+}',
     SolutionController::class . ':get'
 )->setName('tdw_get_solutions');
 
-// DELETE: Deletes a solutions
+// DELETE: Deletes a solution
 $app->delete(
     $_ENV['RUTA_API'] . '/solutions/{id:[0-9]+}',
     SolutionController::class . ':delete'
@@ -158,13 +158,13 @@ $app->options(
     SolutionController::class . ':options'
 )->setName('tdw_options_solutions');
 
-// POST: Creates a new solutions
+// POST: Creates a new solution
 $app->post(
     $_ENV['RUTA_API'] . '/solutions',
     SolutionController::class . ':post'
 )->setName('tdw_post_solutions');
 
-// PUT: Updates a solutions
+// PUT: Updates a solution
 $app->put(
     $_ENV['RUTA_API'] . '/solutions/{id:[0-9]+}',
     SolutionController::class . ':put'
@@ -175,19 +175,19 @@ $app->put(
  * ############################################################
  */
 
-// CGET: Returns all solutions
+// CGET: Returns all reasons
 $app->get(
     $_ENV['RUTA_API'] . '/reasons',
     RazonamientoController::class . ':cget'
 )->setName('tdw_cget_reasons');
 
-// GET: Returns a solutions based on a single ID
+// GET: Returns a reason based on a single ID
 $app->get(
     $_ENV['RUTA_API'] . '/reasons/{id:[0-9]+}',
     RazonamientoController::class . ':get'
 )->setName('tdw_get_reasons');
 
-// DELETE: Deletes a solutions
+// DELETE: Deletes a reason
 $app->delete(
     $_ENV['RUTA_API'] . '/reasons/{id:[0-9]+}',
     RazonamientoController::class . ':delete'
@@ -199,13 +199,13 @@ $app->options(
     RazonamientoController::class . ':options'
 )->setName('tdw_options_reasons');
 
-// POST: Creates a new solutions
+// POST: Creates a new reason
 $app->post(
     $_ENV['RUTA_API'] . '/reasons',
     RazonamientoController::class . ':post'
 )->setName('tdw_post_reasons');
 
-// PUT: Updates a solutions
+// PUT: Updates a reason
 $app->put(
     $_ENV['RUTA_API'] . '/reasons/{id:[0-9]+}',
     RazonamientoController::class . ':put'

@@ -226,7 +226,7 @@ class Razonamiento implements \JsonSerializable
  * Razonamiento definition
  *
  * @OA\Schema(
- *     schema = "Razonamiento",
+ *     schema = "Reason",
  *     type   = "object",
  *     required = { "idRazonamiento"},
  *     @OA\Property(
@@ -272,7 +272,7 @@ class Razonamiento implements \JsonSerializable
  * Razonamiento data definition
  *
  * @OA\Schema(
- *      schema          = "RazonamientoData",
+ *      schema          = "ReasonData",
  *      @OA\Property(
  *          property    = "textoRazonamiento",
  *          description = "Solution",
@@ -307,13 +307,13 @@ class Razonamiento implements \JsonSerializable
  * Razonamiento array definition
  *
  * @OA\Schema(
- *     schema           = "RazonamientoArray",
+ *     schema           = "ReasonsArray",
  *     @OA\Property(
  *          property    = "razonamientos",
  *          description = "Razonamiento array",
  *          type        = "array",
  *          @OA\Items(
- *              ref     = "#/components/schemas/Razonamiento"
+ *              ref     = "#/components/schemas/Reason"
  *          )
  *     )
  * )

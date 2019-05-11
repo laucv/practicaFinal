@@ -189,6 +189,7 @@ paths:
               description: 'List of HTTP supported methods'
               schema:
                 type: string
+
   /solutions:
     get:
       tags:
@@ -543,6 +544,7 @@ paths:
               description: 'List of HTTP supported methods'
               schema:
                 type: string
+
   /login:
     post:
       tags:
@@ -785,6 +787,7 @@ paths:
       security:
         -
           TDWApiSecurity: []
+
 components:
   schemas:
     Question:
@@ -845,6 +848,7 @@ components:
           items:
             $ref: '#/components/schemas/Question'
       type: object
+
     Solution:
       required:
         - idSolucion
@@ -895,7 +899,8 @@ components:
           items:
             $ref: '#/components/schemas/Solution'
       type: object
-    Reasons:
+
+    Reason:
       required:
         - idReason
       properties:
@@ -910,7 +915,7 @@ components:
           description: 'Denotes if reason is justified'
           type: boolean
         solucion:
-          description: 'Solution''s id'
+          description: 'Reason''s id'
           type: integer
           format: int64
         textoError:
@@ -929,7 +934,7 @@ components:
         textoRazonamiento:
           description: 'Reason description'
           type: string
-        solucionCorrecta:
+        razonamientoJustificado:
           description: 'Denotes if reason is justified'
           type: boolean
         solucion:
@@ -948,10 +953,10 @@ components:
     ReasonsArray:
       properties:
         cuestiones:
-          description: 'Solutions array'
+          description: 'Reasons array'
           type: array
           items:
-            $ref: '#/components/schemas/Solution'
+            $ref: '#/components/schemas/Reason'
       type: object
     User:
       required:
