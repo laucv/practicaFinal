@@ -109,6 +109,18 @@ class Cuestion implements \JsonSerializable
     protected $categorias;
 
     /**
+     * @var ArrayCollection $soluciones
+     *
+     * @ORM\OneToMany(
+     *     targetEntity="Solucion",
+     *     mappedBy="cuestion",
+     *     cascade={ "merge", "remove" },
+     *     orphanRemoval=true
+     * )
+     */
+    protected $soluciones;
+
+    /**
      * Cuestion constructor.
      *
      * @param string|null  $enunciadoDescripcion
@@ -130,6 +142,8 @@ class Cuestion implements \JsonSerializable
         $this->enunciadoDisponible = $enunciadoDisponible;
         $this->estado = self::CUESTION_CERRADA;
         $this->categorias = new ArrayCollection();
+        $this->soluciones = new ArrayCollection();
+
     }
 
     /**
@@ -293,6 +307,75 @@ class Cuestion implements \JsonSerializable
     }
 
     /**
+     * @return Collection
+     */
+
+    public function getSoluciones(): Collection
+    {
+        return $this->soluciones;
+    }
+
+    /**
+     * @param Solucion $solucion
+     * @return bool
+     */
+    public function containsSolucion(Solucion $solucion): bool
+    {
+        return $this->soluciones->contains($solucion);
+    }
+
+    /**
+     * Añade la solucion a la cuestión
+     *
+     * @param Solucion $solucion
+     * @return Cuestion
+     */
+    public function addSolucion(Solucion $solucion): Cuestion
+    {
+        if ($this->soluciones->contains($solucion)) {
+            return $this;
+        }
+
+        $this->soluciones->add($solucion);
+        return $this;
+    }
+
+    /**
+     * Elimina la solucion identificada por $solucion de la cuestión
+     *
+     * @param Solucion $solucion
+     * @return Solucion|null La cuestión o nulo, si la cuestión no contiene la solucion
+     */
+    public function removeSolucion(Solucion $solucion): ?Cuestion
+    {
+        if (!$this->soluciones->contains($solucion)) {
+            return null;
+        }
+
+        $this->soluciones->removeElement($solucion);
+        return $this;
+    }
+
+    /**
+     * Get an array with the solution identifiers
+     *
+     * @return array
+     */
+    private function getIdsSoluciones(): array
+    {
+        /** @var ArrayCollection $cod_soluciones */
+        $cod_soluciones = $this->getSoluciones()->isEmpty()
+            ? new ArrayCollection()
+            : $this->getSoluciones()->map(
+                function (Solucion $solucion) {
+                    return $solucion->getId();
+                }
+            );
+
+        return $cod_soluciones->getValues();
+    }
+
+    /**
      * The __toString method allows a class to decide how it will react when it is converted to a string.
      *
      * @return string
@@ -302,6 +385,8 @@ class Cuestion implements \JsonSerializable
     {
         $cod_categorias = $this->getIdsCategorias();
         $txt_categorias = '[ ' . implode(', ', $cod_categorias) . ' ]';
+        $cod_soluciones = $this->getIdsSoluciones();
+        $txt_soluciones = '[ ' . implode(', ', $cod_soluciones) . ' ]';
         return '[ cuestion ' .
             '(id=' . $this->getIdCuestion() . ', ' .
             'enunciadoDescripcion="' . $this->getEnunciadoDescripcion() . '", ' .
@@ -309,6 +394,7 @@ class Cuestion implements \JsonSerializable
             'creador=' . ($this->getCreador() ?? 0) . ', ' .
             'estado="' . $this->getEstado() . '" ' .
             'categorias=' . $txt_categorias .
+            'soluciones=' . $txt_soluciones .
             ') ]';
     }
 
@@ -329,6 +415,7 @@ class Cuestion implements \JsonSerializable
                 'creador' => $this->getCreador() ? $this->getCreador()->getId() : null,
                 'estado' => $this->getEstado(),
                 'categorias' => $this->getIdsCategorias(),
+                'soluciones' => $this->getIdsSoluciones(),
             ]
         ];
     }
