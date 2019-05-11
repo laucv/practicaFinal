@@ -38,6 +38,10 @@ use OpenApi\Annotations as OA;
  *     name="Solutions",
  *     description="Solution management"
  * )
+ * @OA\Tag(
+ *     name="Reasons",
+ *     description="Reasons management"
+ * )
  */
 
 /**
@@ -89,6 +93,16 @@ use OpenApi\Annotations as OA;
  *      name        = "solutionId",
  *      in          = "path",
  *      description = "ID of solution",
+ *      required    = true,
+ *      @OA\Schema(
+ *          format  = "int64",
+ *          type    = "integer"
+ *      )
+ * )
+ * @OA\Parameter(
+ *      name        = "razonamientoId",
+ *      in          = "path",
+ *      description = "ID of reason4",
  *      required    = true,
  *      @OA\Schema(
  *          format  = "int64",

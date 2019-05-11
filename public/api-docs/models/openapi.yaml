@@ -366,6 +366,183 @@ paths:
               description: 'List of HTTP supported methods'
               schema:
                 type: string
+  /reasons:
+    get:
+      tags:
+        - Reasons
+      summary: 'Returns all reasons'
+      description: 'Returns all reasons from the system that the user has access to.'
+      operationId: tdw_cget_reasons
+      responses:
+        '200':
+          description: 'Array of reasons'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ReasonsArray'
+        '401':
+          $ref: '#/components/responses/401_Standard_Response'
+        '403':
+          $ref: '#/components/responses/403_Forbidden_Response'
+        '404':
+          $ref: '#/components/responses/404_Resource_Not_Found_Response'
+      security:
+        -
+          TDWApiSecurity: []
+    post:
+      tags:
+        - Reasons
+      summary: 'Creates a new reason'
+      description: 'Creates a new reason'
+      operationId: tdw_post_reasons
+      requestBody:
+        description: '`Reason` properties to add to the system'
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ReasonData'
+      responses:
+        '201':
+          description: '`Created`: reason created'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Reason'
+        '401':
+          $ref: '#/components/responses/401_Standard_Response'
+        '403':
+          $ref: '#/components/responses/403_Forbidden_Response'
+        '409':
+          description: '`Conflict`: the solution does not exist.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Message'
+              example:
+                code: 409
+                message: '`Conflict`: the solution does not exist.'
+      security:
+        -
+          TDWApiSecurity: []
+    options:
+      tags:
+        - Reasons
+      summary: 'Provides the list of HTTP supported methods'
+      description: 'Return a `Allow` header with a comma separated list of HTTP supported methods.'
+      operationId: tdw_options_reasons
+      responses:
+        '200':
+          description: '`Allow` header &lt;Response body is empty&gt;'
+          headers:
+            Allow:
+              description: 'List of HTTP supported methods'
+              schema:
+                type: string
+  '/reasons/{reasonId}':
+    get:
+      tags:
+        - Reasons
+      summary: 'Returns a reason based on a single ID'
+      description: 'Returns the reason identified by `reasonId`.'
+      operationId: tdw_get_reasons
+      parameters:
+        -
+          $ref: '#/components/parameters/reasonId'
+      responses:
+        '200':
+          description: Reason
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Reason'
+        '401':
+          $ref: '#/components/responses/401_Standard_Response'
+        '403':
+          $ref: '#/components/responses/403_Forbidden_Response'
+        '404':
+          $ref: '#/components/responses/404_Resource_Not_Found_Response'
+      security:
+        -
+          TDWApiSecurity: []
+    put:
+      tags:
+        - Reasons
+      summary: 'Updates a reason'
+      description: 'Updates the reason identified by `reasonId`.'
+      operationId: tdw_put_reasons
+      parameters:
+        -
+          $ref: '#/components/parameters/reasonId'
+      requestBody:
+        description: '`Reason` data to update'
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ReasonData'
+      responses:
+        '209':
+          description: '`Content Returned`: reason previously existed and is now updated'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Reason'
+        '401':
+          $ref: '#/components/responses/401_Standard_Response'
+        '403':
+          $ref: '#/components/responses/403_Forbidden_Response'
+        '404':
+          $ref: '#/components/responses/404_Resource_Not_Found_Response'
+        '409':
+          description: '`Conflict`: the solution does not exist.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Message'
+              example:
+                code: 409
+                message: '`Conflict`: the solution does not exist.'
+      security:
+        -
+          TDWApiSecurity: []
+    delete:
+      tags:
+        - Reasons
+      summary: 'Deletes a reason'
+      description: 'Deletes the reason identified by `reasonId`.'
+      operationId: tdw_delete_reasons
+      parameters:
+        -
+          $ref: '#/components/parameters/reasonId'
+      responses:
+        '204':
+          description: 'Reason deleted &lt;Response body is empty&gt;'
+        '401':
+          $ref: '#/components/responses/401_Standard_Response'
+        '403':
+          $ref: '#/components/responses/403_Forbidden_Response'
+        '404':
+          $ref: '#/components/responses/404_Resource_Not_Found_Response'
+      security:
+        -
+          TDWApiSecurity: []
+    options:
+      tags:
+        - Reasons
+      summary: 'Provides the list of HTTP supported methods'
+      description: 'Return a `Allow` header with a comma separated list of HTTP supported methods.'
+      operationId: tdw_options_reasons_id
+      parameters:
+        - $ref: '#/components/parameters/reasonId'
+      responses:
+        '200':
+          description: '`Allow` header &lt;Response body is empty&gt;'
+          headers:
+            Allow:
+              description: 'List of HTTP supported methods'
+              schema:
+                type: string
   /login:
     post:
       tags:
@@ -718,6 +895,64 @@ components:
           items:
             $ref: '#/components/schemas/Solution'
       type: object
+    Reasons:
+      required:
+        - idReason
+      properties:
+        idRazonamiento:
+          description: 'Reason Id'
+          type: integer
+          format: int64
+        textoRazonamiento:
+          description: 'Reason description'
+          type: string
+        razonamientoJustificado:
+          description: 'Denotes if reason is justified'
+          type: boolean
+        solucion:
+          description: 'Solution''s id'
+          type: integer
+          format: int64
+        textoError:
+          description: 'Error description'
+          type: string
+      type: object
+      example:
+        razonamiento:
+          idRazonamiento: 805
+          textoRazonamiento: 'Reason description'
+          razonamientoJustificado: true
+          solucion: 7
+          textoError: 'Error description'
+    ReasonData:
+      properties:
+        textoRazonamiento:
+          description: 'Reason description'
+          type: string
+        solucionCorrecta:
+          description: 'Denotes if reason is justified'
+          type: boolean
+        solucion:
+          description: 'Solution''s id '
+          type: integer
+          format: int64
+        textError:
+          description: 'Error description'
+          type: string
+      type: object
+      example:
+        textoRazonamiento: 'Reason description'
+        razonamiento: true
+        solucion: 501
+        textError: 'Error description'
+    ReasonsArray:
+      properties:
+        cuestiones:
+          description: 'Solutions array'
+          type: array
+          items:
+            $ref: '#/components/schemas/Solution'
+      type: object
     User:
       required:
         - id
@@ -833,6 +1068,7 @@ components:
           example:
             code: 404
             message: '`Not found`: resource not found'
+
   parameters:
     userId:
       name: userId
@@ -865,6 +1101,14 @@ components:
       schema:
         type: integer
         format: int64
+    reasonId:
+      name: reasonId
+      in: path
+      description: 'ID of reason'
+      required: true
+      schema:
+        type: integer
+        format: int64
   securitySchemes:
     TDWApiSecurity:
       type: http
@@ -883,3 +1127,7 @@ tags:
   -
     name: Solutions
     description: 'Solution management'
+  -
+    name: Reasons
+    description: 'Reason management'
+
