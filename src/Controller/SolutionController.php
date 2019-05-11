@@ -21,7 +21,7 @@ use TDW\GCuest\Utils;
  */
 class SolutionController
 {
-    /** @var string ruta api gestión cuestiones  */
+    /** @var string ruta api gestión soluciones  */
     public const PATH_USUARIOS = '/soluction';
 
     /** @var ContainerInterface $container */
