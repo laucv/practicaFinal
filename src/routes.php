@@ -177,36 +177,36 @@ $app->put(
 
 // CGET: Returns all solutions
 $app->get(
-    $_ENV['RUTA_API'] . '/solutions',
+    $_ENV['RUTA_API'] . '/reasons',
     RazonamientoController::class . ':cget'
 )->setName('tdw_cget_reasons');
 
 // GET: Returns a solutions based on a single ID
 $app->get(
-    $_ENV['RUTA_API'] . '/solutions/{id:[0-9]+}',
+    $_ENV['RUTA_API'] . '/reasons/{id:[0-9]+}',
     RazonamientoController::class . ':get'
 )->setName('tdw_get_reasons');
 
 // DELETE: Deletes a solutions
 $app->delete(
-    $_ENV['RUTA_API'] . '/solutions/{id:[0-9]+}',
+    $_ENV['RUTA_API'] . '/reasons/{id:[0-9]+}',
     RazonamientoController::class . ':delete'
 )->setName('tdw_delete_reasons');
 
 // OPTIONS: Provides the list of HTTP supported methods
 $app->options(
-    $_ENV['RUTA_API'] . '/solutions[/{id:[0-9]+}]',
+    $_ENV['RUTA_API'] . '/reasons[/{id:[0-9]+}]',
     RazonamientoController::class . ':options'
 )->setName('tdw_options_reasons');
 
 // POST: Creates a new solutions
 $app->post(
-    $_ENV['RUTA_API'] . '/solutions',
+    $_ENV['RUTA_API'] . '/reasons',
     RazonamientoController::class . ':post'
 )->setName('tdw_post_reasons');
 
 // PUT: Updates a solutions
 $app->put(
-    $_ENV['RUTA_API'] . '/solutions/{id:[0-9]+}',
+    $_ENV['RUTA_API'] . '/reasons/{id:[0-9]+}',
     RazonamientoController::class . ':put'
 )->setName('tdw_put_reasons');
