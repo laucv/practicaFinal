@@ -33,11 +33,11 @@ use OpenApi\Annotations as OA;
  * @OA\Tag(
  *     name="Questions",
  *     description="Question management"
- * )
+ * ),
  * @OA\Tag(
  *     name="Solutions",
  *     description="Solution management"
- * )
+ * ),
  * @OA\Tag(
  *     name="Reasons",
  *     description="Reasons management"

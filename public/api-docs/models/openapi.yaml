@@ -941,7 +941,7 @@ components:
           description: 'Solution''s id '
           type: integer
           format: int64
-        textError:
+        textoError:
           description: 'Error description'
           type: string
       type: object
@@ -949,7 +949,7 @@ components:
         textoRazonamiento: 'Reason description'
         razonamiento: true
         solucion: 501
-        textError: 'Error description'
+        textoError: 'Error description'
     ReasonsArray:
       properties:
         cuestiones:

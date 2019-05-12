@@ -96,7 +96,7 @@ class Razonamiento implements \JsonSerializable
         ?string $textoRazonamiento = null,
         ?Solucion $solucion = null,
         bool $razonamientoJustificado = true,
-        ?string $textoError = ""
+        ?string $textoError = null
     ) {
         $this->idRazonamiento = 0;
         $this->textoRazonamiento = $textoRazonamiento;
@@ -211,12 +211,12 @@ class Razonamiento implements \JsonSerializable
     public function jsonSerialize()
     {
         return [
-            'solucion'=> [
+            'razonamiento'=> [
                 'idRazonamiento' => $this->getIdRazonamiento(),
                 'textoRazonamiento' => $this->getTextoRazonamiento(),
                 'razonamientoJustificado' => $this->isRazonamientoJustificado(),
                 'textoError' => $this->getTextoError(),
-                'solucion' => $this->getSolucion(),
+                'solucion' => $this->getSolucion()->getIdSolucion(),
             ]
         ];
     }

@@ -475,7 +475,9 @@ class RazonamientoController{
             }
             $solucion->setSolucion($solucion);
         }
-
+        if (isset($req_data['textoError'])) {///////
+            $razonamiento->setTextoError($req_data['textoError']);
+        }
 
         //$entity_manager->merge($razonamiento);
         $entity_manager->flush();
