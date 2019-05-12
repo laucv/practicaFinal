@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="utf-8">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <link rel="stylesheet" href="css/style.css">
+    <script type="text/javascript" src="js/login.js"></script>
+
+    <title>login</title>
+</head>
+
+<body>
+    <h1>Iniciar sesión</h1>
+    <form name="formulario" onsubmit="return login();" id="iniciar" >
+        <div>
+            <label for="username">Nombre de usuario</label>
+            <input type="text" class="form-control" id="username" placeholder="Nombre de usuario">
+        </div>
+        <div>
+            <label for="password">Contraseña</label>
+            <input type="password" class="form-control" id="password" placeholder="Contraseña">
+        </div>
+        <div>
+            <input type="submit" value="iniciar" >
+         </div>
+    </form>
+</body>
+
+</html>
