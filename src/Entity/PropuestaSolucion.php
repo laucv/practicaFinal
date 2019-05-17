@@ -1,8 +1,5 @@
 <?php
-/**
- * PHP version 7.2
- * src\Entity\Cuestion.php
- */
+
 
 namespace TDW\GCuest\Entity;
 
@@ -12,11 +9,11 @@ use Doctrine\ORM\Mapping as ORM;
 use OpenApi\Annotations as OA;
 
 /**
- * Class solucion
+ * Class PropuestaSolucion
  *
  * @ORM\Entity()
  * @ORM\Table(
- *     name="soluciones",
+ *     name="propuestaSoluciones",
  *     indexes={
  *         @ORM\Index(
  *             name="fk_cuestion_idx",
@@ -25,34 +22,34 @@ use OpenApi\Annotations as OA;
  *     }
  * )
  */
-class Solucion implements \JsonSerializable
+class PropuestaSolucion
 {
     /**
-     * @var int $idSolucion
+     * @var int $idPropuestaSolucion
      *
      * @ORM\Id()
      * @ORM\GeneratedValue( strategy="AUTO" )
      * @ORM\Column(
-     *     name="idSolucion",
+     *     name="idPropuestaSolucion",
      *     type="integer"
      * )
      */
-    protected $idSolucion;
+    protected $idPropuestaSolucion;
 
     /**
-     * @var string|null $textoSolucion
+     * @var string|null $textoPropuestaSolucion
      *
      * @ORM\Column(
-     *     name="text_solucion",
+     *     name="text_Propuesta_solucion",
      *     type="string",
      *     length=255,
      *     nullable=true
      * )
      */
-    protected $textoSolucion;
+    protected $textoPropuestaSolucion;
 
     /**
-     * @var bool $solucionCorrecta
+     * @var bool $propuestaSolucionCorrecta
      *
      * @ORM\Column(
      *     name="sol_correcta",
@@ -60,7 +57,7 @@ class Solucion implements \JsonSerializable
      *     options={ "default"=true }
      * )
      */
-    protected $solucionCorrecta;
+    protected $propuestaSolucionCorrecta;
 
     /**
      * @var cuestion|null $cuestion
@@ -80,17 +77,6 @@ class Solucion implements \JsonSerializable
      */
     protected $cuestion;
 
-    /**
-     * @var ArrayCollection $razonamientos
-     *
-     * @ORM\OneToMany(
-     *     targetEntity="Razonamiento",
-     *     mappedBy="solucion",
-     *     cascade={ "merge", "remove" },
-     *     orphanRemoval=true
-     * )
-     */
-    protected $razonamientos;
 
     public function __construct(
         ?string $textoSolucion = null,
@@ -101,8 +87,6 @@ class Solucion implements \JsonSerializable
         $this->textoSolucion = $textoSolucion;
         $this->setCuestion($cuestion);
         $this->solucionCorrecta = $solucionCorrecta;
-        $this->razonamientos = new ArrayCollection();
-
     }
 
     /**
@@ -176,91 +160,18 @@ class Solucion implements \JsonSerializable
     }
 
     /**
-     * @return Collection
-     */
-
-    public function getRazonamientos(): Collection
-    {
-        return $this->razonamientos;
-    }
-
-    /**
-     * @param Razonamiento $razonamiento
-     * @return bool
-     */
-    public function containsRazonamientos(Razonamiento $razonamiento): bool
-    {
-        return $this->razonamientos->contains($razonamiento);
-    }
-
-    /**
-     * Añade el razonamiento a la solucion
-     *
-     * @param Razonamiento $razonamiento
-     * @return Solucion
-     */
-    public function addRazonamiento(Razonamiento $razonamiento): Solucion
-    {
-        if ($this->razonamientos->contains($razonamiento)) {
-            return $this;
-        }
-
-        $this->razonamientos->add($razonamiento);
-        return $this;
-    }
-
-    /**
-     * Elimina el razonamiento identificada por $razonamiento de la razonamiento
-     *
-     * @param Razonamiento $razonamiento
-     * @return Solucion|null La solucion o nulo, si la solucion no contiene el razonamiento
-     */
-    public function removeRazonamiento(Razonamiento $razonamiento): ?Solucion
-    {
-        if (!$this->razonamientos->contains($razonamiento)) {
-            return null;
-        }
-
-        $this->razonamientos->removeElement($razonamiento);
-        return $this;
-    }
-
-    /**
-     * Get an array with the solution identifiers
-     *
-     * @return array
-     */
-    private function getIdsRazonamiento(): array
-    {
-        /** @var ArrayCollection $cod_soluciones */
-        $cod_razonamientos = $this->getRazonamientos()->isEmpty()
-            ? new ArrayCollection()
-            : $this->getRazonamientos()->map(
-                function (Razonamiento $razonamiento) {
-                    return $razonamiento->getIdRazonamiento();
-                }
-            );
-
-        return $cod_razonamientos->getValues();
-    }
-
-    /**
      * The __toString method allows a class to decide how it will react when it is converted to a string.
      *
      * @return string
      * @link http://php.net/manual/en/language.oop5.magic.php#language.oop5.magic.tostring
      */
-
     public function __toString()
     {
-        $cod_razonamientos= $this->getIdsRazonamiento();
-        $txt_razonamientos = '[ ' . implode(', ', $cod_razonamientos) . ' ]';
         return '[ solucion ' .
             '(id=' . $this->getIdSolucion() . ', ' .
             'textoSolucion="' . $this->getTextoSolucion() . ', ' .
             'solucionCorrecta=' . (int) $this->isSolucionCorrecta() . ', ' .
             'cuestion=' . ($this->getCuestion()) . ', ' .
-            'razonamientos=' . $txt_razonamientos .
             ') ]';
     }
 
@@ -279,7 +190,6 @@ class Solucion implements \JsonSerializable
                 'textoSolucion' => $this->getTextoSolucion(),
                 'solucionCorrecta' => $this->isSolucionCorrecta(),
                 'cuestion' => $this->getCuestion()->getIdCuestion(),
-                'razonamientos' => $this->getIdsRazonamiento(),
             ]
         ];
     }

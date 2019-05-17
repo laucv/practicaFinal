@@ -1,8 +1,8 @@
 div{
     width: 75%;
-    padding: 10px;
+    padding: 1px;
     align-content: center;
-    margin: 5px auto;
+    margin: auto;
     text-align: center;
 }
 body{
@@ -28,4 +28,10 @@ h2{
 }
 .btn btn-info{
     padding: 5px;
+}
+ul{
+    padding: 5px;
+}
+li{
+    padding: 10px;
 }
