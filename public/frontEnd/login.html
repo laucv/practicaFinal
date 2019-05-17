@@ -12,17 +12,17 @@
 
 <body>
     <h1>Iniciar sesión</h1>
-    <form name="formulario" onsubmit="return login();" id="iniciar" >
+    <form name="formulario" id="login" >
         <div>
             <label for="username">Nombre de usuario</label>
-            <input type="text" class="form-control" id="username" placeholder="Nombre de usuario">
+            <input type="text" class="form-control" id="username" name="_username" placeholder="Nombre de usuario">
         </div>
         <div>
             <label for="password">Contraseña</label>
-            <input type="password" class="form-control" id="password" placeholder="Contraseña">
+            <input type="password" class="form-control" id="password" name="_password" placeholder="Contraseña">
         </div>
         <div>
-            <input type="submit" value="iniciar" >
+            <input type="button" onclick = "login()" value="Iniciar sesión">
          </div>
     </form>
 </body>
