@@ -82,12 +82,13 @@ class CuestionController
         if (0 === $this->jwt->user_id) { //403
             return Error::error($this->container, $request, $response, StatusCode::HTTP_FORBIDDEN);
         }
+
         $entity_manager = Utils::getEntityManager();
-        $cuestion = $this->jwt->isAdmin
-            ? $entity_manager->getRepository(Cuestion::class)
-                ->findAll()
-            : $entity_manager->getRepository(Cuestion::class)
-                ->findBy([ 'id' => $this->jwt->user_id ]);
+        if ($this->jwt->isAdmin || !$this->jwt->isMaestro){
+            $cuestion =$entity_manager->getRepository(Cuestion::class)->findAll();
+        } else{
+            $cuestion =$entity_manager->getRepository(Cuestion::class)->findBy([ 'creador' => $this->jwt->user_id ]);
+        }
 
         if (0 === count($cuestion)) {    // 404
             return Error::error($this->container, $request, $response, StatusCode::HTTP_NOT_FOUND);

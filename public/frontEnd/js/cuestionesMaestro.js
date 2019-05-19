@@ -59,6 +59,7 @@ function deleteQuestion(idCuestion){
     var request = new XMLHttpRequest();
     let token = window.sessionStorage.getItem("token");
     let url = 'http://localhost:8000/api/v1/questions/' + idCuestion;
+    
     request.open('DELETE', url, true);
     request.setRequestHeader("Authorization", "Bearer " + token);
     request.responseType = 'json';
@@ -91,28 +92,3 @@ function getCuestiones() {
     request.send();
 
 }
-/*
-function getCuestion(idCuestion) {
-    'use strict';
-    function trataRespuesta () {
-        var respuesta;
-        if(request.status==200){
-            respuesta = request.response;
-            let string_cuestion = JSON.stringify(respuesta);
-            let cuestion = JSON.parse(string_cuestion);
-            window.sessionStorage.setItem("cuestion", JSON.stringify(cuestion));
-        }
-        else{
-            alert("No existe la cuestion");
-        }
-    }
-    var request = new XMLHttpRequest();
-    let token = window.sessionStorage.getItem("token");
-    let url = 'http://localhost:8000/api/v1/questions/' + idCuestion;
-    request.open('GET', url, true);
-    request.setRequestHeader("Authorization", "Bearer " + token);
-    request.responseType = 'json';
-    request.onload = trataRespuesta;
-    request.send();
-}
-*/
