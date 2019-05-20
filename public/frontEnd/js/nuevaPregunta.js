@@ -1,11 +1,11 @@
 var claveSolucion = 0;
 
 function nextQuestionValue() {
-  var datos = JSON.parse(window.localStorage.getItem("datos"));
+  var datos = JSON.parse(window.sessionStorage.getItem("cuestiones"));
   if (datos.cuestiones.length === 0) {
     return 0;
   } else {
-    return datos.cuestiones.slice(-1)[0].clave + 1;
+    return datos.cuestiones.length;
   }
 }
 
@@ -72,7 +72,7 @@ function addSolution() {
     var botonPregunta = document.createElement("button");
     botonPregunta.setAttribute("id", "botonPregunta");
     botonPregunta.setAttribute("class", "btn btn-info");
-    botonPregunta.setAttribute("onclick", "addQuestion();");
+    botonPregunta.setAttribute("onclick", "  postCuestion();");
     botonPregunta.innerHTML = "Añadir pregunta";
     botonPregunta.innerHTML = "Añadir pregunta";
     divBotonPregunta.appendChild(botonPregunta);
@@ -118,7 +118,7 @@ function addSolution() {
 
   claveSolucion++;
 }
-
+/*
 function addQuestion() {
   var datos = JSON.parse(window.localStorage.getItem("datos"));
   var clave = nextQuestionValue();
@@ -165,10 +165,8 @@ function addSolutionData(clave) {
       }]
     });
   }
-  window.localStorage.setItem("datos", JSON.stringify(datos));
-
 }
-
+*/
 function deleteSolution(clave) {
 
   var claveSol = claveSolucion - 1;
@@ -187,4 +185,91 @@ function deleteSolution(clave) {
     divBotonPregunta.removeChild(boton);
   }
 
+}
+
+function postCuestion() {
+  'use strict';
+  function trataRespuesta () {
+    var respuesta;
+    if(request.status==201){
+      postSolucion();
+    }
+    else{
+      alert("No se ha podido añadir la pregunta");
+    }
+  }
+  var request = new XMLHttpRequest();
+  let token = window.sessionStorage.getItem("token");
+  request.open('POST', 'http://localhost:8000/api/v1/questions', true);
+  request.setRequestHeader("Authorization", "Bearer " + token);
+  request.responseType = 'json';
+  request.onload = trataRespuesta;
+  let datos = codifica_query_string_cuestion();
+  console.log(datos);
+  request.send(datos);
+}
+
+function codifica_query_string_cuestion() {
+  var enunciadoDescripcion = document.getElementById("pregunta-" + nextQuestionValue()).value;
+  var enunciadoDisponible = document.getElementById("disponible-" + nextQuestionValue()).checked;
+  //var creador = document.getElementById("password").value;
+  //var estado = document.getElementById("password").value;
+  var creador = 1;
+  var estado = "cerrada";
+
+  console.log(enunciadoDescripcion);
+  console.log(enunciadoDisponible);
+  console.log(creador);
+  console.log(estado);
+  console.log('{\"enunciadoDescripcion\":\"' + enunciadoDescripcion + '\",\"enunciadoDisponible\":' + enunciadoDisponible + ',\"creador\":' + creador + ',\"estado\":\"'+ estado +'\"}');
+
+  return '{\"enunciadoDescripcion\":\"' + enunciadoDescripcion + '\",\"enunciadoDisponible\":' + enunciadoDisponible + ',\"creador\":' + creador + ',\"estado\":\"'+ estado +'\"}';
+}
+function codifica_query_string_solucion() {
+  //Crear funcion para obtener el idCuestion
+  let valorSolucion = 0;
+
+  var textoSolucion = document.getElementById("solucion-" + valorSolucion).value;
+  var solucionCorrecta = document.getElementById("correcta-" + valorSolucion).checked;
+  //Crear una función que saque el idCuestion de la que se va introducir ahora
+  var cuestion = 12;
+
+  console.log(textoSolucion);
+  console.log(solucionCorrecta);
+  console.log(cuestion);
+    console.log('{\"textoSolucion\":\"' + textoSolucion + '\",\"enunciadoDisponible\":' + solucionCorrecta + ',\"cuestion\":' + cuestion +'\"}');
+  return '{\"textoSolucion\":\"' + textoSolucion + '\",\"enunciadoDisponible\":' + solucionCorrecta + ',\"cuestion\":' + cuestion +'\}';
+
+}
+function codifica_query_string_razonamiento() {
+  var username = document.getElementById("username").value;
+  var pwd = document.getElementById("password").value;
+  var username_codif = encodeURIComponent(username);
+  var pwd_codif = encodeURIComponent(pwd);
+
+  return "_username=" + username_codif + "&_password=" + pwd_codif;
+}
+
+function postSolucion() {
+  'use strict';
+  function trataRespuesta () {
+    var respuesta;
+    if(request.status==201){
+      //postRazonamiento();
+      //El alert más el redirect deben de ir en postRazonamiento
+      alert("Pregunta añadida")
+      location.href = 'http://localhost:8000/frontend/cuestionesMaestro.html';
+    }
+    else{
+      alert("No se ha podido añadir la pregunta");
+    }
+  }
+  var request = new XMLHttpRequest();
+  let token = window.sessionStorage.getItem("token");
+  request.open('POST', 'http://localhost:8000/api/v1/solutions', true);
+  request.setRequestHeader("Authorization", "Bearer " + token);
+  request.responseType = 'json';
+  request.onload = trataRespuesta;
+  let datos = codifica_query_string_solucion();
+  request.send(datos);
 }

@@ -210,7 +210,7 @@ function getSolucion(idSolucion) {
       window.sessionStorage.setItem("solucion", JSON.stringify(solucion));
     }
     else{
-      alert("No existe la cuestion");
+      console.log("No existen soluciones");
     }
   }
   var request = new XMLHttpRequest();
@@ -234,7 +234,7 @@ function getRazonamientos() {
       window.sessionStorage.setItem("razonamientos", JSON.stringify(razonamientos));
     }
     else{
-      alert("No existe la cuestion");
+      console.log("No existen razonamientos");
     }
   }
   var request = new XMLHttpRequest();

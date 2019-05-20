@@ -34,6 +34,7 @@ function login() {
 function codifica_query_string() {
     var username = document.getElementById("username").value;
     var pwd = document.getElementById("password").value;
+
     var username_codif = encodeURIComponent(username);
     var pwd_codif = encodeURIComponent(pwd);
 

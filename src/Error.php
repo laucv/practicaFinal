@@ -27,7 +27,7 @@ class Error
         StatusCode::HTTP_NOT_FOUND              // 404
             => 'Resource not found',
         StatusCode::HTTP_CONFLICT               // 409
-            => '`Conflict`: the creator does not exist or is not a teacher.',
+            => '`Conflict`: the creator/the question/the solution does not exist or is not a teacher in the case of the creator.',
         StatusCode::HTTP_UNPROCESSABLE_ENTITY   // 422
             => '`Unprocessable entity` Username, e-mail or password is left out',
         StatusCode::HTTP_METHOD_NOT_ALLOWED     // 405

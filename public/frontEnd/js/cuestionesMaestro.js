@@ -45,11 +45,7 @@ function listarPreguntas() {
 
 function deleteQuestion(idCuestion){
     function trataRespuesta () {
-        var respuesta;
         if(request.status==204){
-            respuesta = request.response;
-            let string_cuestion = JSON.stringify(respuesta);
-            let cuestion = JSON.parse(string_cuestion);
             location.reload();
         }
         else{
