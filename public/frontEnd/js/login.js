@@ -11,8 +11,10 @@ function login() {
             let jsonToken = JSON.parse(stringToken);
             let isAdmin = jsonToken.isAdmin;
             let isMaestro = jsonToken.isMaestro;
+            let user_id = jsonToken.user_id;
             window.sessionStorage.setItem("isAdmin", isAdmin);
             window.sessionStorage.setItem("isMaestro", isMaestro);
+            window.sessionStorage.setItem("user_id", user_id);
             if(isMaestro){
                 location.href = 'http://localhost:8000/frontend/cuestionesMaestro.html';
             } else {

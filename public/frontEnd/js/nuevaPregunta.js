@@ -192,7 +192,9 @@ function postCuestion() {
   function trataRespuesta () {
     var respuesta;
     if(request.status==201){
-      postSolucion();
+      respuesta = request.response;
+      let idCuestion = respuesta.cuestion.idCuestion;
+      postSolucion(idCuestion);
     }
     else{
       alert("No se ha podido añadir la pregunta");
@@ -204,59 +206,50 @@ function postCuestion() {
   request.setRequestHeader("Authorization", "Bearer " + token);
   request.responseType = 'json';
   request.onload = trataRespuesta;
+  request.setRequestHeader("Content-Type", "application/json");
   let datos = codifica_query_string_cuestion();
-  console.log(datos);
   request.send(datos);
 }
 
 function codifica_query_string_cuestion() {
   var enunciadoDescripcion = document.getElementById("pregunta-" + nextQuestionValue()).value;
   var enunciadoDisponible = document.getElementById("disponible-" + nextQuestionValue()).checked;
-  //var creador = document.getElementById("password").value;
-  //var estado = document.getElementById("password").value;
-  var creador = 1;
+  var creador = parseInt(window.sessionStorage.getItem("user_id"));
   var estado = "cerrada";
 
-  console.log(enunciadoDescripcion);
-  console.log(enunciadoDisponible);
-  console.log(creador);
-  console.log(estado);
-  console.log('{\"enunciadoDescripcion\":\"' + enunciadoDescripcion + '\",\"enunciadoDisponible\":' + enunciadoDisponible + ',\"creador\":' + creador + ',\"estado\":\"'+ estado +'\"}');
+  let datos = {
+    "enunciadoDescripcion": enunciadoDescripcion,
+    "enunciadoDisponible": enunciadoDisponible,
+    "creador": creador,
+    "estado": estado
+  };
 
-  return '{\"enunciadoDescripcion\":\"' + enunciadoDescripcion + '\",\"enunciadoDisponible\":' + enunciadoDisponible + ',\"creador\":' + creador + ',\"estado\":\"'+ estado +'\"}';
+  return JSON.stringify(datos);
 }
-function codifica_query_string_solucion() {
+function codifica_query_string_solucion(idCuestion) {
   //Crear funcion para obtener el idCuestion
   let valorSolucion = 0;
 
   var textoSolucion = document.getElementById("solucion-" + valorSolucion).value;
   var solucionCorrecta = document.getElementById("correcta-" + valorSolucion).checked;
   //Crear una función que saque el idCuestion de la que se va introducir ahora
-  var cuestion = 12;
+  var cuestion = idCuestion;
 
-  console.log(textoSolucion);
-  console.log(solucionCorrecta);
-  console.log(cuestion);
-    console.log('{\"textoSolucion\":\"' + textoSolucion + '\",\"enunciadoDisponible\":' + solucionCorrecta + ',\"cuestion\":' + cuestion +'\"}');
-  return '{\"textoSolucion\":\"' + textoSolucion + '\",\"enunciadoDisponible\":' + solucionCorrecta + ',\"cuestion\":' + cuestion +'\}';
+  let datos = {
+    "textoSolucion": textoSolucion,
+    "solucionCorrecta": solucionCorrecta,
+    "cuestion": cuestion
+  }
+
+  return JSON.stringify(datos);
 
 }
-function codifica_query_string_razonamiento() {
-  var username = document.getElementById("username").value;
-  var pwd = document.getElementById("password").value;
-  var username_codif = encodeURIComponent(username);
-  var pwd_codif = encodeURIComponent(pwd);
 
-  return "_username=" + username_codif + "&_password=" + pwd_codif;
-}
-
-function postSolucion() {
+function postSolucion(idCuestion) {
   'use strict';
   function trataRespuesta () {
     var respuesta;
     if(request.status==201){
-      //postRazonamiento();
-      //El alert más el redirect deben de ir en postRazonamiento
       alert("Pregunta añadida")
       location.href = 'http://localhost:8000/frontend/cuestionesMaestro.html';
     }
@@ -267,9 +260,10 @@ function postSolucion() {
   var request = new XMLHttpRequest();
   let token = window.sessionStorage.getItem("token");
   request.open('POST', 'http://localhost:8000/api/v1/solutions', true);
+  request.setRequestHeader("Content-Type", "application/json");
   request.setRequestHeader("Authorization", "Bearer " + token);
   request.responseType = 'json';
   request.onload = trataRespuesta;
-  let datos = codifica_query_string_solucion();
+  let datos = codifica_query_string_solucion(idCuestion);
   request.send(datos);
 }
