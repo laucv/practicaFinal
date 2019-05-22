@@ -151,9 +151,9 @@ class PropuestaSolucion
      * @param bool $disponible
      * @return Cuestion
      */
-    public function setPropuestaSolucionCorrecta(bool $correcta): PropuestaSolucion
+    public function setPropuestaSolucionCorrecta(bool $propuestaCorrecta): PropuestaSolucion
     {
-        $this->PropuestaSolucionCorrecta = $correcta;
+        $this->propuestaSolucionCorrecta = $propuestaCorrecta;
         return $this;
     }
 
@@ -212,7 +212,7 @@ class PropuestaSolucion
             'textoPropuestaSolucion="' . $this->getTextoPropuestaSolucion() . ', ' .
             'propuestaSolucionCorrecta=' . (int)$this->isPropuestaSolucionCorrecta() . ', ' .
             'cuestion=' . ($this->getCuestion()) . ', ' .
-            'user=' . ($this->getUser() ?? 0) . ', ' .
+            'user=' . $this->getUser(). ', ' .
             ') ]';
     }
 
@@ -223,14 +223,15 @@ class PropuestaSolucion
      * which is a value of any type other than a resource.
      * @since 5.4.0
      */
+
     public function jsonSerialize()
     {
         return [
-            'propuestaSolucion' => [
+            'propuestaSolucion'=> [
                 'idPropuestaSolucion' => $this->getIdPropuestaSolucion(),
                 'textoPropuestaSolucion' => $this->getTextoPropuestaSolucion(),
+                'propuestaSolucionCorrecta' => $this->isPropuestaSolucionCorrecta(),
                 'cuestion' => $this->getCuestion()->getIdCuestion(),
-                'propuestaSolucionCorrecta' => $this->getIdPropuestaSolucion(),
                 'user' => $this->getUser()->getId()
             ]
         ];
