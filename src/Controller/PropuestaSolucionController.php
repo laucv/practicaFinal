@@ -16,7 +16,7 @@ use TDW\GCuest\Error;
 use TDW\GCuest\Utils;
 
 /**
- * Class PropuestaSolutionController
+ * Class PropuestaSolucionController
  */
 class PropuestaSolucionController
 {
@@ -82,13 +82,13 @@ class PropuestaSolucionController
             return Error::error($this->container, $request, $response, StatusCode::HTTP_FORBIDDEN);
         }
         $entity_manager = Utils::getEntityManager();
-        $soluciones = $this->jwt->isAdmin
+        $propuestaSoluciones = $this->jwt->isAdmin
             ? $entity_manager->getRepository(PropuestaSolucion::class)
                 ->findAll()
-            : $entity_manager->getRepository(PropuestaSolution::class)
+            : $entity_manager->getRepository(PropuestaSolucion::class)
                 ->findBy([ 'user' => $this->jwt->user_id ]);
 
-        if (0 === count($soluciones)) {    // 404
+        if (0 === count($propuestaSoluciones)) {    // 404
             return Error::error($this->container, $request, $response, StatusCode::HTTP_NOT_FOUND);
         }
 
@@ -99,7 +99,7 @@ class PropuestaSolucionController
 
         return $response
             ->withJson(
-                [ 'PropuestaSoluciones' => $soluciones ],
+                [ 'PropuestaSoluciones' => $propuestaSoluciones ],
                 StatusCode::HTTP_OK // 200
             );
     }
@@ -362,21 +362,22 @@ class PropuestaSolucionController
         $entity_manager = Utils::getEntityManager();
 
         $cuestion= (isset($req_data["cuestion"])) ? $entity_manager->find(Cuestion::class, $req_data["cuestion"]) : null;
+        $user = (isset($req_data["user"])) ? $entity_manager->find(Usuario::class, $req_data["user"]) : null;
 
-        if($cuestion === null ){ //La cuestion no existe
+
+        if($cuestion === null || $user === null){ //La cuestion no existe
             return Error::error($this->container, $request, $response, StatusCode::HTTP_CONFLICT);
         }
-        $user = (isset($req_data["user"])) ? $entity_manager->find(Usuario::class, $req_data["user"]): null;
 
         // 201
-        $solucion = new PropuestaSolucion(
+        $propuestaSolucion = new PropuestaSolucion(
             $req_data['textoPropuestaSolucion'],
             $req_data['propuestaSolucionCorrecta'] ?? false,
             $cuestion,
             $user
 
         );
-        $entity_manager->persist($solucion);
+        $entity_manager->persist($propuestaSolucion);
         $entity_manager->flush();
 
         $this->logger->info(
@@ -387,7 +388,7 @@ class PropuestaSolucionController
             ]
         );
 
-        return $response->withJson($solucion, StatusCode::HTTP_CREATED); // 201
+        return $response->withJson($propuestaSolucion, StatusCode::HTTP_CREATED); // 201
     }
 
     /**

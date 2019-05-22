@@ -10,8 +10,7 @@ use Slim\Http\StatusCode;
 use TDW\GCuest\Controller\CuestionController;
 use TDW\GCuest\Controller\LoginController;
 use TDW\GCuest\Controller\UsuarioController;
-use TDW\GCuest\Controller\SolutionController;
-use TDW\GCuest\Controller\RazonamientoController;
+use TDW\GCuest\Controller\PropuestaSolucionController;
 
 /**
  * @var \Slim\App $app

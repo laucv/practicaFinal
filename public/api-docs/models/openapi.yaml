@@ -1049,11 +1049,11 @@ components:
           format: int64
       type: object
       example:
-        solution:
-          idSolucion: 805
-          textoSolucion: 'Solution description'
-          solucionCorrecta: true
-          cuestion: 50
+        propuestaSolucion:
+          idPropuestaSolucion: 805
+          textoPropuestaSolucion: 'Solution description'
+          propuestaSolucionCorrecta: true
+          cuestion: 1
           user: 1
     SolutionProposalData:
       properties:

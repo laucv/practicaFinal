@@ -231,7 +231,7 @@ class PropuestaSolucion
                 'textoPropuestaSolucion' => $this->getTextoPropuestaSolucion(),
                 'cuestion' => $this->getCuestion()->getIdCuestion(),
                 'propuestaSolucionCorrecta' => $this->getIdPropuestaSolucion(),
-                'user' => $this->getUser() ? $this->getUser()->getId() : null,
+                'user' => $this->getUser()->getId()
             ]
         ];
     }
@@ -273,11 +273,11 @@ class PropuestaSolucion
  *          type        = "integer"
  *      ),
  *      example = {
- *          "solution" = {
- *              "idSolucion"           = 805,
- *              "textoSolucion" = "Solution description",
- *              "solucionCorrecta"  = true,
- *              "cuestion"              = 50,
+ *          "propuestaSolucion" = {
+ *              "idPropuestaSolucion"           = 805,
+ *              "textoPropuestaSolucion" = "Solution description",
+ *              "propuestaSolucionCorrecta"  = true,
+ *              "cuestion"              = 1,
  *              "user"              = 1
  *          }
  *     }
