@@ -99,7 +99,7 @@ class PropuestaSolucionController
 
         return $response
             ->withJson(
-                [ 'PropuestaSoluciones' => $propuestaSoluciones ],
+                [ 'propuestaSoluciones' => $propuestaSoluciones ],
                 StatusCode::HTTP_OK // 200
             );
     }

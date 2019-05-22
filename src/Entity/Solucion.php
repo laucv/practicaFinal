@@ -279,7 +279,7 @@ class Solucion implements \JsonSerializable
                 'textoSolucion' => $this->getTextoSolucion(),
                 'solucionCorrecta' => $this->isSolucionCorrecta(),
                 'cuestion' => $this->getCuestion()->getIdCuestion(),
-                'razonamientos' => $this->getIdsRazonamiento(),
+                'razonamientos' => $this->getIdsRazonamiento()
             ]
         ];
     }

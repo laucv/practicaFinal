@@ -216,7 +216,7 @@ class Razonamiento implements \JsonSerializable
                 'textoRazonamiento' => $this->getTextoRazonamiento(),
                 'razonamientoJustificado' => $this->isRazonamientoJustificado(),
                 'textoError' => $this->getTextoError(),
-                'solucion' => $this->getSolucion()->getIdSolucion(),
+                'solucion' => $this->getSolucion()->getIdSolucion()
             ]
         ];
     }
