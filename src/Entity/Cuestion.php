@@ -121,6 +121,18 @@ class Cuestion implements \JsonSerializable
     protected $soluciones;
 
     /**
+     * @var ArrayCollection $propuestaSoluciones
+     *
+     * @ORM\OneToMany(
+     *     targetEntity="PropuestaSolucion",
+     *     mappedBy="cuestion",
+     *     cascade={ "merge", "remove" },
+     *     orphanRemoval=true
+     * )
+     */
+    protected $propuestaSoluciones;
+
+    /**
      * Cuestion constructor.
      *
      * @param string|null  $enunciadoDescripcion
@@ -143,6 +155,7 @@ class Cuestion implements \JsonSerializable
         $this->estado = self::CUESTION_CERRADA;
         $this->categorias = new ArrayCollection();
         $this->soluciones = new ArrayCollection();
+        $this->propuestaSoluciones = new ArrayCollection();
 
     }
 
@@ -376,6 +389,75 @@ class Cuestion implements \JsonSerializable
     }
 
     /**
+     * @return Collection
+     */
+
+    public function getPropuestaSoluciones(): Collection
+    {
+        return $this->propuestaSoluciones;
+    }
+
+    /**
+     * @param PropuestaSolucion $propuestaSolucion
+     * @return bool
+     */
+    public function containsPropuesstaSolucion(PropuestaSolucion $propuestaSolucion): bool
+    {
+        return $this->propuestaSoluciones->contains($propuestaSolucion);
+    }
+
+    /**
+     * Añade la propuesta solucion a la cuestión
+     *
+     * @param PropuestaSolucion $propuestaSolucion
+     * @return Cuestion
+     */
+    public function addPropuestaSolucion(PropuestaSolucion $propuestaSolucion): Cuestion
+    {
+        if ($this->propuestaSoluciones->contains($propuestaSolucion)) {
+            return $this;
+        }
+
+        $this->propuestaSoluciones->add($propuestaSolucion);
+        return $this;
+    }
+
+    /**
+     * Elimina la solucion identificada por $solucion de la cuestión
+     *
+     * @param PropuestaSolucion $propuestaSolucion
+     * @return PropuestaSolucion|null La cuestión o nulo, si la cuestión no contiene la propuesta solucion
+     */
+    public function removePropuestaSolucion(PropuestaSolucion $propuestaSolucion): ?Cuestion
+    {
+        if (!$this->propuestaSoluciones->contains($propuestaSolucion)) {
+            return null;
+        }
+
+        $this->propuestaSoluciones->removeElement($propuestaSolucion);
+        return $this;
+    }
+
+    /**
+     * Get an array with the proposal solution identifiers
+     *
+     * @return array
+     */
+    private function getIdsPropuestaSoluciones(): array
+    {
+        /** @var ArrayCollection $cod_soluciones */
+        $cod_propuesta_soluciones = $this->getPropuestaSoluciones()->isEmpty()
+            ? new ArrayCollection()
+            : $this->getPropuestaSoluciones()->map(
+                function (PropuestaSolucion $propuestaSolucion) {
+                    return $propuestaSolucion->getIdPropuestaSolucion();
+                }
+            );
+
+        return $cod_propuesta_soluciones->getValues();
+    }
+
+    /**
      * The __toString method allows a class to decide how it will react when it is converted to a string.
      *
      * @return string
@@ -387,6 +469,8 @@ class Cuestion implements \JsonSerializable
         $txt_categorias = '[ ' . implode(', ', $cod_categorias) . ' ]';
         $cod_soluciones = $this->getIdsSoluciones();
         $txt_soluciones = '[ ' . implode(', ', $cod_soluciones) . ' ]';
+        $cod_propuesta_soluciones = $this->getIdsPropuestaSoluciones();
+        $txt_propuesta_soluciones = '[ ' . implode(', ', $cod_propuesta_soluciones) . ' ]';
         return '[ cuestion ' .
             '(id=' . $this->getIdCuestion() . ', ' .
             'enunciadoDescripcion="' . $this->getEnunciadoDescripcion() . '", ' .
@@ -395,6 +479,7 @@ class Cuestion implements \JsonSerializable
             'estado="' . $this->getEstado() . '" ' .
             'categorias=' . $txt_categorias .
             'soluciones=' . $txt_soluciones .
+            'propuestaSoluciones=' . $txt_propuesta_soluciones .
             ') ]';
     }
 
@@ -416,6 +501,7 @@ class Cuestion implements \JsonSerializable
                 'estado' => $this->getEstado(),
                 'categorias' => $this->getIdsCategorias(),
                 'soluciones' => $this->getIdsSoluciones(),
+                'propuestaSoluciones' => $this->getIdsPropuestaSoluciones()
             ]
         ];
     }

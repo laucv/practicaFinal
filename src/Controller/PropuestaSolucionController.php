@@ -1,8 +1,5 @@
 <?php
-/**
- * PHP version 7.2
- * apiTDWUsers - src/Controller/CuestionController.php
- */
+
 
 namespace TDW\GCuest\Controller;
 
@@ -11,17 +8,20 @@ use Psr\Container\ContainerInterface;
 use Slim\Http\Request;
 use Slim\Http\Response;
 use Slim\Http\StatusCode;
-use TDW\GCuest\Entity\Razonamiento;
+use TDW\GCuest\Entity\PropuestaSolucion;
 use TDW\GCuest\Entity\Solucion;
+use TDW\GCuest\Entity\Cuestion;
+use TDW\GCuest\Entity\Usuario;
 use TDW\GCuest\Error;
 use TDW\GCuest\Utils;
 
 /**
- * Class RazonamientoController
+ * Class PropuestaSolutionController
  */
-class RazonamientoController{
-    /** @var string ruta api gestión razonamiento  */
-    public const PATH_USUARIOS = '/reasons';
+class PropuestaSolucionController
+{
+    /** @var string ruta api gestión soluciones  */
+    public const PATH_USUARIOS = '/propuestaSolucion';
 
     /** @var ContainerInterface $container */
     protected $container;
@@ -41,22 +41,22 @@ class RazonamientoController{
     }
 
     /**
-     * Summary: Returns all reasons
+     * Summary: Returns all solutions
      *
      * @OA\Get(
-     *     path        = "/reasons",
-     *     tags        = { "Reasons" },
-     *     summary     = "Returns all reasons",
-     *     description = "Returns all reasons from the system that the user has access to.",
-     *     operationId = "tdw_cget_reasons",
+     *     path        = "/solutionsProposal",
+     *     tags        = { "SolutionsProposal" },
+     *     summary     = "Returns all solutions Proposal",
+     *     description = "Returns all solutions Proposal from the system that the user has access to.",
+     *     operationId = "tdw_cget_solutionsProposal",
      *     security    = {
      *          { "TDWApiSecurity": {} }
      *     },
      *     @OA\Response(
      *          response    = 200,
-     *          description = "Array of reasons",
+     *          description = "Array of solutions Proposal",
      *          @OA\JsonContent(
-     *              ref  = "#/components/schemas/ReasonsArray"
+     *              ref  = "#/components/schemas/SolutionProposalArray"
      *         )
      *     ),
      *     @OA\Response(
@@ -82,13 +82,13 @@ class RazonamientoController{
             return Error::error($this->container, $request, $response, StatusCode::HTTP_FORBIDDEN);
         }
         $entity_manager = Utils::getEntityManager();
-        $razonamientos = $this->jwt->isAdmin
-            ? $entity_manager->getRepository(Razonamiento::class)
+        $soluciones = $this->jwt->isAdmin
+            ? $entity_manager->getRepository(PropuestaSolucion::class)
                 ->findAll()
-            : $entity_manager->getRepository(Razonamiento::class)
-                ->findBy([ 'id' => $this->jwt->user_id ]);
+            : $entity_manager->getRepository(PropuestaSolution::class)
+                ->findBy([ 'user' => $this->jwt->user_id ]);
 
-        if (0 === count($razonamientos)) {    // 404
+        if (0 === count($soluciones)) {    // 404
             return Error::error($this->container, $request, $response, StatusCode::HTTP_NOT_FOUND);
         }
 
@@ -99,31 +99,31 @@ class RazonamientoController{
 
         return $response
             ->withJson(
-                [ 'razonamientos' => $razonamientos ],
+                [ 'PropuestaSoluciones' => $soluciones ],
                 StatusCode::HTTP_OK // 200
             );
     }
 
     /**
-     * Summary: Returns a reason based on a single ID
+     * Summary: Returns a solution Proposal based on a single ID
      *
      * @OA\Get(
-     *     path        = "/reasons/{reasonId}",
-     *     tags        = { "Reasons" },
-     *     summary     = "Returns a reason based on a single ID",
-     *     description = "Returns the reason identified by `solutionId`.",
-     *     operationId = "tdw_get_reasons",
+     *     path        = "/solutionsProposal/{solutionProposalId}",
+     *     tags        = { "SolutionsProposal" },
+     *     summary     = "Returns a solution Proposal based on a single ID",
+     *     description = "Returns the solution Proposal identified by `solutionProposalId`.",
+     *     operationId = "tdw_get_solutionsProposal",
      *     @OA\Parameter(
-     *          ref    = "#/components/parameters/reasonId"
+     *          ref    = "#/components/parameters/solutionProposalId"
      *     ),
      *     security    = {
      *          { "TDWApiSecurity": {} }
      *     },
      *     @OA\Response(
      *          response    = 200,
-     *          description = "Reason",
+     *          description = "SolutionProposal",
      *          @OA\JsonContent(
-     *              ref  = "#/components/schemas/Solution"
+     *              ref  = "#/components/schemas/SolutionProposal"
      *         )
      *     ),
      *     @OA\Response(
@@ -150,9 +150,9 @@ class RazonamientoController{
             return Error::error($this->container, $request, $response, StatusCode::HTTP_FORBIDDEN);
         }
         $entity_manager = Utils::getEntityManager();
-        $razonamiento= $entity_manager->find(Razonamiento::class, $args['id']);
+        $solucion = $entity_manager->find(PropuestaSolucion::class, $args['idPropuestaSolucion']);
 
-        if (null === $razonamiento) {
+        if (null === $solucion) {
             return Error::error($this->container, $request, $response, StatusCode::HTTP_NOT_FOUND);
         }
 
@@ -166,29 +166,29 @@ class RazonamientoController{
 
         return $response
             ->withJson(
-                $razonamiento,
+                $solucion,
                 StatusCode::HTTP_OK // 200
             );
     }
 
     /**
-     * Summary: Deletes a reason
+     * Summary: Deletes a solution Proposal
      *
      * @OA\Delete(
-     *     path        = "/reasons/{reasonId}",
-     *     tags        = { "Reasons" },
-     *     summary     = "Deletes a reason",
-     *     description = "Deletes the reason identified by `reasonId`.",
-     *     operationId = "tdw_delete_reason",
+     *     path        = "/solutionsProposal/{solutionProposalId}",
+     *     tags        = { "SolutionsProposal" },
+     *     summary     = "Deletes a solution Proposal",
+     *     description = "Deletes the solution Proposal identified by `solutionProposalId`.",
+     *     operationId = "tdw_delete_solutionsProposal",
      *     parameters={
-     *          { "$ref" = "#/components/parameters/reasonId" }
+     *          { "$ref" = "#/components/parameters/solutionProposalId" }
      *     },
      *     security    = {
      *          { "TDWApiSecurity": {} }
      *     },
      *     @OA\Response(
      *          response    = 204,
-     *          description = "Reason deleted &lt;Response body is empty&gt;"
+     *          description = "Solution deleted &lt;Response body is empty&gt;"
      *     ),
      *     @OA\Response(
      *          response    = 401,
@@ -215,9 +215,9 @@ class RazonamientoController{
         }
 
         $entity_manager = Utils::getEntityManager();
-        $razonamiento = $entity_manager->find(Razonamiento::class, $args['id']);
+        $solucion = $entity_manager->find(PropuestaSolucion::class, $args['idPropuestaSolucion']);
 
-        if (null === $razonamiento) {    // 404
+        if (null === $solucion) {    // 404
             return Error::error($this->container, $request, $response, StatusCode::HTTP_NOT_FOUND);
         }
 
@@ -228,7 +228,7 @@ class RazonamientoController{
                 'status' => StatusCode::HTTP_NO_CONTENT
             ]
         );
-        $entity_manager->remove($razonamiento);
+        $entity_manager->remove($solucion);
         $entity_manager->flush();
 
         return $response->withStatus(StatusCode::HTTP_NO_CONTENT);  // 204
@@ -239,11 +239,11 @@ class RazonamientoController{
      * Summary: Provides the list of HTTP supported methods
      *
      * @OA\Options(
-     *     path        = "/reasons",
-     *     tags        = { "Reasons" },
+     *     path        = "/solutionsProposal",
+     *     tags        = { "SolutionsProposal" },
      *     summary     = "Provides the list of HTTP supported methods",
      *     description = "Return a `Allow` header with a comma separated list of HTTP supported methods.",
-     *     operationId = "tdw_options_reasons",
+     *     operationId = "tdw_options_solutionsProposal",
      *     @OA\Response(
      *          response    = 200,
      *          description = "`Allow` header &lt;Response body is empty&gt;",
@@ -258,13 +258,13 @@ class RazonamientoController{
      * )
      *
      * @OA\Options(
-     *     path        = "/reasons/{reasonId}",
-     *     tags        = { "Reasons" },
+     *     path        = "/solutionsProposal/{solutionProposalId}",
+     *     tags        = { "SolutionsProposal" },
      *     summary     = "Provides the list of HTTP supported methods",
      *     description = "Return a `Allow` header with a comma separated list of HTTP supported methods.",
-     *     operationId = "tdw_options_reasons_id",
+     *     operationId = "tdw_options_solutionsProposal_id",
      *     parameters={
-     *          { "$ref" = "#/components/parameters/reasonId" },
+     *          { "$ref" = "#/components/parameters/solutionProposalId" },
      *     },
      *     @OA\Response(
      *          response    = 200,
@@ -301,19 +301,19 @@ class RazonamientoController{
     }
 
     /**
-     * Summary: Creates a new reason
+     * Summary: Creates a new solution
      *
      * @OA\Post(
-     *     path        = "/reasons",
-     *     tags        = { "Reasons" },
-     *     summary     = "Creates a new reason",
-     *     description = "Creates a new reason",
-     *     operationId = "tdw_post_reasons",
+     *     path        = "/solutionsProposal",
+     *     tags        = { "SolutionsProposal" },
+     *     summary     = "Creates a new solution Proposal",
+     *     description = "Creates a new solution Proposal",
+     *     operationId = "tdw_post_solutionsProposal",
      *     @OA\RequestBody(
-     *         description = "`Reason` properties to add to the system",
+     *         description = "`SolutionProposal` properties to add to the system",
      *         required    = true,
      *         @OA\JsonContent(
-     *             ref = "#/components/schemas/ReasonData"
+     *             ref = "#/components/schemas/SolutionProposalData"
      *         )
      *     ),
      *     security    = {
@@ -321,9 +321,9 @@ class RazonamientoController{
      *     },
      *     @OA\Response(
      *          response    = 201,
-     *          description = "`Created`: reason created",
+     *          description = "`Created`: solution Proposal created",
      *          @OA\JsonContent(
-     *              ref  = "#/components/schemas/Reason"
+     *              ref  = "#/components/schemas/SolutionProposal"
      *         )
      *     ),
      *     @OA\Response(
@@ -336,12 +336,12 @@ class RazonamientoController{
      *     ),
      *     @OA\Response(
      *          response    = 409,
-     *          description = "`Conflict`: the solution does not exist",
+     *          description = "`Conflict`: the question does not exist",
      *          @OA\JsonContent(
      *              ref  = "#/components/schemas/Message",
      *              example          = {
      *                   "code"      = 409,
-     *                   "message"   = "`Conflict`: the solution does not exist "
+     *                   "message"   = "`Conflict`: the question does not exist "
      *              }
      *         )
      *     )
@@ -361,20 +361,22 @@ class RazonamientoController{
             ?? json_decode($request->getBody(), true);
         $entity_manager = Utils::getEntityManager();
 
-        $solucion= (isset($req_data["solucion"])) ? $entity_manager->find(Solucion::class, $req_data["solucion"]) : null;
+        $cuestion= (isset($req_data["cuestion"])) ? $entity_manager->find(Cuestion::class, $req_data["cuestion"]) : null;
 
-        if($solucion === null ){ //La cuestion no existe
+        if($cuestion === null ){ //La cuestion no existe
             return Error::error($this->container, $request, $response, StatusCode::HTTP_CONFLICT);
         }
+        $user = (isset($req_data["user"])) ? $entity_manager->find(Usuario::class, $req_data["user"]): null;
 
         // 201
-        $razonamiento = new Razonamiento(
-            $req_data['textoRazonamiento'],
-            $solucion,
-            $req_data['razonamientoJustificado'] ?? false,
-            $req_data['textoError']
+        $solucion = new PropuestaSolucion(
+            $req_data['textoPropuestaSolucion'],
+            $req_data['propuestaSolucionCorrecta'] ?? false,
+            $cuestion,
+            $user
+
         );
-        $entity_manager->persist($razonamiento);
+        $entity_manager->persist($solucion);
         $entity_manager->flush();
 
         $this->logger->info(
@@ -385,26 +387,26 @@ class RazonamientoController{
             ]
         );
 
-        return $response->withJson($razonamiento, StatusCode::HTTP_CREATED); // 201
+        return $response->withJson($solucion, StatusCode::HTTP_CREATED); // 201
     }
 
     /**
-     * Summary: Updates a reason
+     * Summary: Updates a solution
      *
      * @OA\Put(
-     *     path        = "/reasons/{reasonId}",
-     *     tags        = { "Reasons" },
-     *     summary     = "Updates a reason",
-     *     description = "Updates the reason identified by `reasonId`.",
-     *     operationId = "tdw_put_reasons",
+     *     path        = "/solutionsProposal/{solutionProposalId}",
+     *     tags        = { "SolutionsProposal" },
+     *     summary     = "Updates a solution Proposal",
+     *     description = "Updates the solution Proposal identified by `solutionId`.",
+     *     operationId = "tdw_put_solutionsProposal",
      *     @OA\Parameter(
-     *          ref    = "#/components/parameters/reasonId"
+     *          ref    = "#/components/parameters/solutionProposalId"
      *     ),
      *     @OA\RequestBody(
-     *         description = "`Reason` data to update",
+     *         description = "`SolutionProposal` data to update",
      *         required    = true,
      *         @OA\JsonContent(
-     *             ref = "#/components/schemas/ReasonData"
+     *             ref = "#/components/schemas/SolutionProposalData"
      *         )
      *     ),
      *     security    = {
@@ -412,9 +414,9 @@ class RazonamientoController{
      *     },
      *     @OA\Response(
      *          response    = 209,
-     *          description = "`Content Returned`: reason previously existed and is now updated",
+     *          description = "`Content Returned`: solution previously existed and is now updated",
      *          @OA\JsonContent(
-     *              ref = "#/components/schemas/Reason"
+     *              ref = "#/components/schemas/SolutionProposal"
      *         )
      *     ),
      *     @OA\Response(
@@ -456,30 +458,35 @@ class RazonamientoController{
             = $request->getParsedBody()
             ?? json_decode($request->getBody(), true);
         $entity_manager = Utils::getEntityManager();
-        $razonamiento= $entity_manager->find(Razonamiento::class, $args['id']);
+        $solucion= $entity_manager->find(PropuestaSolucion::class, $args['id']);
 
-        if (null === $razonamiento) {    // 404
+        if (null === $solucion) {    // 404
             return Error::error($this->container, $request, $response, StatusCode::HTTP_NOT_FOUND);
         }
-        if (isset($req_data['textoRazonamiento'])) {///////
-            $razonamiento->setTextoRazonamiento($req_data['textoRazonamiento']);
+        if (isset($req_data['textoSolucion'])) {///////
+            $solucion->setTextoPropuestaSolucion($req_data['textoPropuestaSolucion']);
         }
-        if (isset($req_data['razonamientoJustificado'])) {
-            $razonamiento->setRazonamientoJustificado($req_data['razonamientoJustificado']);
+        if (isset($req_data['solucionCorrecta'])) {
+            $solucion->setPropuestaSolucionCorrecta($req_data['propuestaSolucionCorrecta']);
         }
 
-        if (isset($req_data['solucion'])) {
-            $solucion = (isset($req_data["solucion"])) ? $entity_manager->find(Solucion::class, $req_data["solucion"]) : null;
-            if(null === $solucion){ //cuestion no existe
+        if (isset($req_data['cuestion'])) {
+            $cuestion = (isset($req_data["cuestion"])) ? $entity_manager->find(Cuestion::class, $req_data["cuestion"]) : null;
+            if(null === $cuestion){ //cuestion no existe
                 return Error::error($this->container, $request, $response, StatusCode::HTTP_CONFLICT);
             }
-            $solucion->setSolucion($solucion);
-        }
-        if (isset($req_data['textoError'])) {///////
-            $razonamiento->setTextoError($req_data['textoError']);
+            $cuestion->setCuestion($cuestion);
         }
 
-        //$entity_manager->merge($razonamiento);
+        if (isset($req_data['user'])) {
+            $user = (isset($req_data["user"])) ? $entity_manager->find(Usuario::class, $req_data["user"]) : null;
+            if(null === $user){ //usuario no existe
+                return Error::error($this->container, $request, $response, StatusCode::HTTP_CONFLICT);
+            }
+            $user->setCuestion($user);
+        }
+
+        //$entity_manager->merge($solucion);
         $entity_manager->flush();
 
         $this->logger->info(
@@ -487,6 +494,6 @@ class RazonamientoController{
             [ 'uid' => $this->jwt->user_id, 'status' => StatusCode::HTTP_OK ]
         );
 
-        return $response->withJson($razonamiento)->withStatus(209, 'Content Returned');
+        return $response->withJson($solucion)->withStatus(209, 'Content Returned');
     }
 }

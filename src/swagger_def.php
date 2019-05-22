@@ -108,7 +108,7 @@ use OpenApi\Annotations as OA;
  *      )
  * )
  * @OA\Parameter(
- *      name        = "razonamientoId",
+ *      name        = "reasonId",
  *      in          = "path",
  *      description = "ID of reason4",
  *      required    = true,

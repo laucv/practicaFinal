@@ -7,6 +7,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use OpenApi\Annotations as OA;
+use TDW\GCuest\Controller\PropuestaSolucionController;
 
 /**
  * Class PropuestaSolucion
@@ -40,7 +41,7 @@ class PropuestaSolucion
      * @var string|null $textoPropuestaSolucion
      *
      * @ORM\Column(
-     *     name="text_Propuesta_solucion",
+     *     name="text_propuesta_solucion",
      *     type="string",
      *     length=255,
      *     nullable=true
@@ -52,7 +53,7 @@ class PropuestaSolucion
      * @var bool $propuestaSolucionCorrecta
      *
      * @ORM\Column(
-     *     name="sol_correcta",
+     *     name="propuesta_solucion_correcta",
      *     type="boolean",
      *     options={ "default"=true }
      * )
@@ -64,7 +65,7 @@ class PropuestaSolucion
      *
      * @ORM\ManyToOne(
      *     targetEntity="Cuestion",
-     *     inversedBy="soluciones"
+     *     inversedBy="propuestaSoluciones"
      *     )
      * @ORM\JoinColumns({
      *   @ORM\JoinColumn(
@@ -77,68 +78,91 @@ class PropuestaSolucion
      */
     protected $cuestion;
 
+    /**
+     * @var Usuario|null $user
+     *
+     * @ORM\ManyToOne(
+     *     targetEntity="Usuario",
+     *     inversedBy="propuestaSoluciones"
+     *     )
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(
+     *     name="user",
+     *     referencedColumnName="id",
+     *     nullable=true,
+     *     onDelete="SET NULL"
+     *     )
+     * })
+     */
+    protected $user;
+
+    /**
+     * Cuestion constructor.
+     *
+     * @param string|null $textoPropuestaSolucion
+     * @param bool $propuestaSolucionCorrecta
+     * @param Cuestion|null $cuestion
+     * @param Usuario|null $user
+     *
+     * @throws \Doctrine\ORM\ORMException
+     */
 
     public function __construct(
-        ?string $textoSolucion = null,
+        ?string $textoPropuestaSolucion = null,
+        bool $propuestaSolucionCorrecta = true,
         ?Cuestion $cuestion = null,
-        bool $solucionCorrecta = true
-    ) {
-        $this->idSolucion = 0;
-        $this->textoSolucion = $textoSolucion;
+        ?Usuario $user = null
+    )
+    {
+        $this->idPropuestaSolucion = 0;
+        $this->textoPropuestaSolucion = $textoPropuestaSolucion;
+        $this->propuestaSolucionCorrecta = $propuestaSolucionCorrecta;
         $this->setCuestion($cuestion);
-        $this->solucionCorrecta = $solucionCorrecta;
+        $this->setUser($user);
     }
 
     /**
      * @return int
      */
-    public function getIdSolucion(): int
+    public function getIdPropuestaSolucion(): int
     {
-        return $this->idSolucion;
+        return $this->idPropuestaSolucion;
     }
 
     /**
      * @return string|null
      */
-    public function getTextoSolucion(): ?string
+    public function getTextoPropuestaSolucion(): ?string
     {
-        return $this->textoSolucion;
+        return $this->textoPropuestaSolucion;
     }
 
     /**
      * @param string|null $textoSolucion
      * @return Solucion
      */
-    public function setTextoSolucion(?string $textoSolucion): Solucion
+    public function setTextoPropuestaSolucion(?string $textoPropuestaSolucion): PropuestaSolucion
     {
-        $this->textoSolucion = $textoSolucion;
+        $this->textoPropuestaSolucion = $textoPropuestaSolucion;
         return $this;
     }
+
     /**
      * @param bool $disponible
      * @return Cuestion
      */
-    public function setSolucionCorrecta(bool $correcta): Solucion
+    public function setPropuestaSolucionCorrecta(bool $correcta): PropuestaSolucion
     {
-        $this->solucionCorrecta = $correcta;
+        $this->PropuestaSolucionCorrecta = $correcta;
         return $this;
-    }
-    /**
-     * @return bool
-     */
-    public function isSolucionCorrecta(): bool
-    {
-        return $this->solucionCorrecta;
     }
 
     /**
-     * @param bool $correcta
-     * @return Solucion
+     * @return bool
      */
-    public function setEnunciadoDisponible(bool $correcta): Solucion
+    public function isPropuestaSolucionCorrecta(): bool
     {
-        $this->solucionCorrecta = $correcta;
-        return $this;
+        return $this->propuestaSolucionCorrecta;
     }
 
     /**
@@ -153,9 +177,25 @@ class PropuestaSolucion
      * @param Cuestion $cuestion
      * @return Solucion
      */
-    public function setCuestion(Cuestion $cuestion): Solucion
+    public function setCuestion(Cuestion $cuestion): PropuestaSolucion
     {
         $this->cuestion = $cuestion;
+        return $this;
+    }
+
+    public function getUser(): ?Usuario
+    {
+        return $this->creador;
+    }
+
+    /**
+     * @param Usuario|null $creador
+     * @return Cuestion
+     * @throws \Doctrine\ORM\ORMException
+     */
+    public function setUser(?Usuario $creador): PropuestaSolucion
+    {
+        $this->creador = $creador;
         return $this;
     }
 
@@ -167,11 +207,12 @@ class PropuestaSolucion
      */
     public function __toString()
     {
-        return '[ solucion ' .
-            '(id=' . $this->getIdSolucion() . ', ' .
-            'textoSolucion="' . $this->getTextoSolucion() . ', ' .
-            'solucionCorrecta=' . (int) $this->isSolucionCorrecta() . ', ' .
+        return '[ propuestaSolucion ' .
+            '(idPropuestaSolucion=' . $this->getIdPropuestaSolucion() . ', ' .
+            'textoPropuestaSolucion="' . $this->getTextoPropuestaSolucion() . ', ' .
+            'propuestaSolucionCorrecta=' . (int)$this->isPropuestaSolucionCorrecta() . ', ' .
             'cuestion=' . ($this->getCuestion()) . ', ' .
+            'user=' . ($this->getUser() ?? 0) . ', ' .
             ') ]';
     }
 
@@ -185,36 +226,37 @@ class PropuestaSolucion
     public function jsonSerialize()
     {
         return [
-            'solucion'=> [
-                'idSolucion' => $this->getIdSolucion(),
-                'textoSolucion' => $this->getTextoSolucion(),
-                'solucionCorrecta' => $this->isSolucionCorrecta(),
+            'propuestaSolucion' => [
+                'idPropuestaSolucion' => $this->getIdPropuestaSolucion(),
+                'textoPropuestaSolucion' => $this->getTextoPropuestaSolucion(),
                 'cuestion' => $this->getCuestion()->getIdCuestion(),
+                'propuestaSolucionCorrecta' => $this->getIdPropuestaSolucion(),
+                'user' => $this->getUser() ? $this->getUser()->getId() : null,
             ]
         ];
     }
 }
 
 /**
- * Solution definition
+ * Proposal Solution definition
  *
  * @OA\Schema(
- *     schema = "Solution",
+ *     schema = "SolutionProposal",
  *     type   = "object",
- *     required = { "idSolution"},
+ *     required = { "idProposalSolution"},
  *     @OA\Property(
- *          property    = "idSolucion",
+ *          property    = "idPropuestaSolucion",
  *          description = "Solution Id",
  *          format      = "int64",
  *          type        = "integer"
  *      ),
  *      @OA\Property(
- *          property    = "textoSolucion",
+ *          property    = "textoPropuestaSolucion",
  *          description = "Solution",
  *          type        = "string"
  *      ),
  *      @OA\Property(
- *          property    = "solucionCorrecta",
+ *          property    = "propuestaSolucionCorrecta",
  *          description = "Denotes if question is correct",
  *          type        = "boolean"
  *      ),
@@ -224,29 +266,36 @@ class PropuestaSolucion
  *          format      = "int64",
  *          type        = "integer"
  *      ),
+ *      @OA\Property(
+ *          property    = "user",
+ *          description = "Solution's id user creator",
+ *          format      = "int64",
+ *          type        = "integer"
+ *      ),
  *      example = {
  *          "solution" = {
  *              "idSolucion"           = 805,
  *              "textoSolucion" = "Solution description",
  *              "solucionCorrecta"  = true,
- *              "cuestion"              = 1,
+ *              "cuestion"              = 50,
+ *              "user"              = 1
  *          }
  *     }
  * )
  */
 
 /**
- * Solution data definition
+ * Solution Proposal data definition
  *
  * @OA\Schema(
- *      schema          = "SolutionData",
+ *      schema          = "SolutionProposalData",
  *      @OA\Property(
- *          property    = "textoSolucion",
+ *          property    = "textoPropuestaSolucion",
  *          description = "Solution",
  *          type        = "string"
  *      ),
  *      @OA\Property(
- *          property    = "solucionCorrecta",
+ *          property    = "propuestaSolucionCorrecta",
  *          description = "Denotes if solution is correct",
  *          type        = "boolean"
  *      ),
@@ -256,25 +305,32 @@ class PropuestaSolucion
  *          format      = "int64",
  *          type        = "integer"
  *      ),
+ *      @OA\Property(
+ *          property    = "user",
+ *          description = "Solution's id creator",
+ *          format      = "int64",
+ *          type        = "integer"
+ *      ),
  *      example = {
- *          "textoSolucion" = "Solution description",
- *          "solucionCorrecta"  = true,
- *          "cuestion"              = 1
+ *          "textoPropuestaSolucion" = "Solution description",
+ *          "propuestaSolucionCorrecta"  = false,
+ *          "cuestion"              = 50,
+ *          "user"              = 1
  *      }
  * )
  */
 
 /**
- * Solution array definition
+ * Solution Proposal array definition
  *
  * @OA\Schema(
- *     schema           = "SolutionArray",
+ *     schema           = "SolutionProposalArray",
  *     @OA\Property(
- *          property    = "soluciones",
- *          description = "Solution array",
+ *          property    = "propuestaSoluciones",
+ *          description = "PropuestaSolution array",
  *          type        = "array",
  *          @OA\Items(
- *              ref     = "#/components/schemas/Solution"
+ *              ref     = "#/components/schemas/SolutionProposal"
  *          )
  *     )
  * )

@@ -57,7 +57,7 @@ class SolutionController
      *          response    = 200,
      *          description = "Array of solutions",
      *          @OA\JsonContent(
-     *              ref  = "#/components/schemas/SolutionsArray"
+     *              ref  = "#/components/schemas/SolutionArray"
      *         )
      *     ),
      *     @OA\Response(

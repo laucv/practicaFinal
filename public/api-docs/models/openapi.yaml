@@ -189,7 +189,399 @@ paths:
               description: 'List of HTTP supported methods'
               schema:
                 type: string
-
+  /login:
+    post:
+      tags:
+        - login
+      summary: 'Returns TDW api token'
+      description: 'Returns TDW api authorization token.'
+      operationId: tdw_post_login
+      requestBody:
+        required: true
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              properties:
+                _username:
+                  description: 'User name'
+                  type: string
+                _password:
+                  description: 'User password'
+                  type: string
+                  format: password
+              type: object
+      responses:
+        '200':
+          description: 'TDW Users api token'
+          headers:
+            X-Token:
+              description: 'api authorization token'
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                type: object
+              example:
+                token: '<JSON web token>'
+        '404':
+          $ref: '#/components/responses/404_Resource_Not_Found_Response'
+  /solutionsProposal:
+    get:
+      tags:
+        - SolutionsProposal
+      summary: 'Returns all solutions Proposal'
+      description: 'Returns all solutions Proposal from the system that the user has access to.'
+      operationId: tdw_cget_solutionsProposal
+      responses:
+        '200':
+          description: 'Array of solutions Proposal'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SolutionProposalArray'
+        '401':
+          $ref: '#/components/responses/401_Standard_Response'
+        '403':
+          $ref: '#/components/responses/403_Forbidden_Response'
+        '404':
+          $ref: '#/components/responses/404_Resource_Not_Found_Response'
+      security:
+        -
+          TDWApiSecurity: []
+    post:
+      tags:
+        - SolutionsProposal
+      summary: 'Creates a new solution Proposal'
+      description: 'Creates a new solution Proposal'
+      operationId: tdw_post_solutionsProposal
+      requestBody:
+        description: '`SolutionProposal` properties to add to the system'
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SolutionProposalData'
+      responses:
+        '201':
+          description: '`Created`: solution Proposal created'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SolutionProposal'
+        '401':
+          $ref: '#/components/responses/401_Standard_Response'
+        '403':
+          $ref: '#/components/responses/403_Forbidden_Response'
+        '409':
+          description: '`Conflict`: the question does not exist'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Message'
+              example:
+                code: 409
+                message: '`Conflict`: the question does not exist '
+      security:
+        -
+          TDWApiSecurity: []
+    options:
+      tags:
+        - SolutionsProposal
+      summary: 'Provides the list of HTTP supported methods'
+      description: 'Return a `Allow` header with a comma separated list of HTTP supported methods.'
+      operationId: tdw_options_solutionsProposal
+      responses:
+        '200':
+          description: '`Allow` header &lt;Response body is empty&gt;'
+          headers:
+            Allow:
+              description: 'List of HTTP supported methods'
+              schema:
+                type: string
+  '/solutionsProposal/{solutionProposalId}':
+    get:
+      tags:
+        - SolutionsProposal
+      summary: 'Returns a solution Proposal based on a single ID'
+      description: 'Returns the solution Proposal identified by `solutionProposalId`.'
+      operationId: tdw_get_solutionsProposal
+      parameters:
+        -
+          $ref: '#/components/parameters/solutionProposalId'
+      responses:
+        '200':
+          description: SolutionProposal
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SolutionProposal'
+        '401':
+          $ref: '#/components/responses/401_Standard_Response'
+        '403':
+          $ref: '#/components/responses/403_Forbidden_Response'
+        '404':
+          $ref: '#/components/responses/404_Resource_Not_Found_Response'
+      security:
+        -
+          TDWApiSecurity: []
+    put:
+      tags:
+        - SolutionsProposal
+      summary: 'Updates a solution Proposal'
+      description: 'Updates the solution Proposal identified by `solutionId`.'
+      operationId: tdw_put_solutionsProposal
+      parameters:
+        -
+          $ref: '#/components/parameters/solutionProposalId'
+      requestBody:
+        description: '`SolutionProposal` data to update'
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SolutionProposalData'
+      responses:
+        '209':
+          description: '`Content Returned`: solution previously existed and is now updated'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SolutionProposal'
+        '401':
+          $ref: '#/components/responses/401_Standard_Response'
+        '403':
+          $ref: '#/components/responses/403_Forbidden_Response'
+        '404':
+          $ref: '#/components/responses/404_Resource_Not_Found_Response'
+        '409':
+          description: '`Conflict`: the solution does not exis'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Message'
+              example:
+                code: 409
+                message: '`Conflict`: the solution does not exist'
+      security:
+        -
+          TDWApiSecurity: []
+    delete:
+      tags:
+        - SolutionsProposal
+      summary: 'Deletes a solution Proposal'
+      description: 'Deletes the solution Proposal identified by `solutionProposalId`.'
+      operationId: tdw_delete_solutionsProposal
+      parameters:
+        -
+          $ref: '#/components/parameters/solutionProposalId'
+      responses:
+        '204':
+          description: 'Solution deleted &lt;Response body is empty&gt;'
+        '401':
+          $ref: '#/components/responses/401_Standard_Response'
+        '403':
+          $ref: '#/components/responses/403_Forbidden_Response'
+        '404':
+          $ref: '#/components/responses/404_Resource_Not_Found_Response'
+      security:
+        -
+          TDWApiSecurity: []
+    options:
+      tags:
+        - SolutionsProposal
+      summary: 'Provides the list of HTTP supported methods'
+      description: 'Return a `Allow` header with a comma separated list of HTTP supported methods.'
+      operationId: tdw_options_solutionsProposal_id
+      parameters:
+        -
+          $ref: '#/components/parameters/solutionProposalId'
+      responses:
+        '200':
+          description: '`Allow` header &lt;Response body is empty&gt;'
+          headers:
+            Allow:
+              description: 'List of HTTP supported methods'
+              schema:
+                type: string
+  /reasons:
+    get:
+      tags:
+        - Reasons
+      summary: 'Returns all reasons'
+      description: 'Returns all reasons from the system that the user has access to.'
+      operationId: tdw_cget_reasons
+      responses:
+        '200':
+          description: 'Array of reasons'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ReasonsArray'
+        '401':
+          $ref: '#/components/responses/401_Standard_Response'
+        '403':
+          $ref: '#/components/responses/403_Forbidden_Response'
+        '404':
+          $ref: '#/components/responses/404_Resource_Not_Found_Response'
+      security:
+        -
+          TDWApiSecurity: []
+    post:
+      tags:
+        - Reasons
+      summary: 'Creates a new reason'
+      description: 'Creates a new reason'
+      operationId: tdw_post_reasons
+      requestBody:
+        description: '`Reason` properties to add to the system'
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ReasonData'
+      responses:
+        '201':
+          description: '`Created`: reason created'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Reason'
+        '401':
+          $ref: '#/components/responses/401_Standard_Response'
+        '403':
+          $ref: '#/components/responses/403_Forbidden_Response'
+        '409':
+          description: '`Conflict`: the solution does not exist'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Message'
+              example:
+                code: 409
+                message: '`Conflict`: the solution does not exist '
+      security:
+        -
+          TDWApiSecurity: []
+    options:
+      tags:
+        - Reasons
+      summary: 'Provides the list of HTTP supported methods'
+      description: 'Return a `Allow` header with a comma separated list of HTTP supported methods.'
+      operationId: tdw_options_reasons
+      responses:
+        '200':
+          description: '`Allow` header &lt;Response body is empty&gt;'
+          headers:
+            Allow:
+              description: 'List of HTTP supported methods'
+              schema:
+                type: string
+  '/reasons/{reasonId}':
+    get:
+      tags:
+        - Reasons
+      summary: 'Returns a reason based on a single ID'
+      description: 'Returns the reason identified by `solutionId`.'
+      operationId: tdw_get_reasons
+      parameters:
+        -
+          $ref: '#/components/parameters/reasonId'
+      responses:
+        '200':
+          description: Reason
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Solution'
+        '401':
+          $ref: '#/components/responses/401_Standard_Response'
+        '403':
+          $ref: '#/components/responses/403_Forbidden_Response'
+        '404':
+          $ref: '#/components/responses/404_Resource_Not_Found_Response'
+      security:
+        -
+          TDWApiSecurity: []
+    put:
+      tags:
+        - Reasons
+      summary: 'Updates a reason'
+      description: 'Updates the reason identified by `reasonId`.'
+      operationId: tdw_put_reasons
+      parameters:
+        -
+          $ref: '#/components/parameters/reasonId'
+      requestBody:
+        description: '`Reason` data to update'
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ReasonData'
+      responses:
+        '209':
+          description: '`Content Returned`: reason previously existed and is now updated'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Reason'
+        '401':
+          $ref: '#/components/responses/401_Standard_Response'
+        '403':
+          $ref: '#/components/responses/403_Forbidden_Response'
+        '404':
+          $ref: '#/components/responses/404_Resource_Not_Found_Response'
+        '409':
+          description: '`Conflict`: the solution does not exis'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Message'
+              example:
+                code: 409
+                message: '`Conflict`: the solution does not exist'
+      security:
+        -
+          TDWApiSecurity: []
+    delete:
+      tags:
+        - Reasons
+      summary: 'Deletes a reason'
+      description: 'Deletes the reason identified by `reasonId`.'
+      operationId: tdw_delete_reason
+      parameters:
+        -
+          $ref: '#/components/parameters/reasonId'
+      responses:
+        '204':
+          description: 'Reason deleted &lt;Response body is empty&gt;'
+        '401':
+          $ref: '#/components/responses/401_Standard_Response'
+        '403':
+          $ref: '#/components/responses/403_Forbidden_Response'
+        '404':
+          $ref: '#/components/responses/404_Resource_Not_Found_Response'
+      security:
+        -
+          TDWApiSecurity: []
+    options:
+      tags:
+        - Reasons
+      summary: 'Provides the list of HTTP supported methods'
+      description: 'Return a `Allow` header with a comma separated list of HTTP supported methods.'
+      operationId: tdw_options_reasons_id
+      parameters:
+        -
+          $ref: '#/components/parameters/reasonId'
+      responses:
+        '200':
+          description: '`Allow` header &lt;Response body is empty&gt;'
+          headers:
+            Allow:
+              description: 'List of HTTP supported methods'
+              schema:
+                type: string
   /solutions:
     get:
       tags:
@@ -203,7 +595,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/SolutionsArray'
+                $ref: '#/components/schemas/SolutionArray'
         '401':
           $ref: '#/components/responses/401_Standard_Response'
         '403':
@@ -238,14 +630,14 @@ paths:
         '403':
           $ref: '#/components/responses/403_Forbidden_Response'
         '409':
-          description: '`Conflict`: the question does not exist.'
+          description: '`Conflict`: the question does not exist'
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/Message'
               example:
                 code: 409
-                message: '`Conflict`: the question does not exist.'
+                message: '`Conflict`: the question does not exist '
       security:
         -
           TDWApiSecurity: []
@@ -319,14 +711,14 @@ paths:
         '404':
           $ref: '#/components/responses/404_Resource_Not_Found_Response'
         '409':
-          description: '`Conflict`: the question does not exist.'
+          description: '`Conflict`: the solution does not exis'
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/Message'
               example:
                 code: 409
-                message: '`Conflict`: the question does not exist.'
+                message: '`Conflict`: the solution does not exist'
       security:
         -
           TDWApiSecurity: []
@@ -358,7 +750,8 @@ paths:
       description: 'Return a `Allow` header with a comma separated list of HTTP supported methods.'
       operationId: tdw_options_solutions_id
       parameters:
-        - $ref: '#/components/parameters/solutionId'
+        -
+          $ref: '#/components/parameters/solutionId'
       responses:
         '200':
           description: '`Allow` header &lt;Response body is empty&gt;'
@@ -367,575 +760,6 @@ paths:
               description: 'List of HTTP supported methods'
               schema:
                 type: string
-  /reasons:
-    get:
-      tags:
-        - Reasons
-      summary: 'Returns all reasons'
-      description: 'Returns all reasons from the system that the user has access to.'
-      operationId: tdw_cget_reasons
-      responses:
-        '200':
-          description: 'Array of reasons'
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ReasonsArray'
-        '401':
-          $ref: '#/components/responses/401_Standard_Response'
-        '403':
-          $ref: '#/components/responses/403_Forbidden_Response'
-        '404':
-          $ref: '#/components/responses/404_Resource_Not_Found_Response'
-      security:
-        -
-          TDWApiSecurity: []
-    post:
-      tags:
-        - Reasons
-      summary: 'Creates a new reason'
-      description: 'Creates a new reason'
-      operationId: tdw_post_reasons
-      requestBody:
-        description: '`Reason` properties to add to the system'
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/ReasonData'
-      responses:
-        '201':
-          description: '`Created`: reason created'
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Reason'
-        '401':
-          $ref: '#/components/responses/401_Standard_Response'
-        '403':
-          $ref: '#/components/responses/403_Forbidden_Response'
-        '409':
-          description: '`Conflict`: the solution does not exist.'
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Message'
-              example:
-                code: 409
-                message: '`Conflict`: the solution does not exist.'
-      security:
-        -
-          TDWApiSecurity: []
-    options:
-      tags:
-        - Reasons
-      summary: 'Provides the list of HTTP supported methods'
-      description: 'Return a `Allow` header with a comma separated list of HTTP supported methods.'
-      operationId: tdw_options_reasons
-      responses:
-        '200':
-          description: '`Allow` header &lt;Response body is empty&gt;'
-          headers:
-            Allow:
-              description: 'List of HTTP supported methods'
-              schema:
-                type: string
-  '/reasons/{reasonId}':
-    get:
-      tags:
-        - Reasons
-      summary: 'Returns a reason based on a single ID'
-      description: 'Returns the reason identified by `reasonId`.'
-      operationId: tdw_get_reasons
-      parameters:
-        -
-          $ref: '#/components/parameters/reasonId'
-      responses:
-        '200':
-          description: Reason
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Reason'
-        '401':
-          $ref: '#/components/responses/401_Standard_Response'
-        '403':
-          $ref: '#/components/responses/403_Forbidden_Response'
-        '404':
-          $ref: '#/components/responses/404_Resource_Not_Found_Response'
-      security:
-        -
-          TDWApiSecurity: []
-    put:
-      tags:
-        - Reasons
-      summary: 'Updates a reason'
-      description: 'Updates the reason identified by `reasonId`.'
-      operationId: tdw_put_reasons
-      parameters:
-        -
-          $ref: '#/components/parameters/reasonId'
-      requestBody:
-        description: '`Reason` data to update'
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/ReasonData'
-      responses:
-        '209':
-          description: '`Content Returned`: reason previously existed and is now updated'
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Reason'
-        '401':
-          $ref: '#/components/responses/401_Standard_Response'
-        '403':
-          $ref: '#/components/responses/403_Forbidden_Response'
-        '404':
-          $ref: '#/components/responses/404_Resource_Not_Found_Response'
-        '409':
-          description: '`Conflict`: the solution does not exist.'
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Message'
-              example:
-                code: 409
-                message: '`Conflict`: the solution does not exist.'
-      security:
-        -
-          TDWApiSecurity: []
-    delete:
-      tags:
-        - Reasons
-      summary: 'Deletes a reason'
-      description: 'Deletes the reason identified by `reasonId`.'
-      operationId: tdw_delete_reasons
-      parameters:
-        -
-          $ref: '#/components/parameters/reasonId'
-      responses:
-        '204':
-          description: 'Reason deleted &lt;Response body is empty&gt;'
-        '401':
-          $ref: '#/components/responses/401_Standard_Response'
-        '403':
-          $ref: '#/components/responses/403_Forbidden_Response'
-        '404':
-          $ref: '#/components/responses/404_Resource_Not_Found_Response'
-      security:
-        -
-          TDWApiSecurity: []
-    options:
-      tags:
-        - Reasons
-      summary: 'Provides the list of HTTP supported methods'
-      description: 'Return a `Allow` header with a comma separated list of HTTP supported methods.'
-      operationId: tdw_options_reasons_id
-      parameters:
-        - $ref: '#/components/parameters/reasonId'
-      responses:
-        '200':
-          description: '`Allow` header &lt;Response body is empty&gt;'
-          headers:
-            Allow:
-              description: 'List of HTTP supported methods'
-              schema:
-                type: string
-  /solutionsProposal:
-    get:
-      tags:
-        - SolutionsProposal
-      summary: 'Returns all solutions Proposal'
-      description: 'Returns all solutions Proposal from the system that the user has access to.'
-      operationId: tdw_cget_solutionsProposal
-      responses:
-        '200':
-          description: 'Array of solutions Proposal'
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/SolutionsProposalArray'
-        '401':
-          $ref: '#/components/responses/401_Standard_Response'
-        '403':
-          $ref: '#/components/responses/403_Forbidden_Response'
-        '404':
-          $ref: '#/components/responses/404_Resource_Not_Found_Response'
-      security:
-        -
-          TDWApiSecurity: []
-    post:
-      tags:
-        - SolutionsProposal
-      summary: 'Creates a new solution Proposal'
-      description: 'Creates a new solution Proposal'
-      operationId: tdw_post_solutionsProposal
-      requestBody:
-        description: '`SolutionProposal` properties to add to the system'
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/SolutionProposalData'
-      responses:
-        '201':
-          description: '`Created`: solution Proposal created'
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/SolutionProposal'
-        '401':
-          $ref: '#/components/responses/401_Standard_Response'
-        '403':
-          $ref: '#/components/responses/403_Forbidden_Response'
-        '409':
-          description: '`Conflict`: the question does not exist.'
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Message'
-              example:
-                code: 409
-                message: '`Conflict`: the question does not exist.'
-      security:
-        -
-          TDWApiSecurity: []
-    options:
-      tags:
-        - SolutionsProposal
-      summary: 'Provides the list of HTTP supported methods'
-      description: 'Return a `Allow` header with a comma separated list of HTTP supported methods.'
-      operationId: tdw_options_solutionsProposal
-      responses:
-        '200':
-          description: '`Allow` header &lt;Response body is empty&gt;'
-          headers:
-            Allow:
-              description: 'List of HTTP supported methods'
-              schema:
-                type: string
-  '/solutionsProposal/{solutionProposalId}':
-    get:
-      tags:
-        - SolutionsProposal
-      summary: 'Returns a solution Proposal based on a single ID'
-      description: 'Returns the solution identified by `solutionProposalId`.'
-      operationId: tdw_get_solutionsProposal
-      parameters:
-        -
-          $ref: '#/components/parameters/solutionProposalId'
-      responses:
-        '200':
-          description: SolutionProposal
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/SolutionProposal'
-        '401':
-          $ref: '#/components/responses/401_Standard_Response'
-        '403':
-          $ref: '#/components/responses/403_Forbidden_Response'
-        '404':
-          $ref: '#/components/responses/404_Resource_Not_Found_Response'
-      security:
-        -
-          TDWApiSecurity: []
-    put:
-      tags:
-        - SolutionsProposal
-      summary: 'Updates a solution Proposal'
-      description: 'Updates the solution Proposal identified by `solutionProposalId`.'
-      operationId: tdw_put_solutionsProposal
-      parameters:
-        -
-          $ref: '#/components/parameters/solutionProposalId'
-      requestBody:
-        description: '`SolutionProposal` data to update'
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/SolutionProposalData'
-      responses:
-        '209':
-          description: '`Content Returned`: solution previously existed and is now updated'
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/SolutionProposal'
-        '401':
-          $ref: '#/components/responses/401_Standard_Response'
-        '403':
-          $ref: '#/components/responses/403_Forbidden_Response'
-        '404':
-          $ref: '#/components/responses/404_Resource_Not_Found_Response'
-        '409':
-          description: '`Conflict`: the question does not exist.'
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Message'
-              example:
-                code: 409
-                message: '`Conflict`: the question does not exist.'
-      security:
-        -
-          TDWApiSecurity: []
-    delete:
-      tags:
-        - SolutionsProposal
-      summary: 'Deletes a solution Proposal'
-      description: 'Deletes the solution identified by `solutionProposalId`.'
-      operationId: tdw_delete_solutionsProposal
-      parameters:
-        -
-          $ref: '#/components/parameters/solutionProposalId'
-      responses:
-        '204':
-          description: 'Solution Proposal deleted &lt;Response body is empty&gt;'
-        '401':
-          $ref: '#/components/responses/401_Standard_Response'
-        '403':
-          $ref: '#/components/responses/403_Forbidden_Response'
-        '404':
-          $ref: '#/components/responses/404_Resource_Not_Found_Response'
-      security:
-        -
-          TDWApiSecurity: []
-    options:
-      tags:
-        - SolutionsProposal
-      summary: 'Provides the list of HTTP supported methods'
-      description: 'Return a `Allow` header with a comma separated list of HTTP supported methods.'
-      operationId: tdw_options_solutionsProposal_id
-      parameters:
-        - $ref: '#/components/parameters/solutionProposalId'
-      responses:
-        '200':
-          description: '`Allow` header &lt;Response body is empty&gt;'
-          headers:
-            Allow:
-              description: 'List of HTTP supported methods'
-              schema:
-                type: string
-  /reasonsProposal:
-    get:
-      tags:
-        - ReasonsProposal
-      summary: 'Returns all reasons Proposal'
-      description: 'Returns all reasons Proposal from the system that the user has access to.'
-      operationId: tdw_cget_reasonsProposal
-      responses:
-        '200':
-          description: 'Array of reasons Proposal'
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ReasonsProposalArray'
-        '401':
-          $ref: '#/components/responses/401_Standard_Response'
-        '403':
-          $ref: '#/components/responses/403_Forbidden_Response'
-        '404':
-          $ref: '#/components/responses/404_Resource_Not_Found_Response'
-      security:
-        -
-          TDWApiSecurity: []
-    post:
-      tags:
-        - ReasonsProposal
-      summary: 'Creates a new reason Proposal'
-      description: 'Creates a new reason Proposal'
-      operationId: tdw_post_reasonsProposal
-      requestBody:
-        description: '`ReasonProposal` properties to add to the system'
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/ReasonProposalData'
-      responses:
-        '201':
-          description: '`Created`: reason Proposal created'
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ReasonProposal'
-        '401':
-          $ref: '#/components/responses/401_Standard_Response'
-        '403':
-          $ref: '#/components/responses/403_Forbidden_Response'
-        '409':
-          description: '`Conflict`: the solution does not exist.'
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Message'
-              example:
-                code: 409
-                message: '`Conflict`: the solution does not exist.'
-      security:
-        -
-          TDWApiSecurity: []
-    options:
-      tags:
-        - ReasonsProposal
-      summary: 'Provides the list of HTTP supported methods'
-      description: 'Return a `Allow` header with a comma separated list of HTTP supported methods.'
-      operationId: tdw_options_reasonsProposal
-      responses:
-        '200':
-          description: '`Allow` header &lt;Response body is empty&gt;'
-          headers:
-            Allow:
-              description: 'List of HTTP supported methods'
-              schema:
-                type: string
-  '/reasonsProposal/{reasonProposalId}':
-    get:
-      tags:
-        - ReasonsProposal
-      summary: 'Returns a reason Proposal based on a single ID'
-      description: 'Returns the reason Proposal identified by `reasonProposalId`.'
-      operationId: tdw_get_reasonsProposal
-      parameters:
-        -
-          $ref: '#/components/parameters/reasonProposalId'
-      responses:
-        '200':
-          description: Reason Proposal
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ReasonProposal'
-        '401':
-          $ref: '#/components/responses/401_Standard_Response'
-        '403':
-          $ref: '#/components/responses/403_Forbidden_Response'
-        '404':
-          $ref: '#/components/responses/404_Resource_Not_Found_Response'
-      security:
-        -
-          TDWApiSecurity: []
-    put:
-      tags:
-        - ReasonsProposal
-      summary: 'Updates a reason Proposal'
-      description: 'Updates the reasonProposal identified by `reasonProposalId`.'
-      operationId: tdw_put_reasonsProposal
-      parameters:
-        -
-          $ref: '#/components/parameters/reasonProposalId'
-      requestBody:
-        description: '`ReasonProposal` data to update'
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/ReasonProposalData'
-      responses:
-        '209':
-          description: '`Content Returned`: reason Proposal previously existed and is now updated'
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ReasonProposal'
-        '401':
-          $ref: '#/components/responses/401_Standard_Response'
-        '403':
-          $ref: '#/components/responses/403_Forbidden_Response'
-        '404':
-          $ref: '#/components/responses/404_Resource_Not_Found_Response'
-        '409':
-          description: '`Conflict`: the solution does not exist.'
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Message'
-              example:
-                code: 409
-                message: '`Conflict`: the solution does not exist.'
-      security:
-        -
-          TDWApiSecurity: []
-    delete:
-      tags:
-        - ReasonsProposal
-      summary: 'Deletes a reason Proposal'
-      description: 'Deletes the reason Proposal identified by `reasonProposalId`.'
-      operationId: tdw_delete_reasonsProposal
-      parameters:
-        -
-          $ref: '#/components/parameters/reasonProposalId'
-      responses:
-        '204':
-          description: 'Reason Proposal deleted &lt;Response body is empty&gt;'
-        '401':
-          $ref: '#/components/responses/401_Standard_Response'
-        '403':
-          $ref: '#/components/responses/403_Forbidden_Response'
-        '404':
-          $ref: '#/components/responses/404_Resource_Not_Found_Response'
-      security:
-        -
-          TDWApiSecurity: []
-    options:
-      tags:
-        - ReasonsProposal
-      summary: 'Provides the list of HTTP supported methods'
-      description: 'Return a `Allow` header with a comma separated list of HTTP supported methods.'
-      operationId: tdw_options_reasons_id
-      parameters:
-        - $ref: '#/components/parameters/reasonProposalId'
-      responses:
-        '200':
-          description: '`Allow` header &lt;Response body is empty&gt;'
-          headers:
-            Allow:
-              description: 'List of HTTP supported methods'
-              schema:
-                type: string
-
-  /login:
-    post:
-      tags:
-        - login
-      summary: 'Returns TDW api token'
-      description: 'Returns TDW api authorization token.'
-      operationId: tdw_post_login
-      requestBody:
-        required: true
-        content:
-          application/x-www-form-urlencoded:
-            schema:
-              properties:
-                _username:
-                  description: 'User name'
-                  type: string
-                _password:
-                  description: 'User password'
-                  type: string
-                  format: password
-              type: object
-      responses:
-        '200':
-          description: 'TDW Users api token'
-          headers:
-            X-Token:
-              description: 'api authorization token'
-              schema:
-                type: string
-          content:
-            application/json:
-              schema:
-                type: object
-              example:
-                token: '<JSON web token>'
-        '404':
-          $ref: '#/components/responses/404_Resource_Not_Found_Response'
   /users:
     get:
       tags:
@@ -1141,7 +965,6 @@ paths:
       security:
         -
           TDWApiSecurity: []
-
 components:
   schemas:
     Question:
@@ -1202,203 +1025,174 @@ components:
           items:
             $ref: '#/components/schemas/Question'
       type: object
-
+    SolutionProposal:
+      required:
+        - idProposalSolution
+      properties:
+        idPropuestaSolucion:
+          description: 'Solution Id'
+          type: integer
+          format: int64
+        textoPropuestaSolucion:
+          description: Solution
+          type: string
+        propuestaSolucionCorrecta:
+          description: 'Denotes if question is correct'
+          type: boolean
+        cuestion:
+          description: 'Solution''s id cuestion'
+          type: integer
+          format: int64
+        user:
+          description: 'Solution''s id user creator'
+          type: integer
+          format: int64
+      type: object
+      example:
+        solution:
+          idSolucion: 805
+          textoSolucion: 'Solution description'
+          solucionCorrecta: true
+          cuestion: 50
+          user: 1
+    SolutionProposalData:
+      properties:
+        textoPropuestaSolucion:
+          description: Solution
+          type: string
+        propuestaSolucionCorrecta:
+          description: 'Denotes if solution is correct'
+          type: boolean
+        cuestion:
+          description: 'Solution''s id question'
+          type: integer
+          format: int64
+        user:
+          description: 'Solution''s id creator'
+          type: integer
+          format: int64
+      type: object
+      example:
+        textoPropuestaSolucion: 'Solution description'
+        propuestaSolucionCorrecta: false
+        cuestion: 50
+        user: 1
+    SolutionProposalArray:
+      properties:
+        propuestaSoluciones:
+          description: 'PropuestaSolution array'
+          type: array
+          items:
+            $ref: '#/components/schemas/SolutionProposal'
+      type: object
+    Reason:
+      required:
+        - idRazonamiento
+      properties:
+        idRazonamiento:
+          description: 'Razonamiento Id'
+          type: integer
+          format: int64
+        textoRazonamiento:
+          description: Solution
+          type: string
+        razonamientoJustificado:
+          description: 'Denotes if question is correct'
+          type: boolean
+        solucion:
+          description: 'Solution''s id cuestion'
+          type: integer
+          format: int64
+        textoError:
+          description: Error
+          type: string
+      type: object
+      example:
+        razonamiento:
+          idRazonamiento: 805
+          textoRazonamiento: 'Solution description'
+          razonamientoJustificado: true
+          solucion: 1
+          error: 'Error description'
+    ReasonData:
+      properties:
+        textoRazonamiento:
+          description: Solution
+          type: string
+        razonamientoJustificacion:
+          description: 'Denotes if solution is correct'
+          type: boolean
+        solucion:
+          description: 'Solution''s id question'
+          type: integer
+          format: int64
+        textoError:
+          description: 'Error description'
+          type: string
+      type: object
+      example:
+        textoRazonamiento: 'Solution description'
+        razonamientoJustificacion: true
+        solucion: 1
+        error: 'Error description'
+    ReasonsArray:
+      properties:
+        razonamientos:
+          description: 'Razonamiento array'
+          type: array
+          items:
+            $ref: '#/components/schemas/Reason'
+      type: object
     Solution:
       required:
-        - idSolucion
+        - idSolution
       properties:
         idSolucion:
           description: 'Solution Id'
           type: integer
           format: int64
         textoSolucion:
-          description: 'Solution description'
+          description: Solution
+          type: string
+        solucionCorrecta:
+          description: 'Denotes if question is correct'
+          type: boolean
+        cuestion:
+          description: 'Solution''s id cuestion'
+          type: integer
+          format: int64
+      type: object
+      example:
+        solution:
+          idSolucion: 805
+          textoSolucion: 'Solution description'
+          solucionCorrecta: true
+          cuestion: 1
+    SolutionData:
+      properties:
+        textoSolucion:
+          description: Solution
           type: string
         solucionCorrecta:
           description: 'Denotes if solution is correct'
           type: boolean
         cuestion:
-          description: 'Cuestion''s id'
-          type: integer
-          format: int64
-      type: object
-      example:
-        solucion:
-          idSolucion: 805
-          textoSolucion: 'Solution description'
-          solucionCorrecta: true
-          cuestion: 7
-    SolutionData:
-      properties:
-        textoSolucion:
-          description: 'Solution description'
-          type: string
-        solucionCorrecta:
-          description: 'Denotes if solucion is correct'
-          type: boolean
-        Cuestion:
-          description: 'Cuestion''s id '
+          description: 'Solution''s id question'
           type: integer
           format: int64
       type: object
       example:
         textoSolucion: 'Solution description'
         solucionCorrecta: true
-        cuestion: 501
-    SolutionsArray:
+        cuestion: 1
+    SolutionArray:
       properties:
-        cuestiones:
-          description: 'Solutions array'
+        soluciones:
+          description: 'Solution array'
           type: array
           items:
             $ref: '#/components/schemas/Solution'
       type: object
-
-    Reason:
-      required:
-        - idReason
-      properties:
-        idRazonamiento:
-          description: 'Reason Id'
-          type: integer
-          format: int64
-        textoRazonamiento:
-          description: 'Reason description'
-          type: string
-        razonamientoJustificado:
-          description: 'Denotes if reason is justified'
-          type: boolean
-        solucion:
-          description: 'Reason''s id'
-          type: integer
-          format: int64
-        textoError:
-          description: 'Error description'
-          type: string
-      type: object
-      example:
-        razonamiento:
-          idRazonamiento: 805
-          textoRazonamiento: 'Reason description'
-          razonamientoJustificado: true
-          solucion: 7
-          textoError: 'Error description'
-    ReasonData:
-      properties:
-        textoRazonamiento:
-          description: 'Reason description'
-          type: string
-        razonamientoJustificado:
-          description: 'Denotes if reason is justified'
-          type: boolean
-        solucion:
-          description: 'Solution''s id '
-          type: integer
-          format: int64
-        textoError:
-          description: 'Error description'
-          type: string
-      type: object
-      example:
-        textoRazonamiento: 'Reason description'
-        razonamientoJustificado: true
-        solucion: 501
-        textoError: 'Error description'
-    ReasonsArray:
-      properties:
-        cuestiones:
-          description: 'Reasons array'
-          type: array
-          items:
-            $ref: '#/components/schemas/Reason'
-      type: object
-
-      SolutionProposal:
-        required:
-          - idPropuestaSolucion
-        properties:
-          idSolucion:
-            description: 'Solution Id'
-            type: integer
-            format: int64
-          textoPropuestaSolucion:
-            description: 'Solution description'
-            type: string
-          cuestion:
-            description: 'Cuestion''s id'
-            type: integer
-            format: int64
-        type: object
-        example:
-          solucion:
-            idPropuestaSolucion: 805
-            textoPropuestaSolucion: 'Solution description'
-            cuestion: 7
-        SolutionProposalData:
-          properties:
-            textoPropuestaSolucion:
-              description: 'Solution Propuesta description'
-              type: string
-            Cuestion:
-              description: 'Cuestion''s id '
-              type: integer
-              format: int64
-          type: object
-          example:
-            textoSolucion: 'Solution description'
-            cuestion: 501
-        SolutionsProposalArray:
-          properties:
-            cuestiones:
-              description: 'Solutions Propuesta array'
-              type: array
-              items:
-                $ref: '#/components/schemas/SolutionProposal'
-          type: object
-
-        ReasonProposal:
-          required:
-            - idPropuestaReason
-          properties:
-            idPropuestaRazonamiento:
-              description: 'Reason Propuesta Id'
-              type: integer
-              format: int64
-            textoPropuestaRazonamiento:
-              description: 'Reason Propuesta description'
-              type: string
-            solucion:
-              description: 'ReasonPropuesta''s id'
-              type: integer
-              format: int64
-          type: object
-          example:
-            razonamiento:
-              idRazonamiento: 805
-              textoRazonamiento: 'Reason Propuesta description'
-              solucion: 7
-        ReasonProposalData:
-          properties:
-            textoPropuestaRazonamiento:
-              description: 'ReasonPropuesta description'
-              type: string
-            solucion:
-              description: 'Solution''s id '
-              type: integer
-              format: int64
-          type: object
-          example:
-            textoPropuestaRazonamiento: 'Reason Propuesta description'
-            solucion: 501
-        ReasonsProposalArray:
-          properties:
-            cuestiones:
-              description: 'Reasons Propuesta array'
-              type: array
-              items:
-                $ref: '#/components/schemas/ReasonProposal'
-          type: object
-
     User:
       required:
         - id
@@ -1514,7 +1308,6 @@ components:
           example:
             code: 404
             message: '`Not found`: resource not found'
-
   parameters:
     userId:
       name: userId
@@ -1550,23 +1343,23 @@ components:
     reasonId:
       name: reasonId
       in: path
-      description: 'ID of reason'
+      description: 'ID of reason4'
       required: true
       schema:
         type: integer
         format: int64
     solutionProposalId:
-      name: solutionId
+      name: solutionProposalId
       in: path
-      description: 'ID of solution proposal'
+      description: 'ID of solution'
       required: true
       schema:
         type: integer
         format: int64
-    reasonProposalId:
-      name: reasonId
+    razonamientoProposalId:
+      name: razonamientoProposalId
       in: path
-      description: 'ID of reason proposal'
+      description: 'ID of reason4'
       required: true
       schema:
         type: integer
@@ -1591,10 +1384,10 @@ tags:
     description: 'Solution management'
   -
     name: Reasons
-    description: 'Reason management'
+    description: 'Reasons management'
   -
     name: SolutionsProposal
-    description: 'Solution proposal management'
+    description: 'Solution Proposal management'
   -
-    name: ReasonsProposal
-    description: 'Reason proposal management'
+    name: Reasons
+    description: 'Reasons Proposal managment'
