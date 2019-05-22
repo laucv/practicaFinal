@@ -150,7 +150,7 @@ class PropuestaSolucionController
             return Error::error($this->container, $request, $response, StatusCode::HTTP_FORBIDDEN);
         }
         $entity_manager = Utils::getEntityManager();
-        $solucion = $entity_manager->find(PropuestaSolucion::class, $args['idPropuestaSolucion']);
+        $solucion = $entity_manager->find(PropuestaSolucion::class, $args['id']);
 
         if (null === $solucion) {
             return Error::error($this->container, $request, $response, StatusCode::HTTP_NOT_FOUND);
@@ -215,7 +215,7 @@ class PropuestaSolucionController
         }
 
         $entity_manager = Utils::getEntityManager();
-        $solucion = $entity_manager->find(PropuestaSolucion::class, $args['idPropuestaSolucion']);
+        $solucion = $entity_manager->find(PropuestaSolucion::class, $args['id']);
 
         if (null === $solucion) {    // 404
             return Error::error($this->container, $request, $response, StatusCode::HTTP_NOT_FOUND);
@@ -464,10 +464,10 @@ class PropuestaSolucionController
         if (null === $solucion) {    // 404
             return Error::error($this->container, $request, $response, StatusCode::HTTP_NOT_FOUND);
         }
-        if (isset($req_data['textoSolucion'])) {///////
+        if (isset($req_data['textoPropuestaSolucion'])) {///////
             $solucion->setTextoPropuestaSolucion($req_data['textoPropuestaSolucion']);
         }
-        if (isset($req_data['solucionCorrecta'])) {
+        if (isset($req_data['propuestaSolucionCorrecta'])) {
             $solucion->setPropuestaSolucionCorrecta($req_data['propuestaSolucionCorrecta']);
         }
 
@@ -476,7 +476,7 @@ class PropuestaSolucionController
             if(null === $cuestion){ //cuestion no existe
                 return Error::error($this->container, $request, $response, StatusCode::HTTP_CONFLICT);
             }
-            $cuestion->setCuestion($cuestion);
+            $solucion->setCuestion($cuestion);
         }
 
         if (isset($req_data['user'])) {
@@ -484,7 +484,7 @@ class PropuestaSolucionController
             if(null === $user){ //usuario no existe
                 return Error::error($this->container, $request, $response, StatusCode::HTTP_CONFLICT);
             }
-            $user->setCuestion($user);
+            $solucion->setUser($user);
         }
 
         //$entity_manager->merge($solucion);

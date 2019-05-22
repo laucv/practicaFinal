@@ -193,9 +193,9 @@ class PropuestaSolucion
      * @return Cuestion
      * @throws \Doctrine\ORM\ORMException
      */
-    public function setUser(?Usuario $creador): PropuestaSolucion
+    public function setUser(?Usuario $user): PropuestaSolucion
     {
-        $this->creador = $creador;
+        $this->user = $user;
         return $this;
     }
 
@@ -314,7 +314,7 @@ class PropuestaSolucion
  *      example = {
  *          "textoPropuestaSolucion" = "Solution description",
  *          "propuestaSolucionCorrecta"  = false,
- *          "cuestion"              = 50,
+ *          "cuestion"              = 1,
  *          "user"              = 1
  *      }
  * )
