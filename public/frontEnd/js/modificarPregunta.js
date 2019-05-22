@@ -141,7 +141,8 @@ function modificarCuestion() {
                 botonRazonamiento.setAttribute("onclick", "addJustification(" + idCuestion + ", " + idSolucion + ");");
                 botonRazonamiento.innerHTML = "Añadir razonamiento";
                 divRespuesta.appendChild(botonRazonamiento);
-            }
+
+
             for (let j = 0; j < sol.solucion.razonamientos.length; j++) {
 
                 if (parseInt(razonamientos.razonamientos[j].razonamiento.solucion) === idSolucion) {
@@ -242,6 +243,8 @@ function modificarCuestion() {
                     }
                 }
             }
+        }
+
             //imprimirPropuestaRazonamientos(i);
             var hr1 = document.createElement("hr");
             body.appendChild(hr1);

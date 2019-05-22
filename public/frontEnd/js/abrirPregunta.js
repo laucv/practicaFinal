@@ -10,7 +10,6 @@ function getIdCuestion() {
         }
     }
     alert("No existe dicha cuestión");
-    location.href = 'http://localhost:8000/frontend/notFound.html';
     return null;
 }
 
