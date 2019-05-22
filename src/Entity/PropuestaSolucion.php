@@ -23,7 +23,7 @@ use TDW\GCuest\Controller\PropuestaSolucionController;
  *     }
  * )
  */
-class PropuestaSolucion
+class PropuestaSolucion implements \JsonSerializable
 {
     /**
      * @var int $idPropuestaSolucion
@@ -185,7 +185,7 @@ class PropuestaSolucion
 
     public function getUser(): ?Usuario
     {
-        return $this->creador;
+        return $this->user;
     }
 
     /**
@@ -212,7 +212,7 @@ class PropuestaSolucion
             'textoPropuestaSolucion="' . $this->getTextoPropuestaSolucion() . ', ' .
             'propuestaSolucionCorrecta=' . (int)$this->isPropuestaSolucionCorrecta() . ', ' .
             'cuestion=' . ($this->getCuestion()) . ', ' .
-            'user=' . $this->getUser(). ', ' .
+            'user=' . ($this->getUser() ?? 0). ', ' .
             ') ]';
     }
 
@@ -232,7 +232,7 @@ class PropuestaSolucion
                 'textoPropuestaSolucion' => $this->getTextoPropuestaSolucion(),
                 'propuestaSolucionCorrecta' => $this->isPropuestaSolucionCorrecta(),
                 'cuestion' => $this->getCuestion()->getIdCuestion(),
-                'user' => $this->getUser()->getId()
+                'user' => $this->getUser() ? $this->getUser()->getId() : null
             ]
         ];
     }

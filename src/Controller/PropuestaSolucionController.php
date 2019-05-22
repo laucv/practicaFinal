@@ -150,9 +150,9 @@ class PropuestaSolucionController
             return Error::error($this->container, $request, $response, StatusCode::HTTP_FORBIDDEN);
         }
         $entity_manager = Utils::getEntityManager();
-        $solucion = $entity_manager->find(PropuestaSolucion::class, $args['id']);
+        $propuestaSolucion = $entity_manager->find(PropuestaSolucion::class, $args['id']);
 
-        if (null === $solucion) {
+        if (null === $propuestaSolucion) {
             return Error::error($this->container, $request, $response, StatusCode::HTTP_NOT_FOUND);
         }
 
@@ -166,7 +166,7 @@ class PropuestaSolucionController
 
         return $response
             ->withJson(
-                $solucion,
+                $propuestaSolucion,
                 StatusCode::HTTP_OK // 200
             );
     }
@@ -215,9 +215,9 @@ class PropuestaSolucionController
         }
 
         $entity_manager = Utils::getEntityManager();
-        $solucion = $entity_manager->find(PropuestaSolucion::class, $args['id']);
+        $propuestaSolucion = $entity_manager->find(PropuestaSolucion::class, $args['id']);
 
-        if (null === $solucion) {    // 404
+        if (null === $propuestaSolucion) {    // 404
             return Error::error($this->container, $request, $response, StatusCode::HTTP_NOT_FOUND);
         }
 
@@ -228,7 +228,7 @@ class PropuestaSolucionController
                 'status' => StatusCode::HTTP_NO_CONTENT
             ]
         );
-        $entity_manager->remove($solucion);
+        $entity_manager->remove($propuestaSolucion);
         $entity_manager->flush();
 
         return $response->withStatus(StatusCode::HTTP_NO_CONTENT);  // 204
@@ -459,16 +459,16 @@ class PropuestaSolucionController
             = $request->getParsedBody()
             ?? json_decode($request->getBody(), true);
         $entity_manager = Utils::getEntityManager();
-        $solucion= $entity_manager->find(PropuestaSolucion::class, $args['id']);
+        $propuestaSolucion = $entity_manager->find(PropuestaSolucion::class, $args['id']);
 
-        if (null === $solucion) {    // 404
+        if (null === $propuestaSolucion) {    // 404
             return Error::error($this->container, $request, $response, StatusCode::HTTP_NOT_FOUND);
         }
         if (isset($req_data['textoPropuestaSolucion'])) {///////
-            $solucion->setTextoPropuestaSolucion($req_data['textoPropuestaSolucion']);
+            $propuestaSolucion->setTextoPropuestaSolucion($req_data['textoPropuestaSolucion']);
         }
         if (isset($req_data['propuestaSolucionCorrecta'])) {
-            $solucion->setPropuestaSolucionCorrecta($req_data['propuestaSolucionCorrecta']);
+            $propuestaSolucion->setPropuestaSolucionCorrecta($req_data['propuestaSolucionCorrecta']);
         }
 
         if (isset($req_data['cuestion'])) {
@@ -476,7 +476,7 @@ class PropuestaSolucionController
             if(null === $cuestion){ //cuestion no existe
                 return Error::error($this->container, $request, $response, StatusCode::HTTP_CONFLICT);
             }
-            $solucion->setCuestion($cuestion);
+            $propuestaSolucion->setCuestion($cuestion);
         }
 
         if (isset($req_data['user'])) {
@@ -484,7 +484,7 @@ class PropuestaSolucionController
             if(null === $user){ //usuario no existe
                 return Error::error($this->container, $request, $response, StatusCode::HTTP_CONFLICT);
             }
-            $solucion->setUser($user);
+            $propuestaSolucion->setUser($user);
         }
 
         //$entity_manager->merge($solucion);
@@ -495,6 +495,6 @@ class PropuestaSolucionController
             [ 'uid' => $this->jwt->user_id, 'status' => StatusCode::HTTP_OK ]
         );
 
-        return $response->withJson($solucion)->withStatus(209, 'Content Returned');
+        return $response->withJson($propuestaSolucion)->withStatus(209, 'Content Returned');
     }
 }
