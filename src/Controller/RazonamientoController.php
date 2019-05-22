@@ -82,11 +82,8 @@ class RazonamientoController{
             return Error::error($this->container, $request, $response, StatusCode::HTTP_FORBIDDEN);
         }
         $entity_manager = Utils::getEntityManager();
-        $razonamientos = $this->jwt->isAdmin
-            ? $entity_manager->getRepository(Razonamiento::class)
-                ->findAll()
-            : $entity_manager->getRepository(Razonamiento::class)
-                ->findBy([ 'id' => $this->jwt->user_id ]);
+        $razonamientos = $entity_manager->getRepository(Razonamiento::class)
+                ->findAll();
 
         if (0 === count($razonamientos)) {    // 404
             return Error::error($this->container, $request, $response, StatusCode::HTTP_NOT_FOUND);
@@ -372,7 +369,7 @@ class RazonamientoController{
             $req_data['textoRazonamiento'],
             $solucion,
             $req_data['razonamientoJustificado'] ?? false,
-            $req_data['textoError']
+            $req_data['error']
         );
         $entity_manager->persist($razonamiento);
         $entity_manager->flush();

@@ -83,11 +83,8 @@ class SolutionController
             return Error::error($this->container, $request, $response, StatusCode::HTTP_FORBIDDEN);
         }
         $entity_manager = Utils::getEntityManager();
-        $soluciones = $this->jwt->isAdmin
-            ? $entity_manager->getRepository(Solucion::class)
-                ->findAll()
-            : $entity_manager->getRepository(Solution::class)
-                ->findBy([ 'id' => $this->jwt->user_id ]);
+        $soluciones = $entity_manager->getRepository(Solucion::class)
+                ->findAll();
 
         if (0 === count($soluciones)) {    // 404
             return Error::error($this->container, $request, $response, StatusCode::HTTP_NOT_FOUND);
