@@ -6,6 +6,7 @@
 
 namespace TDW\GCuest\Entity;
 
+use Composer\Package\Package;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -153,6 +154,18 @@ class Usuario implements \JsonSerializable
     protected $propuestaSoluciones;
 
     /**
+     * @var ArrayCollection $propuestaRazonamientos
+     *
+     * @ORM\OneToMany(
+     *     targetEntity="PropuestaRazonamiento",
+     *     mappedBy="user",
+     *     cascade={ "merge", "remove" },
+     *     orphanRemoval=true
+     * )
+     */
+    protected $propuestaRazonamientos;
+
+    /**
      * User constructor.
      *
      * @param string $username username
@@ -179,6 +192,7 @@ class Usuario implements \JsonSerializable
         $this->isAdmin  = $isAdmin;
         $this->cuestiones = new ArrayCollection();
         $this->propuestaSoluciones = new ArrayCollection();
+        $this->propuestaRazonamientos = new ArrayCollection();
     }
 
     /**
@@ -369,7 +383,7 @@ class Usuario implements \JsonSerializable
      * @param PropuestaSolucion $propuestaSolucion
      * @return bool
      */
-    public function containsPropuesstaSolucion(PropuestaSolucion $propuestaSolucion): bool
+    public function containsPropuestaSolucion(PropuestaSolucion $propuestaSolucion): bool
     {
         return $this->propuestaSoluciones->contains($propuestaSolucion);
     }
@@ -380,7 +394,7 @@ class Usuario implements \JsonSerializable
      * @param PropuestaSolucion $propuestaSolucion
      * @return Cuestion
      */
-    public function addPropuestaSolucion(PropuestaSolucion $propuestaSolucion): Cuestion
+    public function addPropuestaSolucion(PropuestaSolucion $propuestaSolucion): PropuestaSolucion
     {
         if ($this->propuestaSoluciones->contains($propuestaSolucion)) {
             return $this;
@@ -396,7 +410,7 @@ class Usuario implements \JsonSerializable
      * @param PropuestaSolucion $propuestaSolucion
      * @return PropuestaSolucion|null La cuestión o nulo, si la cuestión no contiene la propuesta solucion
      */
-    public function removePropuestaSolucion(PropuestaSolucion $propuestaSolucion): ?Cuestion
+    public function removePropuestaSolucion(PropuestaSolucion $propuestaSolucion): ?PropuestaSolucion
     {
         if (!$this->propuestaSoluciones->contains($propuestaSolucion)) {
             return null;
@@ -424,6 +438,77 @@ class Usuario implements \JsonSerializable
 
         return $cod_propuesta_soluciones->getValues();
     }
+
+    /**
+     * @return Collection
+     */
+
+    public function getPropuestaRazonamientos(): Collection
+    {
+        return $this->propuestaRazonamientos;
+    }
+
+    /**
+     * @param PropuestaRazonamiento $propuestaRazonamientos
+     * @return bool
+     */
+    public function containsPropuestaRazonamientos(PropuestaRazonamiento $propuestaRazonamientos): bool
+    {
+        return $this->propuestaRazonamientos->contains($propuestaRazonamientos);
+    }
+
+
+    /**
+     * Añade la propuesta solucion a la cuestión
+     *
+     * @param PropuestaRazonamiento $propuestaRazonamiento
+     * @return Cuestion
+     */
+    public function addPropuestaRazonamiento(PropuestaRazonamiento $propuestaRazonamiento): PropuestaRazonamiento
+    {
+        if ($this->propuestaRazonamientos->contains($propuestaRazonamiento)) {
+            return $this;
+        }
+
+        $this->propuestaRazonamientos->add($propuestaRazonamiento);
+        return $this;
+    }
+
+    /**
+     * Elimina la solucion identificada por $solucion de la cuestión
+     *
+     * @param PropuestaRazonamiento $propuestaRazonamiento
+     * @return PropuestaRazonamiento|null La cuestión o nulo, si la cuestión no contiene la propuesta solucion
+     */
+    public function removePropuestaRazonamiento(PropuestaRazonamiento $propuestaRazonamiento): ?PropuestaRazonamiento
+    {
+        if (!$this->propuestaRazonamientos->contains($propuestaRazonamiento)) {
+            return null;
+        }
+
+        $this->propuestaRazonamientos->removeElement($propuestaRazonamiento);
+        return $this;
+    }
+
+    /**
+     * Get an array with the proposal solution identifiers
+     *
+     * @return array
+     */
+    private function getIdsPropuestaRazonamientos(): array
+    {
+        /** @var ArrayCollection $cod_soluciones */
+        $cod_propuesta_Razonamientos = $this->getPropuestaRazonamientos()->isEmpty()
+            ? new ArrayCollection()
+            : $this->getPropuestaRazonamientos()->map(
+                function (PropuestaRazonamientos $propuestaRazonamientos) {
+                    return $propuestaRazonamientos->getIdPropuestaRazonamientos();
+                }
+            );
+
+        return $cod_propuesta_Razonamientos->getValues();
+    }
+
     /**
      * The __toString method allows a class to decide how it will react when it is converted to a string.
      *
@@ -436,6 +521,8 @@ class Usuario implements \JsonSerializable
         $txt_cuestiones = '[ ' . implode(', ', $id_cuestiones) . ' ]';
         $cod_propuesta_soluciones = $this->getIdsPropuestaSoluciones();
         $txt_propuesta_soluciones = '[ ' . implode(', ', $cod_propuesta_soluciones) . ' ]';
+        $cod_propuesta_razonamientos = $this->getIdsPropuestaRazonamientos();
+        $txt_propuesta_razonamientos = '[ ' . implode(', ', $cod_propuesta_razonamientos) . ' ]';
         return '[ usuario ' .
             '(id=' . $this->getId() . ', ' .
             'username="' . $this->getUsername() . '", ' .
@@ -445,6 +532,7 @@ class Usuario implements \JsonSerializable
             'isAdmin="' . (int) $this->isAdmin() . '", ' .
             'cuestiones=' . $txt_cuestiones .
             'propuestaSoluciones=' . $txt_propuesta_soluciones .
+            'propuestaRazonamientos=' . $txt_propuesta_razonamientos .
             ') ]';
     }
 
@@ -466,7 +554,8 @@ class Usuario implements \JsonSerializable
                 'maestro' => $this->isMaestro(),
                 'admin' => $this->isAdmin(),
                 'cuestiones' => $this->getIdsCuestiones(),
-                'propuestaSoluciones' => $this->getIdsPropuestaSoluciones()
+                'propuestaSoluciones' => $this->getIdsPropuestaSoluciones(),
+                'propuestaRazonamientos' => $this->getIdsPropuestaRazonamientos()
             ]
         ];
     }

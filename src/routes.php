@@ -13,7 +13,7 @@ use TDW\GCuest\Controller\LoginController;
 use TDW\GCuest\Controller\UsuarioController;
 use TDW\GCuest\Controller\PropuestaSolucionController;
 use TDW\GCuest\Controller\RazonamientoController;
-
+use TDW\GCuest\Controller\PropuestaRazonamientoController;
 
 /**
  * @var \Slim\App $app
@@ -293,5 +293,5 @@ $app->post(
 // PUT: Updates a reason
 $app->put(
     $_ENV['RUTA_API'] . '/reasonsProposal/{id:[0-9]+}',
-    RazonamientoController::class . ':put'
+    PropuestaRazonamientoController::class . ':put'
 )->setName('tdw_put_reasonsProposal');
