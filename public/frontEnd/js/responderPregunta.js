@@ -296,13 +296,12 @@ function guardarPropuestaRazonamiento(idSolucion) {
 
 function generateJustifications(idSolucion) {
   'use strict';
-    var claveS = idSolucion - 1;
-    var numeroRazonamientos = soluciones.soluciones[claveS].solucion.razonamientos.length;
-    var solucion = soluciones.soluciones[claveS];
+    var solucion = getSolucion(idSolucion);
+    var numeroRazonamientos = solucion.solucion.razonamientos.length;
+
 
     if (j < numeroRazonamientos) {
-      imprimirRazonamiento(solucion, claveS, j);
-      console.log(solucion, claveS)
+      imprimirRazonamiento(solucion, j);
       j++;
     }
 
@@ -326,9 +325,9 @@ function getSolucion(idSolucion) {
   }
 }
 
-function imprimirRazonamiento(solucion, claveS, claveR) {
+function imprimirRazonamiento(solucion, claveR) {
   'use strict';
-  var idSolucion = claveS + 1;
+  var idSolucion = solucion.solucion.idSolucion;
   var divSolucion = document.getElementById("divSolucion-" + idSolucion);
   var idRazonamiento = solucion.solucion.razonamientos[claveR];
   var razonamiento = getRazonamiento(idRazonamiento);
