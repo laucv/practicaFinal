@@ -98,7 +98,7 @@ class PropuestaRazonamientoController
 
         return $response
             ->withJson(
-                [ 'propuestaRazonamiento' => $propuestaRazonamiento ],
+                [ 'propuestaRazonamientos' => $propuestaRazonamiento ],
                 StatusCode::HTTP_OK // 200
             );
     }
