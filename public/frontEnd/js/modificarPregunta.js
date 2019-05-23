@@ -1,11 +1,10 @@
 getCuestiones();
 getSoluciones();
 getRazonamientos();
+
 var datos = JSON.parse(window.sessionStorage.getItem("cuestiones"));
 var soluciones = JSON.parse(window.sessionStorage.getItem("soluciones"));
-var razonamientos = JSON.parse(window.sessionStorage.getItem("razonamientos"));
 var claveRazonamiento = 0;
-var claveSolucion;
 
 function getIdCuestion() {
     'use strict';
@@ -140,13 +139,17 @@ function modificarCuestion() {
                 botonRazonamiento.innerHTML = "Añadir razonamiento";
                 divRespuesta.appendChild(botonRazonamiento);
             }
+            var razonamientos = JSON.parse(window.sessionStorage.getItem("razonamientos"));
 
             for (let j = 0; j < sol.solucion.razonamientos.length; j++) {
 
                 if (parseInt(razonamientos.razonamientos[j].razonamiento.solucion) === idSolucion) {
 
                     let idRazonamiento = razonamientos.razonamientos[j].razonamiento.idRazonamiento;
+                    console.log(idSolucion);
+                    console.log(idRazonamiento);
                     let jus = razonamientos.razonamientos[j];
+                    console.log(jus);
 
                     var divJustificacion = document.createElement("div");
                     divJustificacion.setAttribute("id", "divJustificacion-" + idSolucion + "-" + idRazonamiento);
@@ -245,7 +248,6 @@ function modificarCuestion() {
             imprimirPropuestaRazonamientos(idSolucion);
             var hr1 = document.createElement("hr");
             body.appendChild(hr1);
-            claveSolucion++;
         }
     }
     var divBoton = document.createElement("div");
@@ -356,8 +358,6 @@ function addSolution(claveCuestion, claveSol) {
     botonEliminar.innerHTML = "Eliminar solución";
     div.appendChild(botonEliminar);
 
-    claveSolucion++;
-
     var boton = document.getElementById("botonAñadir-" + claveSol);
     divSolucionCero.removeChild(boton);
 }
@@ -367,7 +367,6 @@ function deleteSolution(clave) {
     var divSolucion = document.getElementById("divSolucion-" + clave);
     var divPregunta = divSolucion.parentElement;
     divPregunta.removeChild(divSolucion);
-    claveSolucion--;
     location.reload();
 
 }
@@ -403,7 +402,6 @@ function addError(claveCuestion, claveSol, claveJus) {
     div.appendChild(botonRazonamiento);
 
 }
-
 
 function imprimirPropuestaSoluciones() {
     var claveCuestion = getIdCuestion();
@@ -451,14 +449,12 @@ function imprimirPropuestaSoluciones() {
     }
 }
 
-
 function corregirPropuestaSolucion(claveS) {
     var textoSolucion = document.getElementById("propuestaSolucion-" + claveS).innerText;
     var correcta = document.getElementById("propuestaCorrecta-" + claveS).checked;
     putPropuestaSolucion(claveS, correcta);
     postSolucionPropuesta(textoSolucion, correcta);
 }
-
 
 function imprimirPropuestaRazonamientos(claveS) {
     getPropuestaRazonamiento();
@@ -562,7 +558,7 @@ function getRazonamientos() {
     request.send();
 }
 
-function codifica_query_string_solucion(idCuestion, idSolucion) {
+function datos_post_solucion(idCuestion, idSolucion) {
     //Crear funcion para obtener el idCuestion
     let valorSolucion = 0;
 
@@ -578,7 +574,6 @@ function codifica_query_string_solucion(idCuestion, idSolucion) {
     }
 
     return JSON.stringify(datos);
-
 }
 
 function postSolucion(idCuestion, idSolucion) {
@@ -602,11 +597,11 @@ function postSolucion(idCuestion, idSolucion) {
     request.setRequestHeader("Authorization", "Bearer " + token);
     request.responseType = 'json';
     request.onload = trataRespuesta;
-    let datos = codifica_query_string_solucion(idCuestion, idSolucion);
+    let datos = datos_post_solucion(idCuestion, idSolucion);
     request.send(datos);
 }
 
-function codifica_query_string_razonamiento(idSolucion, idRazonamiento) {
+function datos_post_razonamiento(idSolucion, idRazonamiento) {
 
     var textoRazonamiento = document.getElementById("razonamiento-" + idSolucion + "-" + idRazonamiento).value;
     var razonamientoJustificado = document.getElementById("justificado-" + idSolucion + "-" + idRazonamiento).checked;
@@ -616,7 +611,7 @@ function codifica_query_string_razonamiento(idSolucion, idRazonamiento) {
         "textoRazonamiento": textoRazonamiento,
         "razonamientoJustificado": razonamientoJustificado,
         "solucion": solucion,
-        "textoError": "Error description"
+        "error": "Error description"
     }
 
     return JSON.stringify(datos);
@@ -644,7 +639,7 @@ function postRazonamiento(idCuestion, idSolucion) {
     request.setRequestHeader("Authorization", "Bearer " + token);
     request.responseType = 'json';
     request.onload = trataRespuesta;
-    let datos = codifica_query_string_razonamiento(idCuestion, idSolucion);
+    let datos = datos_post_razonamiento(idCuestion, idSolucion);
     request.send(datos);
 }
 
@@ -1046,11 +1041,11 @@ function postSolucionPropuesta(textoSolucion, correcta) {
     request.setRequestHeader("Authorization", "Bearer " + token);
     request.responseType = 'json';
     request.onload = trataRespuesta;
-    let datos = codifica_query_string_propuesta_solucion(textoSolucion, correcta);
+    let datos = datos_post_solucion_propuesta(textoSolucion, correcta);
     request.send(datos);
 }
 
-function codifica_query_string_propuesta_solucion(textoSolucion, correcta) {
+function datos_post_solucion_propuesta(textoSolucion, correcta) {
     var cuestion = getIdCuestion();
 
     let datos = {
@@ -1117,11 +1112,11 @@ function postPropuestaRazonamiento(idSolucion, textoRazonamiento, justificado) {
     request.setRequestHeader("Authorization", "Bearer " + token);
     request.responseType = 'json';
     request.onload = trataRespuesta;
-    let datos = datos_post_propuesta_razonamiento(idSolucion, textoRazonamiento, justificado);
+    let datos = datos_post_razonamiento_propuesto(idSolucion, textoRazonamiento, justificado);
     request.send(datos);
 }
 
-function datos_post_propuesta_razonamiento(idSolucion, textoRazonamiento, justificado) {
+function datos_post_razonamiento_propuesto(idSolucion, textoRazonamiento, justificado) {
 
     let datos = {
         "textoRazonamiento": textoRazonamiento,

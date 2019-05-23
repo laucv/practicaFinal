@@ -501,8 +501,8 @@ class Usuario implements \JsonSerializable
         $cod_propuesta_Razonamientos = $this->getPropuestaRazonamientos()->isEmpty()
             ? new ArrayCollection()
             : $this->getPropuestaRazonamientos()->map(
-                function (PropuestaRazonamientos $propuestaRazonamientos) {
-                    return $propuestaRazonamientos->getIdPropuestaRazonamientos();
+                function (PropuestaRazonamiento $propuestaRazonamientos) {
+                    return $propuestaRazonamientos->getIdPropuestaRazonamiento();
                 }
             );
 

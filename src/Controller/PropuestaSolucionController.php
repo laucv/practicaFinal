@@ -352,10 +352,6 @@ class PropuestaSolucionController
      */
     public function post(Request $request, Response $response): Response
     {
-        if (!$this->jwt->isMaestro) {
-            return Error::error($this->container, $request, $response, StatusCode::HTTP_FORBIDDEN);
-        }
-
         $req_data
             = $request->getParsedBody()
             ?? json_decode($request->getBody(), true);
