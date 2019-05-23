@@ -1,5 +1,9 @@
-getCuestiones();
+getCuestiones()
+getSoluciones();
+getRazonamientos();
 var datos = JSON.parse(window.sessionStorage.getItem("cuestiones"));
+var soluciones = JSON.parse(window.sessionStorage.getItem("soluciones"));
+var razonamientos = JSON.parse(window.sessionStorage.getItem("razonamientos"));
 var claveRazonamiento = 0;
 var claveSolucion;
 
@@ -73,14 +77,8 @@ function modificarCuestion() {
     botonAdd.innerHTML = "Añadir solución";
     divPregunta.appendChild(botonAdd);
 
-    getSoluciones();
-    let soluciones = JSON.parse(window.sessionStorage.getItem("soluciones"));
-
     let sol;
     let idSolucion;
-
-    getRazonamientos();
-    let razonamientos = JSON.parse(window.sessionStorage.getItem("razonamientos"));
 
     for (let i = 0; i < soluciones.soluciones.length; i++) {
 
@@ -141,7 +139,7 @@ function modificarCuestion() {
                 botonRazonamiento.setAttribute("onclick", "addJustification(" + idCuestion + ", " + idSolucion + ");");
                 botonRazonamiento.innerHTML = "Añadir razonamiento";
                 divRespuesta.appendChild(botonRazonamiento);
-
+            }
 
             for (let j = 0; j < sol.solucion.razonamientos.length; j++) {
 
@@ -243,7 +241,6 @@ function modificarCuestion() {
                     }
                 }
             }
-        }
 
             //imprimirPropuestaRazonamientos(i);
             var hr1 = document.createElement("hr");
@@ -856,7 +853,7 @@ function datos_put_razonamiento(idSolucion, idRazonamiento) {
 
     let datos = {
         "textoRazonamiento": textoRazonamiento,
-        "razonamientoJsutificado": razonamientoJustificado
+        "razonamientoJustificado": razonamientoJustificado
     };
 
     return JSON.stringify(datos);

@@ -470,7 +470,7 @@ class RazonamientoController{
             if(null === $solucion){ //cuestion no existe
                 return Error::error($this->container, $request, $response, StatusCode::HTTP_CONFLICT);
             }
-            $solucion->setSolucion($solucion);
+            $razonamiento->setSolucion($solucion);
         }
         if (isset($req_data['textoError'])) {///////
             $razonamiento->setTextoError($req_data['textoError']);
