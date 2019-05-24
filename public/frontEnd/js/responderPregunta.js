@@ -96,7 +96,6 @@ function guardarPropuestaSolucion() {
 
   postPropuestaSolucion(propuestaSolucion);
 
-  window.localStorage.setItem("datos", JSON.stringify(datos));
   generateSolution();
 }
 
@@ -178,26 +177,19 @@ function datos_post_propuesta_razonamiento(idSolucion, textoPropuestaRazonamient
 }
 
 function generateSolution() {
+
   'use strict';
-
   var cuestion = JSON.parse(window.sessionStorage.getItem("cuestion"));
-  var numeroSoluciones = cuestion.cuestion.soluciones.length;
+  let s;
 
-  //for (let s = 0; s< soluciones.soluciones.length; j++) {
-    //if(cuestion.cuestion.soluciones[i] === soluciones.soluciones[s].solucion.idSolucion){
-      if (i < numeroSoluciones) {
-        imprimirSolucion(i);
-        i++;
-      }
-    //}
-  //}
+  for (s of cuestion.cuestion.soluciones) {
+    imprimirSolucion(s);
+    }
 }
 
-function imprimirSolucion(claveS) {
+function imprimirSolucion(idSolucion) {
   'use strict';
-  var cuestion = JSON.parse(window.sessionStorage.getItem("cuestion"));
-  var solucion = soluciones.soluciones[claveS];
-  var idSolucion = soluciones.soluciones[claveS].solucion.idSolucion;
+  var solucion = getSolucion(idSolucion);
 
   var body = document.body;
 
@@ -237,10 +229,10 @@ function corregirSolucion(idSolucion) {
   'use strict';
   var inutilizar = document.getElementById("botonCorregirSolucion-" + idSolucion);
   inutilizar.removeAttribute("onclick");
-  var claveS = idSolucion - 1;
+  var solucion = getSolucion(idSolucion);
 
   var correctaAlumno = document.getElementById("correcta-" + idSolucion).checked;
-  var correctaProfesor = soluciones.soluciones[claveS].solucion.solucionCorrecta;
+  var correctaProfesor = solucion.solucion.solucionCorrecta;
 
   if (correctaAlumno === correctaProfesor) {
     alert("¡Acierto :)");
@@ -297,12 +289,9 @@ function guardarPropuestaRazonamiento(idSolucion) {
 function generateJustifications(idSolucion) {
   'use strict';
     var solucion = getSolucion(idSolucion);
-    var numeroRazonamientos = solucion.solucion.razonamientos.length;
-
-
-    if (j < numeroRazonamientos) {
-      imprimirRazonamiento(solucion, j);
-      j++;
+    let r;
+    for(r of solucion.solucion.razonamientos){
+      imprimirRazonamiento(solucion, r);
     }
 
 }
@@ -325,13 +314,11 @@ function getSolucion(idSolucion) {
   }
 }
 
-function imprimirRazonamiento(solucion, claveR) {
+function imprimirRazonamiento(solucion, idRazonamiento) {
   'use strict';
   var idSolucion = solucion.solucion.idSolucion;
   var divSolucion = document.getElementById("divSolucion-" + idSolucion);
-  var idRazonamiento = solucion.solucion.razonamientos[claveR];
   var razonamiento = getRazonamiento(idRazonamiento);
-  var idRazonamiento = razonamiento.razonamiento.idRazonamiento;
   var justificadoProfesor = razonamiento.razonamiento.razonamientoJustificado;
 
   var div = document.createElement("div");
@@ -395,23 +382,6 @@ function corregirJustificacion (idSolucion, idRazonamiento, justificadoProfesor)
     pError.setAttribute("id", "error-" + idSolucion + "-" + idRazonamiento);
     pError.innerHTML = razonamiento.razonamiento.textoError;
     divError.appendChild(pError);
-  }
-
-  console.log("if raro que tengo al final");
-  let solucion = getSolucion(idSolucion);
-  console.log(solucion.solucion.razonamientos.length)
-
-
-  if (solucion.solucion.razonamientos.length === j) {
-    var body = document.body;
-    var hr1 = document.createElement("hr");
-    body.appendChild(hr1);
-    generateSolution();
-  }
-  generateJustifications(idSolucion);
-
-  if (solucion.solucion.razonamientos.length === j) {
-    j = 0;
   }
 
 }
