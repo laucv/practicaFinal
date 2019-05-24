@@ -7,19 +7,26 @@ function login() {
             let token = respuesta.token;
             window.sessionStorage.setItem("token", token);
             let datos_token = decodeToken(token);
-            let stringToken = JSON.stringify(datos_token);
-            let jsonToken = JSON.parse(stringToken);
-            let isAdmin = jsonToken.isAdmin;
-            let isMaestro = jsonToken.isMaestro;
-            let user_id = jsonToken.user_id;
+            let isAdmin = datos_token.isAdmin;
+            let isMaestro = datos_token.isMaestro;
+            let user_id = datos_token.user_id;
+            let enabled = datos_token.enabled;
             window.sessionStorage.setItem("isAdmin", isAdmin);
             window.sessionStorage.setItem("isMaestro", isMaestro);
             window.sessionStorage.setItem("user_id", user_id);
-            if(isMaestro){
-                location.href = 'http://localhost:8000/frontend/cuestionesMaestro.html';
+            window.sessionStorage.setItem("enabled", enabled);
+
+            if(enabled){
+                if(isMaestro){
+                    location.href = 'http://localhost:8000/frontend/cuestionesMaestro.html';
+                } else {
+                    location.href = 'http://localhost:8000/frontend/cuestionesAprendiz.html';
+                }
             } else {
-                location.href = 'http://localhost:8000/frontend/cuestionesAprendiz.html';
+                alert("El usuario no está disponible, por favor contacte con el administrado del sitio web");
             }
+
+
         }
         else{
             alert("No se ha encontrado el usuario o la contraseña es incorrecta");

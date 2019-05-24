@@ -172,6 +172,7 @@ trait Utils
     public static function getToken(
         int     $userId,
         string  $username,
+        bool    $enabled = false,
         bool    $isAdmin = false,
         bool    $isMaestro = false
 
@@ -183,7 +184,7 @@ trait Utils
             'exp'       => $current_time + 3600,    // expires in 60 minutes
             'user_id'   => $userId,                 // user id.
             'username'  => $username,               // user name
-            'enabled'   => true,
+            'enabled'   => $enabled,
             'isAdmin'   => $isAdmin,                // is admin?
             'isMaestro' => $isMaestro,                // is Maestro?
             // 'scope' => ['read', 'write', 'delete']
