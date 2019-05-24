@@ -26,7 +26,6 @@ function login() {
                 alert("El usuario no está disponible, por favor contacte con el administrado del sitio web");
             }
 
-
         }
         else{
             alert("No se ha encontrado el usuario o la contraseña es incorrecta");
