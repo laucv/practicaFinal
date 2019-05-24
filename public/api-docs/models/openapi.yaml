@@ -251,7 +251,7 @@ paths:
           TDWApiSecurity: []
     post:
       tags:
-        - ReasonsProposal
+        - ReasonProposal
       summary: 'Creates a new reason Proposal'
       description: 'Creates a new reason Proposal'
       operationId: tdw_post_reasonsProposal
@@ -1225,6 +1225,9 @@ components:
           description: 'Reason''s id user creator'
           type: integer
           format: int64
+        corregida:
+          description: 'Denotes if question is checked by the teacher'
+          type: boolean
       type: object
       example:
         propuestaRazonamiento:
@@ -1233,6 +1236,7 @@ components:
           propuestaRazonamientoJustificado: false
           solucion: 1
           user: 1
+          corregida: false
     ReasonProposalData:
       properties:
         textoPropuestaRazonamiento:
@@ -1249,12 +1253,16 @@ components:
           description: 'Solucion''s id creator'
           type: integer
           format: int64
+        corregida:
+          description: 'Denotes if question is checked by the teacher'
+          type: boolean
       type: object
       example:
         textoPropuestaRazonamiento: 'Razonamiento description'
         propuestaRazonamientoJustificado: false
         solucion: 1
         user: 1
+        corregida: false
     ReasonProposalArray:
       properties:
         propuestaRazonamientos:
@@ -1285,6 +1293,9 @@ components:
           description: 'Solution''s id user creator'
           type: integer
           format: int64
+        corregida:
+          description: 'Denotes if question is checked by the teacher'
+          type: boolean
       type: object
       example:
         propuestaSolucion:
@@ -1293,6 +1304,7 @@ components:
           propuestaSolucionCorrecta: true
           cuestion: 1
           user: 1
+          corregida: false
     SolutionProposalData:
       properties:
         textoPropuestaSolucion:
@@ -1309,12 +1321,16 @@ components:
           description: 'Solution''s id creator'
           type: integer
           format: int64
+        corregida:
+          description: 'Denotes if question is checked by the teacher'
+          type: boolean
       type: object
       example:
         textoPropuestaSolucion: 'Solution description'
         propuestaSolucionCorrecta: false
         cuestion: 1
         user: 1
+        corregida: false
     SolutionProposalArray:
       properties:
         propuestaSoluciones:

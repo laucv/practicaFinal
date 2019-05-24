@@ -369,8 +369,8 @@ class PropuestaRazonamientoController
             $req_data['textoPropuestaRazonamiento'],
             $req_data['propuestaRazonamientoJustificado'] ?? false,
             $solucion,
-            $user
-
+            $user,
+            $req_data['corregida'] ?? false
         );
         $entity_manager->persist($propuestaRazonamiento);
         $entity_manager->flush();
@@ -483,6 +483,11 @@ class PropuestaRazonamientoController
             }
             $propuestaRazonamiento->setUser($user);
         }
+
+        if (isset($req_data['corregida'])) {
+            $propuestaRazonamiento->setCorregida($req_data['corregida']);
+        }
+
 
         //$entity_manager->merge($propuestaRazonamiento);
         $entity_manager->flush();

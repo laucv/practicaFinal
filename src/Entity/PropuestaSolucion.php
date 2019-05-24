@@ -97,6 +97,17 @@ class PropuestaSolucion implements \JsonSerializable
     protected $user;
 
     /**
+     * @var bool $corregida
+     *
+     * @ORM\Column(
+     *     name="corregida",
+     *     type="boolean",
+     *     options={ "default"=false }
+     * )
+     */
+    protected $corregida;
+
+    /**
      * Cuestion constructor.
      *
      * @param string|null $textoPropuestaSolucion
@@ -111,7 +122,8 @@ class PropuestaSolucion implements \JsonSerializable
         ?string $textoPropuestaSolucion = null,
         bool $propuestaSolucionCorrecta = true,
         ?Cuestion $cuestion = null,
-        ?Usuario $user = null
+        ?Usuario $user = null,
+        bool $corregida = true
     )
     {
         $this->idPropuestaSolucion = 0;
@@ -119,12 +131,14 @@ class PropuestaSolucion implements \JsonSerializable
         $this->propuestaSolucionCorrecta = $propuestaSolucionCorrecta;
         $this->setCuestion($cuestion);
         $this->setUser($user);
+        $this->corregida = $corregida;
     }
 
     /**
      * @return int
      */
-    public function getIdPropuestaSolucion(): int
+    public
+    function getIdPropuestaSolucion(): int
     {
         return $this->idPropuestaSolucion;
     }
@@ -132,7 +146,8 @@ class PropuestaSolucion implements \JsonSerializable
     /**
      * @return string|null
      */
-    public function getTextoPropuestaSolucion(): ?string
+    public
+    function getTextoPropuestaSolucion(): ?string
     {
         return $this->textoPropuestaSolucion;
     }
@@ -141,7 +156,8 @@ class PropuestaSolucion implements \JsonSerializable
      * @param string|null $textoSolucion
      * @return Solucion
      */
-    public function setTextoPropuestaSolucion(?string $textoPropuestaSolucion): PropuestaSolucion
+    public
+    function setTextoPropuestaSolucion(?string $textoPropuestaSolucion): PropuestaSolucion
     {
         $this->textoPropuestaSolucion = $textoPropuestaSolucion;
         return $this;
@@ -151,7 +167,8 @@ class PropuestaSolucion implements \JsonSerializable
      * @param bool $disponible
      * @return Cuestion
      */
-    public function setPropuestaSolucionCorrecta(bool $propuestaCorrecta): PropuestaSolucion
+    public
+    function setPropuestaSolucionCorrecta(bool $propuestaCorrecta): PropuestaSolucion
     {
         $this->propuestaSolucionCorrecta = $propuestaCorrecta;
         return $this;
@@ -160,7 +177,8 @@ class PropuestaSolucion implements \JsonSerializable
     /**
      * @return bool
      */
-    public function isPropuestaSolucionCorrecta(): bool
+    public
+    function isPropuestaSolucionCorrecta(): bool
     {
         return $this->propuestaSolucionCorrecta;
     }
@@ -168,7 +186,8 @@ class PropuestaSolucion implements \JsonSerializable
     /**
      * @return Cuestion
      */
-    public function getCuestion(): Cuestion
+    public
+    function getCuestion(): Cuestion
     {
         return $this->cuestion;
     }
@@ -177,13 +196,15 @@ class PropuestaSolucion implements \JsonSerializable
      * @param Cuestion $cuestion
      * @return Solucion
      */
-    public function setCuestion(Cuestion $cuestion): PropuestaSolucion
+    public
+    function setCuestion(Cuestion $cuestion): PropuestaSolucion
     {
         $this->cuestion = $cuestion;
         return $this;
     }
 
-    public function getUser(): ?Usuario
+    public
+    function getUser(): ?Usuario
     {
         return $this->user;
     }
@@ -193,10 +214,29 @@ class PropuestaSolucion implements \JsonSerializable
      * @return Cuestion
      * @throws \Doctrine\ORM\ORMException
      */
-    public function setUser(?Usuario $user): PropuestaSolucion
+    public
+    function setUser(?Usuario $user): PropuestaSolucion
     {
         $this->user = $user;
         return $this;
+    }
+
+    /**
+     * @return bool
+     */
+    public
+    function isCorregida(): bool
+    {
+        return $this->corregida;
+    }
+
+    /**
+     * @param bool $corregida
+     */
+    public
+    function setCorregida(bool $corregida): void
+    {
+        $this->corregida = $corregida;
     }
 
     /**
@@ -205,14 +245,16 @@ class PropuestaSolucion implements \JsonSerializable
      * @return string
      * @link http://php.net/manual/en/language.oop5.magic.php#language.oop5.magic.tostring
      */
-    public function __toString()
+    public
+    function __toString()
     {
         return '[ propuestaSolucion ' .
             '(idPropuestaSolucion=' . $this->getIdPropuestaSolucion() . ', ' .
             'textoPropuestaSolucion="' . $this->getTextoPropuestaSolucion() . ', ' .
             'propuestaSolucionCorrecta=' . (int)$this->isPropuestaSolucionCorrecta() . ', ' .
             'cuestion=' . ($this->getCuestion()) . ', ' .
-            'user=' . ($this->getUser() ?? 0). ', ' .
+            'user=' . ($this->getUser() ?? 0) . ', ' .
+            'corregida=' . (int)$this->isCorregida() . ', ' .
             ') ]';
     }
 
@@ -224,15 +266,17 @@ class PropuestaSolucion implements \JsonSerializable
      * @since 5.4.0
      */
 
-    public function jsonSerialize()
+    public
+    function jsonSerialize()
     {
         return [
-            'propuestaSolucion'=> [
+            'propuestaSolucion' => [
                 'idPropuestaSolucion' => $this->getIdPropuestaSolucion(),
                 'textoPropuestaSolucion' => $this->getTextoPropuestaSolucion(),
                 'propuestaSolucionCorrecta' => $this->isPropuestaSolucionCorrecta(),
                 'cuestion' => $this->getCuestion()->getIdCuestion(),
-                'user' => $this->getUser() ? $this->getUser()->getId() : null
+                'user' => $this->getUser() ? $this->getUser()->getId() : null,
+                'corregida' => $this->isCorregida()
             ]
         ];
     }
@@ -273,13 +317,19 @@ class PropuestaSolucion implements \JsonSerializable
  *          format      = "int64",
  *          type        = "integer"
  *      ),
+ *     @OA\Property(
+ *          property    = "corregida",
+ *          description = "Denotes if question is checked by the teacher",
+ *          type        = "boolean"
+ *      ),
  *      example = {
  *          "propuestaSolucion" = {
  *              "idPropuestaSolucion"           = 805,
  *              "textoPropuestaSolucion" = "Solution description",
  *              "propuestaSolucionCorrecta"  = true,
  *              "cuestion"              = 1,
- *              "user"              = 1
+ *              "user"              = 1,
+ *              "corregida" = false
  *          }
  *     }
  * )
@@ -312,11 +362,17 @@ class PropuestaSolucion implements \JsonSerializable
  *          format      = "int64",
  *          type        = "integer"
  *      ),
+ *     @OA\Property(
+ *          property    = "corregida",
+ *          description = "Denotes if question is checked by the teacher",
+ *          type        = "boolean"
+ *      ),
  *      example = {
  *          "textoPropuestaSolucion" = "Solution description",
  *          "propuestaSolucionCorrecta"  = false,
  *          "cuestion"              = 1,
- *          "user"              = 1
+ *          "user"              = 1,
+ *           "corregida" = false
  *      }
  * )
  */

@@ -132,7 +132,8 @@ function datos_post_propuesta_solucion(textoPropuestaSolucion) {
     "textoPropuestaSolucion": textoPropuestaSolucion,
     "propuestaSolucionCorrecta": false,
     "cuestion": cuestion,
-    "user" : user_id
+    "user" : user_id,
+    "corregida": false
   }
 
   return JSON.stringify(datos);
@@ -170,7 +171,8 @@ function datos_post_propuesta_razonamiento(idSolucion, textoPropuestaRazonamient
     "textoPropuestaRazonamiento": textoPropuestaRazonamiento,
     "propuestaRazonamientoJustificado": false,
     "solucion": idSolucion,
-    "user" : user_id
+    "user" : user_id,
+    "corregida": false
   }
 
   return JSON.stringify(datos);

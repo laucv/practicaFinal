@@ -95,6 +95,16 @@ class PropuestaRazonamiento implements \JsonSerializable
      * })
      */
     protected $user;
+    /**
+     * @var bool $corregida
+     *
+     * @ORM\Column(
+     *     name="corregida",
+     *     type="boolean",
+     *     options={ "default"=false }
+     * )
+     */
+    protected $corregida;
 
     /**
      * Cuestion constructor.
@@ -103,6 +113,7 @@ class PropuestaRazonamiento implements \JsonSerializable
      * @param bool $propuestaRazonamientoJustificado
      * @param Solucion|null $solucion
      * @param Usuario|null $user
+     * @param bool $corregida
      *
      * @throws \Doctrine\ORM\ORMException
      */
@@ -111,7 +122,9 @@ class PropuestaRazonamiento implements \JsonSerializable
         string $textoPropuestaRazonamiento = null,
         bool $propuestaRazonamientoJustificado = true,
         ?Solucion $solucion = null,
-        ?Usuario $user = null
+        ?Usuario $user = null,
+        bool $corregida = true
+
     )
     {
         $this->idPropuestaRazonamiento = 0;
@@ -119,6 +132,8 @@ class PropuestaRazonamiento implements \JsonSerializable
         $this->propuestaRazonamientoJustificado = $propuestaRazonamientoJustificado;
         $this->setSolucion($solucion);
         $this->setUser($user);
+        $this->corregida = $corregida;
+
     }
 
     /**
@@ -198,7 +213,23 @@ class PropuestaRazonamiento implements \JsonSerializable
         $this->user = $user;
         return $this;
     }
+    /**
+     * @return bool
+     */
+    public
+    function isCorregida(): bool
+    {
+        return $this->corregida;
+    }
 
+    /**
+     * @param bool $corregida
+     */
+    public
+    function setCorregida(bool $corregida): void
+    {
+        $this->corregida = $corregida;
+    }
     /**
      * The __toString method allows a class to decide how it will react when it is converted to a string.
      *
@@ -213,6 +244,7 @@ class PropuestaRazonamiento implements \JsonSerializable
             'propuestaRazonamientoJustificado=' . (int)$this->isPropuestaRazonamientoJustificado() . ', ' .
             'solucion=' . ($this->getsolucion()) . ', ' .
             'user=' . ($this->getUser() ?? 0). ', ' .
+            'corregida=' . (int)$this->isCorregida() . ', ' .
             ') ]';
     }
 
@@ -232,7 +264,8 @@ class PropuestaRazonamiento implements \JsonSerializable
                 'textoPropuestaRazonamiento' => $this->getTextoPropuestaRazonamiento(),
                 'propuestaRazonamientoJustificado' => $this->isPropuestaRazonamientoJustificado(),
                 'solucion' => $this->getSolucion()->getIdSolucion(),
-                'user' => $this->getUser() ? $this->getUser()->getId() : null
+                'user' => $this->getUser() ? $this->getUser()->getId() : null,
+                'corregida' => $this->isCorregida()
             ]
         ];
     }
@@ -273,13 +306,19 @@ class PropuestaRazonamiento implements \JsonSerializable
  *          format      = "int64",
  *          type        = "integer"
  *      ),
+ *      @OA\Property(
+ *          property    = "corregida",
+ *          description = "Denotes if question is checked by the teacher",
+ *          type        = "boolean"
+ *      ),
  *      example = {
  *          "propuestaRazonamiento" = {
  *              "idPropuestaRazonamiento"           = 805,
  *              "textoPropuestaRazonamiento" = "Razonamiento description",
  *              "propuestaRazonamientoJustificado"  = false,
  *              "solucion"              = 1,
- *              "user"              = 1
+ *              "user"              = 1,
+ *              "corregida" = false
  *          }
  *     }
  * )
@@ -312,11 +351,17 @@ class PropuestaRazonamiento implements \JsonSerializable
  *          format      = "int64",
  *          type        = "integer"
  *      ),
+ *     @OA\Property(
+ *          property    = "corregida",
+ *          description = "Denotes if question is checked by the teacher",
+ *          type        = "boolean"
+ *      ),
  *      example = {
  *          "textoPropuestaRazonamiento" = "Razonamiento description",
  *          "propuestaRazonamientoJustificado"  = false,
  *          "solucion"              = 1,
- *          "user"              = 1
+ *          "user"              = 1,
+ *          "corregida" = false
  *      }
  * )
  */

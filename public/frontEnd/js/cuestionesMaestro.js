@@ -37,11 +37,6 @@ function imprimirCuestion(cuestion) {
 function listarPreguntas() {
     'use strict';
     var datos = JSON.parse(window.sessionStorage.getItem("cuestiones"));
-    window.sessionStorage.removeItem("soluciones");
-    window.sessionStorage.removeItem("propuesta_soluciones");
-    window.sessionStorage.removeItem("propuesta_razonamientos");
-    window.sessionStorage.removeItem("razonamientos");
-    window.sessionStorage.removeItem("cuestion");
     var cuestion;
     for (cuestion of datos.cuestiones) {
         imprimirCuestion(cuestion);

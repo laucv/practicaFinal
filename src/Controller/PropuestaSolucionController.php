@@ -370,7 +370,8 @@ class PropuestaSolucionController
             $req_data['textoPropuestaSolucion'],
             $req_data['propuestaSolucionCorrecta'] ?? false,
             $cuestion,
-            $user
+            $user,
+            $req_data['corregida'] ?? false
 
         );
         $entity_manager->persist($propuestaSolucion);
@@ -482,6 +483,11 @@ class PropuestaSolucionController
             }
             $propuestaSolucion->setUser($user);
         }
+
+        if (isset($req_data['corregida'])) {
+            $propuestaSolucion->setCorregida($req_data['corregida']);
+        }
+
 
         //$entity_manager->merge($solucion);
         $entity_manager->flush();
