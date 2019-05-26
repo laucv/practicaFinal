@@ -304,12 +304,12 @@ class PropuestaRazonamientoController
      *
      * @OA\Post(
      *     path        = "/reasonsProposal",
-     *     tags        = { "ReasonProposal" },
+     *     tags        = { "ReasonsProposal" },
      *     summary     = "Creates a new reason Proposal",
      *     description = "Creates a new reason Proposal",
      *     operationId = "tdw_post_reasonsProposal",
      *     @OA\RequestBody(
-     *         description = "`ReasonProposal` properties to add to the system",
+     *         description = "`ReasonsProposal` properties to add to the system",
      *         required    = true,
      *         @OA\JsonContent(
      *             ref = "#/components/schemas/ReasonProposalData"

@@ -166,25 +166,71 @@ class Usuario implements \JsonSerializable
     protected $propuestaRazonamientos;
 
     /**
+     * @var string|null $name
+     *
+     * @ORM\Column(
+     *     name="name",
+     *     type="string",
+     *     length=255,
+     *     nullable=true
+     * )
+     */
+
+    protected $name;
+    /**
+     * @var string|null $surname
+     *
+     * @ORM\Column(
+     *     name="surname",
+     *     type="string",
+     *     length=255,
+     *     nullable=true
+     * )
+     */
+    protected $surname;
+
+    /**
+     * @var string|null $phone_number
+     *
+     * @ORM\Column(
+     *     name="phone_number",
+     *     type="string",
+     *     length=255,
+     *     nullable=true
+     * )
+     */
+
+    protected $phone_number;
+
+    /**
      * User constructor.
      *
-     * @param string $username username
+     * @param string $username phone_number
      * @param string $email email
      * @param string $password password
      * @param bool $enabled enabled
      * @param bool $isMaestro isMaestro
      * @param bool $isAdmin isAdmin
+     * @param string $name
+     * @param string $surname
+     * @param string $phone_number
      */
     public function __construct(
         string $username = '',
         string $email = '',
         string $password = '',
+        string $name = '',
+        string $surname = '',
+        string $phone_number = '',
         bool   $enabled = true,
         bool   $isMaestro = false,
         bool   $isAdmin = false
     ) {
         $this->id       = 0;
         $this->username = $username;
+        $this->name = $name;
+        $this->surname = $surname;
+        $this->phone_number = $phone_number;
         $this->email    = $email;
         $this->setPassword($password);
         $this->enabled  = $enabled;
@@ -510,6 +556,54 @@ class Usuario implements \JsonSerializable
     }
 
     /**
+     * @return string|null
+     */
+    public function getName(): ?string
+    {
+        return $this->name;
+    }
+
+    /**
+     * @param string|null $name
+     */
+    public function setName(?string $name): void
+    {
+        $this->name = $name;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getSurname(): ?string
+    {
+        return $this->surname;
+    }
+
+    /**
+     * @param string|null $surname
+     */
+    public function setSurname(?string $surname): void
+    {
+        $this->surname = $surname;
+    }
+
+    /**
+     * @return int|null
+     */
+    public function getPhoneNumber(): ?string
+    {
+        return $this->phone_number;
+    }
+
+    /**
+     * @param int|null $phone_number
+     */
+    public function setPhoneNumber(string $phone_number): void
+    {
+        $this->phone_number = $phone_number;
+    }
+
+    /**
      * The __toString method allows a class to decide how it will react when it is converted to a string.
      *
      * @return string
@@ -526,7 +620,11 @@ class Usuario implements \JsonSerializable
         return '[ usuario ' .
             '(id=' . $this->getId() . ', ' .
             'username="' . $this->getUsername() . '", ' .
+            'name="' . $this->getName() . '", ' .
+            'surname="' . $this->getUsername() . '", ' .
+            'PhoneNumer="' . $this->getPhoneNumber() . '", ' .
             'email="' . $this->getEmail() . '", ' .
+            'password="' . $this->getPassword() . '", ' .
             'enabled="' . (int) $this->isEnabled() . '", ' .
             'isMaestro="' . (int) $this->isMaestro() . '", ' .
             'isAdmin="' . (int) $this->isAdmin() . '", ' .
@@ -549,7 +647,11 @@ class Usuario implements \JsonSerializable
             'usuario' => [
                 'id' => $this->getId(),
                 'username' => $this->getUsername(),
+                'name' => $this->getName(),
+                'surname' => $this->getSurname(),
+                'phoneNumber' => $this->getPhoneNumber(),
                 'email' => $this->getEmail(),
+                'password' => $this->getPassword(),
                 'enabled' => $this->isEnabled(),
                 'maestro' => $this->isMaestro(),
                 'admin' => $this->isAdmin(),
@@ -580,6 +682,21 @@ class Usuario implements \JsonSerializable
  *          type        = "string"
  *      ),
  *      @OA\Property(
+ *          property    = "name",
+ *          description = "User's name",
+ *          type        = "string"
+ *      ),
+ *     @OA\Property(
+ *          property    = "surname",
+ *          description = "User's surname",
+ *          type        = "string"
+ *      ),
+ *     @OA\Property(
+ *          property    = "phone_number",
+ *          description = "User's phone number",
+ *          type        = "string"
+ *      ),
+ *      @OA\Property(
  *          property    = "email",
  *          description = "User email",
  *          type        = "string"
@@ -603,6 +720,9 @@ class Usuario implements \JsonSerializable
  *          "usuario" = {
  *              "id"       = 1508,
  *              "username" = "User name",
+ *              "name"     = "April",
+ *              "surname"  = "Avery",
+ *              "phoneNumber" = "666777888",
  *              "email"    = "User email",
  *              "enabled"  = true,
  *              "maestro"  = false,
@@ -628,6 +748,21 @@ class Usuario implements \JsonSerializable
  *          type        = "string"
  *      ),
  *      @OA\Property(
+ *          property    = "name",
+ *          description = "User's name",
+ *          type        = "string"
+ *      ),
+ *     @OA\Property(
+ *          property    = "surname",
+ *          description = "User's surname",
+ *          type        = "string"
+ *      ),
+ *     @OA\Property(
+ *          property    = "phone_number",
+ *          description = "User's phone number",
+ *          type        = "string"
+ *      ),
+ *      @OA\Property(
  *          property    = "password",
  *          description = "User password",
  *          type        = "string",
@@ -650,6 +785,9 @@ class Usuario implements \JsonSerializable
  *      ),
  *      example = {
  *          "username"  = "User_name",
+ *          "name"     = "April",
+ *          "surname"  = "Avery",
+ *          "phoneNumber" = "666777888",
  *          "email"     = "User_email@example.com",
  *          "password"  = "User_password",
  *          "enabled"   = true,

@@ -251,12 +251,12 @@ paths:
           TDWApiSecurity: []
     post:
       tags:
-        - ReasonProposal
+        - ReasonsProposal
       summary: 'Creates a new reason Proposal'
       description: 'Creates a new reason Proposal'
       operationId: tdw_post_reasonsProposal
       requestBody:
-        description: '`ReasonProposal` properties to add to the system'
+        description: '`ReasonsProposal` properties to add to the system'
         required: true
         content:
           application/json:
@@ -1460,6 +1460,15 @@ components:
         username:
           description: 'User name'
           type: string
+        name:
+          description: 'User''s name'
+          type: string
+        surname:
+          description: 'User''s surname'
+          type: string
+        phone_number:
+          description: 'User''s phone number'
+          type: string
         email:
           description: 'User email'
           type: string
@@ -1477,6 +1486,9 @@ components:
         usuario:
           id: 1508
           username: 'User name'
+          name: April
+          surname: Avery
+          phoneNumber: '666777888'
           email: 'User email'
           enabled: true
           maestro: false
@@ -1488,6 +1500,15 @@ components:
           type: string
         email:
           description: 'User email'
+          type: string
+        name:
+          description: 'User''s name'
+          type: string
+        surname:
+          description: 'User''s surname'
+          type: string
+        phone_number:
+          description: 'User''s phone number'
           type: string
         password:
           description: 'User password'
@@ -1505,6 +1526,9 @@ components:
       type: object
       example:
         username: User_name
+        name: April
+        surname: Avery
+        phoneNumber: '666777888'
         email: User_email@example.com
         password: User_password
         enabled: true

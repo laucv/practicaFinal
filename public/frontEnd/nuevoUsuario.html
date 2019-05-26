@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+          integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <link rel="stylesheet" href="css/style.css">
+    <script type="text/javascript" src="js/administracion.js"></script>
+    <title>Nuevo usuario</title>
+</head>
+<body>
+<h1>Nuevo usuario</h1>
+<a href="administracion.html" class="btn btn-danger" role="button">Volver</a>
+
+<hr>
+<div>
+    <p>
+        Nombre de usuario: <textarea cols="50" id="username"></textarea>
+    </p>
+    <p>
+        E-mail: <textarea cols="50" id="email"></textarea>
+    </p>
+    <p>
+        Nombre: <textarea cols="50" id="name"></textarea>
+    </p>
+    <p>
+        Apellidos: <textarea cols="50" id="surname"></textarea>
+    </p>
+    <p>
+        Número de teléfono: <textarea cols="50" id="phoneNumber"></textarea>
+    </p>
+    <p>
+        Contraseña: <textarea cols="50" id="password"></textarea>
+    </p>
+    <p>
+        <input type="checkbox" id="enabled">Usuario activo<br>
+    </p>
+    <p>
+       <input type="checkbox" id="isMaestro">Maestro<br>
+    </p>
+    <p>
+        <input type="checkbox" id="isAdmin">Administrador<br>
+    </p>
+</div>
+<div>
+    <a class="btn btn-success" onclick="crearUsuario();" role="button">Crear usuario</a>
+</div>
+</body>
+</html>

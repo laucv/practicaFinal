@@ -448,11 +448,68 @@ function imprimirPropuestaSoluciones() {
             var boton = document.createElement("button");
             boton.setAttribute("onclick", "corregirPropuestaSolucion(" + idPropuestaSolucion + ");");
             boton.setAttribute("class", "btn btn-success");
-            boton.innerHTML = "Corregir solución";
+            boton.innerHTML = "Corregir propuesta de solución";
             divBoton.appendChild(boton);
+
+            var eliminar = document.createElement("button");
+            eliminar.setAttribute("onclick", "eliminarPropuestaSolucion(" + idPropuestaSolucion + ");");
+            eliminar.setAttribute("class", "btn btn-danger");
+            eliminar.innerHTML = "Eliminar propuesta de solución";
+            divBoton.appendChild(eliminar);
         }
     }
 }
+
+function eliminarPropuestaRazonamiento(idPropuestaRazonamiento) {
+    'use strict';
+
+    function trataRespuesta() {
+        if (request.status == 204) {
+            alert("Propuesta de razonamiento eliminada");
+            location.reload();
+        } else {
+            alert("No se ha podido eliminar la propuesta razonamiento");
+        }
+    }
+
+    var request = new XMLHttpRequest();
+    let token = window.sessionStorage.getItem("token");
+    let url = 'http://localhost:8000/api/v1/solutionsProposal/' + idPropuestaSolucion;
+    request.open('DELETE', url, true);
+    request.setRequestHeader("Content-Type", "application/json");
+    request.setRequestHeader("Authorization", "Bearer " + token);
+    request.responseType = 'json';
+    request.onload = trataRespuesta;
+    request.send();
+    location.reload();
+
+}
+
+function eliminarPropuestaSolucion(idPropuestaSolucion) {
+    'use strict';
+
+    function trataRespuesta() {
+        if (request.status == 204) {
+            alert("Propuesta de solucion eliminada");
+            location.reload();
+        } else {
+            alert("No se ha podido eliminar la propuesta solucion");
+        }
+    }
+
+    var request = new XMLHttpRequest();
+    let token = window.sessionStorage.getItem("token");
+    let url = 'http://localhost:8000/api/v1/solutionsProposal/' + idPropuestaSolucion;
+    request.open('DELETE', url, true);
+    request.setRequestHeader("Content-Type", "application/json");
+    request.setRequestHeader("Authorization", "Bearer " + token);
+    request.responseType = 'json';
+    request.onload = trataRespuesta;
+    request.send();
+    location.reload();
+
+}
+
 
 function corregirPropuestaSolucion(claveS) {
     var textoSolucion = document.getElementById("propuestaSolucion-" + claveS).innerText;
@@ -504,8 +561,14 @@ function imprimirPropuestaRazonamientos(claveS) {
                 var boton = document.createElement("button");
                 boton.setAttribute("onclick", "corregirPropuestaRazonamiento(" + claveS + ", " + idPropuestaRazonamiento + ");");
                 boton.setAttribute("class", "btn btn-success");
-                boton.innerHTML = "Corregir razonamiento";
+                boton.innerHTML = "Corregir propuesta de razonamiento";
                 divBoton.appendChild(boton);
+
+                var eliminar = document.createElement("button");
+                eliminar.setAttribute("onclick", "eliminarPropuestaRazonamiento(" + claveS + ", " + idPropuestaRazonamiento + ");");
+                eliminar.setAttribute("class", "btn btn-danger");
+                eliminar.innerHTML = "Eliminar propuesta de razonamiento";
+                divBoton.appendChild(eliminar);
             }
         }
     }

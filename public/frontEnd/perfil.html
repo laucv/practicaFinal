@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+          integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <link rel="stylesheet" href="css/style.css">
+    <script type="text/javascript" src="js/modificarUsuario.js"></script>
+    <title>Perfil</title>
+</head>
+<body onload="cargarDatos();">
+    <h1>Mi perfil</h1>
+    <a onclick="redirigir();" class="btn btn-danger" role="button">Volver</a>
+    <hr>
+    <div>
+        <p>
+            Recuerde que su nombre de usuario e e-mail son únicos en todo el sistema
+        </p>
+        <p>
+            Nombre de usuario: <textarea cols="50" id="username"></textarea>
+        </p>
+        <p>
+            E-mail: <textarea cols="50" id="email"></textarea>
+        </p>
+        <div>
+            <a class="btn btn-success" onclick="actualizarUser();" role="button">Actualizar nombre de usuario e-mail</a>
+        </div>
+        <hr>
+        <p>
+            Nombre: <textarea cols="50" id="name"></textarea>
+        </p>
+        <p>
+            Apellidos: <textarea cols="50" id="surname"></textarea>
+        </p>
+        <p>
+            Número de teléfono: <textarea cols="50" id="phoneNumber"></textarea>
+        </p>
+        <div>
+            <a class="btn btn-success" onclick="actualizarPerfil();" role="button">Actualizar datos</a>
+        </div>
+        <hr>
+        Le mostramos la contraseña codificada para mayor seguridad
+
+        <p>
+            Contraseña: <textarea cols="50" id="password"></textarea>
+        </p>
+    </div>
+    <div>
+        <a class="btn btn-success" onclick="actualizarPassword();" role="button">Actualizar contraseña</a>
+    </div>
+</body>
+</html>
