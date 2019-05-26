@@ -254,7 +254,7 @@ function modificarCuestion() {
         body.appendChild(hr1);
     }
     var divBoton = document.createElement("div");
-    divBoton.setAttribute("class", "botones");
+    divBoton.setAttribute("class", "boton");
     body.appendChild(divBoton);
 
     var botonGuardar = document.createElement("button");
@@ -456,6 +456,9 @@ function imprimirPropuestaSoluciones() {
             eliminar.setAttribute("class", "btn btn-danger");
             eliminar.innerHTML = "Eliminar propuesta de solución";
             divBoton.appendChild(eliminar);
+
+            var hr = document.createElement("hr");
+            divBoton.appendChild(hr);
         }
     }
 }
@@ -569,6 +572,9 @@ function imprimirPropuestaRazonamientos(claveS) {
                 eliminar.setAttribute("class", "btn btn-danger");
                 eliminar.innerHTML = "Eliminar propuesta de razonamiento";
                 divBoton.appendChild(eliminar);
+
+                var hr = document.createElement("hr");
+                divBoton.appendChild(hr);
             }
         }
     }
