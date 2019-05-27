@@ -42,5 +42,15 @@ img {
 
 .preguntas{
     width: 75%;
-
+}
+.correcta {
+    color : limegreen;
+}
+.incorrecta {
+    color: red;
+}
+#login{
+    width: 50%;
+    align-content: center;
+    margin: auto;
 }
