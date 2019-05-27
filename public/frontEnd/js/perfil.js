@@ -58,14 +58,14 @@ function datos_personales_put_usuario() {
 
     return JSON.stringify(datos);
 }
-
 function redirigir() {
+
     let isMaestro = JSON.parse(window.sessionStorage.getItem("isMaestro"));
 
-    if(isMaestro){
-        location.href = "/frontend/cuestionesMaestro.html";
+    if (isMaestro){
+        location.href = "cuestionesMaestro.html";
     } else {
-        location.href = "/frontend/cuestionesAprendiz.html";
+        location.href = "cuestionesAprendiz.html";
     }
 }
 

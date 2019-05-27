@@ -20,6 +20,7 @@ function cargarDatos() {
     email.innerText = usuario.usuario.email;
     password.innerText = usuario.usuario.password;
 
+    console.log(usuario.usuario.enabled);
     if(usuario.usuario.enabled === true){
         disponible.cheked = true;
     } else {
