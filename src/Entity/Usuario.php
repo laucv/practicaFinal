@@ -223,8 +223,8 @@ class Usuario implements \JsonSerializable
         string $surname = '',
         string $phone_number = '',
         bool   $enabled = true,
-        bool   $isMaestro = false,
-        bool   $isAdmin = false
+        bool   $isMaestro = true,
+        bool   $isAdmin = true
     ) {
         $this->id       = 0;
         $this->username = $username;

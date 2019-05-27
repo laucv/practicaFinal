@@ -19,14 +19,7 @@ function cargarDatos() {
     phoneNumber.innerText = usuario.usuario.phoneNumber;
     email.innerText = usuario.usuario.email;
     password.innerText = usuario.usuario.password;
-
-    console.log(usuario.usuario.enabled);
-    if(usuario.usuario.enabled === true){
-        disponible.cheked = true;
-    } else {
-        disponible.cheked = false;
-    }
-
+    disponible.checked  = usuario.usuario.enabled;
     isMaestro.checked = usuario.usuario.maestro;
     isAdmin.checked = usuario.usuario.admin;
 }
