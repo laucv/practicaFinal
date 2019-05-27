@@ -215,13 +215,11 @@ function codifica_query_string_cuestion() {
   var enunciadoDescripcion = document.getElementById("pregunta-" + nextQuestionValue()).value;
   var enunciadoDisponible = document.getElementById("disponible-" + nextQuestionValue()).checked;
   var creador = parseInt(window.sessionStorage.getItem("user_id"));
-  var estado = "cerrada";
 
   let datos = {
     "enunciadoDescripcion": enunciadoDescripcion,
     "enunciadoDisponible": enunciadoDisponible,
-    "creador": creador,
-    "estado": estado
+    "creador": creador
   };
 
   return JSON.stringify(datos);

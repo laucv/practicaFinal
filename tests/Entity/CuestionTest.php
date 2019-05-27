@@ -8,7 +8,6 @@ namespace TDW\Tests\GCuest\Entity;
 
 use Faker\Factory;
 use PHPUnit\Framework\TestCase;
-use TDW\GCuest\Entity\Categoria;
 use TDW\GCuest\Entity\Cuestion;
 use TDW\GCuest\Entity\Usuario;
 

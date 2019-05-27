@@ -1163,9 +1163,6 @@ components:
           description: 'Question''s id creator'
           type: integer
           format: int64
-        estado:
-          description: 'Question''s state'
-          type: string
       type: object
       example:
         cuestion:
@@ -1173,7 +1170,6 @@ components:
           enunciadoDescripcion: 'Question description'
           enunciadoDisponible: true
           creador: 7
-          estado: abierta
     QuestionData:
       properties:
         enunciadoDescripcion:
@@ -1186,15 +1182,11 @@ components:
           description: 'Question''s id creator'
           type: integer
           format: int64
-        estado:
-          description: 'Question status'
-          type: string
       type: object
       example:
         enunciadoDescripcion: 'Question description'
         enunciadoDisponible: true
         creador: 501
-        estado: abierta
     QuestionsArray:
       properties:
         cuestiones:

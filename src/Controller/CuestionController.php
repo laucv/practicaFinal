@@ -477,15 +477,6 @@ class CuestionController
             }
             $cuestion->setCreador($usuario);
         }
-        // estado
-        if (isset($req_data['estado'])) {
-            if($req_data['estado'] === 'abierta') {
-                $cuestion->abrirCuestion();
-            }
-            elseif ($req_data['estado'] === 'cerrada'){
-                $cuestion->cerrarCuestion();
-            }
-        }
 
         //$entity_manager->merge($cuestion);
         $entity_manager->flush();
