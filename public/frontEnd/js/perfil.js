@@ -148,11 +148,9 @@ function actualizarUser() {
 }
 
 function datos_user_put_usuario() {
-    let username = document.getElementById("username").value;
     let email = document.getElementById("email").value;
 
     let datos ={
-        "username": username,
         "email": email
     }
 

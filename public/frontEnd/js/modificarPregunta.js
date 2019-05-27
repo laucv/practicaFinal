@@ -427,9 +427,12 @@ function imprimirPropuestaSoluciones() {
             divPropuestaSolucion.appendChild(h4);
 
             var pPropuestaSolucion = document.createElement("p");
-            pPropuestaSolucion.setAttribute("id", "propuestaSolucion-" + idPropuestaSolucion);
-            pPropuestaSolucion.innerHTML = propuestaSolucion.propuestaSoluciones[i].propuestaSolucion.textoPropuestaSolucion;
             divPropuestaSolucion.appendChild(pPropuestaSolucion);
+
+            var textPropuestaSolucion = document.createElement("textarea");
+            textPropuestaSolucion.setAttribute("id", "propuestaSolucion-" + idPropuestaSolucion);
+            textPropuestaSolucion.innerHTML = propuestaSolucion.propuestaSoluciones[i].propuestaSolucion.textoPropuestaSolucion;
+            pPropuestaSolucion.appendChild(textPropuestaSolucion);
 
             var inputS = document.createElement("input");
             inputS.setAttribute("type", "checkbox");
@@ -451,6 +454,12 @@ function imprimirPropuestaSoluciones() {
             boton.innerHTML = "Corregir propuesta de solución";
             divBoton.appendChild(boton);
 
+            var modificar = document.createElement("button");
+            modificar.setAttribute("onclick", "modificarPropuestaSolucion(" + idPropuestaSolucion + ");");
+            modificar.setAttribute("class", "btn btn-warning");
+            modificar.innerHTML = "Modificar propuesta de solución";
+            divBoton.appendChild(modificar);
+
             var eliminar = document.createElement("button");
             eliminar.setAttribute("onclick", "eliminarPropuestaSolucion(" + idPropuestaSolucion + ");");
             eliminar.setAttribute("class", "btn btn-danger");
@@ -461,6 +470,77 @@ function imprimirPropuestaSoluciones() {
             divBoton.appendChild(hr);
         }
     }
+}
+
+function modificarPropuestaSolucion(idPropuestaSolucion) {
+    'use strict';
+
+    function trataRespuesta() {
+        if (request.status == 209) {
+            alert("Propuesta de solucion modificada");
+        } else {
+            alert("No se ha podido modificar la propuesta solucion");
+        }
+    }
+
+    var request = new XMLHttpRequest();
+    let token = window.sessionStorage.getItem("token");
+    let url = 'http://localhost:8000/api/v1/solutionsProposal/' + idPropuestaSolucion;
+    request.open('PUT', url, true);
+    request.setRequestHeader("Content-Type", "application/json");
+    request.setRequestHeader("Authorization", "Bearer " + token);
+    request.responseType = 'json';
+    request.onload = trataRespuesta;
+    let datos = datos_enunciado_put_propuesta_solucion(idPropuestaSolucion);
+    request.send(datos);
+    location.reload();
+}
+
+function datos_enunciado_put_propuesta_solucion(idPropuestaSolucion) {
+    let enunciado = document.getElementById("propuestaSolucion-" + idPropuestaSolucion).value;
+
+    console.log(enunciado);
+
+    let datos = {
+        "textoPropuestaSolucion": enunciado
+    }
+
+    return JSON.stringify(datos);
+}
+
+function modificarPropuestaRazonamiento(idSolucion, idPropuestaRazonamiento) {
+    'use strict';
+
+    function trataRespuesta() {
+        if (request.status == 209) {
+            alert("Propuesta de razonamiento modificada");
+        } else {
+            let enunciado = document.getElementById("propuestaRazonamiento-" + idSolucion + "-" + idPropuestaRazonamiento).value;
+            console.log(enunciado.value);
+            alert("No se ha podido modificar la propuesta razonamiento");
+        }
+    }
+
+    var request = new XMLHttpRequest();
+    let token = window.sessionStorage.getItem("token");
+    let url = 'http://localhost:8000/api/v1/reasonsProposal/' + idPropuestaRazonamiento;
+    request.open('PUT', url, true);
+    request.setRequestHeader("Content-Type", "application/json");
+    request.setRequestHeader("Authorization", "Bearer " + token);
+    request.responseType = 'json';
+    request.onload = trataRespuesta;
+    let datos = datos_enunciado_put_propuesta_razonamiento(idSolucion, idPropuestaRazonamiento);
+    request.send(datos);
+    location.reload();
+}
+
+function datos_enunciado_put_propuesta_razonamiento(idSolucion, idPropuestaRazonamiento) {
+    let enunciado = document.getElementById("propuestaRazonamiento-" + idSolucion + "-" + idPropuestaRazonamiento).value;
+    let datos = {
+        "textoPropuestaRazonamiento": enunciado
+    }
+
+    return JSON.stringify(datos);
 }
 
 function eliminarPropuestaRazonamiento(idPropuestaRazonamiento) {
@@ -529,6 +609,7 @@ function imprimirPropuestaRazonamientos(claveS) {
     for (i = 0; i < propuestaRazonamiento.propuestaRazonamientos.length; i++) {
 
         if (propuestaRazonamiento.propuestaRazonamientos[i].propuestaRazonamiento.solucion === claveS) {
+
             if (propuestaRazonamiento.propuestaRazonamientos[i].propuestaRazonamiento.corregida === false) {
 
                 var idPropuestaRazonamiento = propuestaRazonamiento.propuestaRazonamientos[i].propuestaRazonamiento.idPropuestaRazonamiento;
@@ -543,9 +624,12 @@ function imprimirPropuestaRazonamientos(claveS) {
                 divPropuestaSolucion.appendChild(h4);
 
                 var pPropuestaSolucion = document.createElement("p");
-                pPropuestaSolucion.setAttribute("id", "propuestaRazonamiento-" + claveS + "-" + idPropuestaRazonamiento);
-                pPropuestaSolucion.innerHTML = propuestaRazonamiento.propuestaRazonamientos[i].propuestaRazonamiento.textoPropuestaRazonamiento;
                 divPropuestaSolucion.appendChild(pPropuestaSolucion);
+
+                var textPropuestaSolucion = document.createElement("textarea");
+                textPropuestaSolucion.setAttribute("id", "propuestaRazonamiento-" + claveS + "-" + idPropuestaRazonamiento);
+                textPropuestaSolucion.innerHTML = propuestaRazonamiento.propuestaRazonamientos[i].propuestaRazonamiento.textoPropuestaRazonamiento;
+                divPropuestaSolucion.appendChild(textPropuestaSolucion);
 
                 var inputS = document.createElement("input");
                 inputS.setAttribute("type", "checkbox");
@@ -567,8 +651,14 @@ function imprimirPropuestaRazonamientos(claveS) {
                 boton.innerHTML = "Corregir propuesta de razonamiento";
                 divBoton.appendChild(boton);
 
+                var modificar = document.createElement("button");
+                modificar.setAttribute("onclick", "modificarPropuestaRazonamiento(" + claveS + ", " + idPropuestaRazonamiento + ");");
+                modificar.setAttribute("class", "btn btn-warning");
+                modificar.innerHTML = "Modificar propuesta de razonamiento";
+                divBoton.appendChild(modificar);
+
                 var eliminar = document.createElement("button");
-                eliminar.setAttribute("onclick", "eliminarPropuestaRazonamiento(" + claveS + ", " + idPropuestaRazonamiento + ");");
+                eliminar.setAttribute("onclick", "eliminarPropuestaRazonamiento(" + idPropuestaRazonamiento + ");");
                 eliminar.setAttribute("class", "btn btn-danger");
                 eliminar.innerHTML = "Eliminar propuesta de razonamiento";
                 divBoton.appendChild(eliminar);

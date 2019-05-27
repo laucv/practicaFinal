@@ -14,6 +14,13 @@
 <hr>
 <div>
     <p>
+        Recuerde que el nombre de usuario es único en todo el sistema y no se puede cambiar
+    </p>
+    <p>
+        Nombre de usuario: <p id="username"></p>
+    </p>
+    <hr>
+    <p>
         <label for="enabled">Usuario activo</label>
         <input onchange="actualizarDisponible();" type="checkbox" id="enabled"><br>
     </p>
@@ -27,16 +34,10 @@
     </p>
     <hr>
     <p>
-        Recuerde que el nombre de usuario e e-mail son únicos en todo el sistema
-    </p>
-    <p>
-        Nombre de usuario: <textarea cols="50" id="username"></textarea>
-    </p>
-    <p>
         E-mail: <textarea cols="50" id="email"></textarea>
     </p>
     <div>
-        <a class="btn btn-success" onclick="actualizarUser();" role="button">Actualizar nombre de usuario e-mail</a>
+        <a class="btn btn-success" onclick="actualizarUser();" role="button">Actualizar e-mail</a>
     </div>
     <hr>
     <p>

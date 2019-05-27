@@ -1,6 +1,6 @@
 div{
-    width: 75%;
-    padding: 1px;
+    width: 100%;
+    padding: 5px;
     align-content: center;
     margin: auto;
     text-align: center;
@@ -38,4 +38,9 @@ li{
 }
 img {
     width: 93%;
+}
+
+.preguntas{
+    width: 75%;
+
 }
