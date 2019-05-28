@@ -440,6 +440,9 @@ class UsuarioController
         // 201
         $usuario = new Usuario(
             $req_data['username'],
+            $req_data['name'],
+            $req_data['surname'],
+            $req_data['phoneNumber'],
             $req_data['email'],
             $req_data['password'],
             $req_data['enabled'] ?? true,
@@ -539,6 +542,18 @@ class UsuarioController
                 return Error::error($this->container, $request, $response, StatusCode::HTTP_BAD_REQUEST);
             }
             $user->setUsername($req_data['username']);
+        }
+
+        if (isset($req_data['name'])) {
+            $user->setName($req_data['name']);
+        }
+
+        if (isset($req_data['surname'])) {
+            $user->setSurname($req_data['surname']);
+        }
+
+        if (isset($req_data['phoneNumber'])) {
+            $user->setPhoneNumber($req_data['phoneNumber']);
         }
 
         if (isset($req_data['email'])) {

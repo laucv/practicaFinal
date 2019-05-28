@@ -92,6 +92,18 @@ class Solucion implements \JsonSerializable
      */
     protected $razonamientos;
 
+    /**
+     * @var ArrayCollection $propuestaRazonamientos
+     *
+     * @ORM\OneToMany(
+     *     targetEntity="PropuestaRazonamiento",
+     *     mappedBy="solucion",
+     *     cascade={ "merge", "remove" },
+     *     orphanRemoval=true
+     * )
+     */
+    protected $propuestaRazonamientos;
+
     public function __construct(
         ?string $textoSolucion = null,
         ?Cuestion $cuestion = null,
@@ -101,6 +113,9 @@ class Solucion implements \JsonSerializable
         $this->textoSolucion = $textoSolucion;
         $this->setCuestion($cuestion);
         $this->solucionCorrecta = $solucionCorrecta;
+        $this->razonamientos = new ArrayCollection();
+        $this->propuestaRazonamientos = new ArrayCollection();
+
     }
 
     /**
@@ -174,18 +189,163 @@ class Solucion implements \JsonSerializable
     }
 
     /**
+     * @return Collection
+     */
+
+    public function getRazonamientos(): Collection
+    {
+        return $this->razonamientos;
+    }
+
+    /**
+     * @param Razonamiento $razonamiento
+     * @return bool
+     */
+    public function containsRazonamientos(Razonamiento $razonamiento): bool
+    {
+        return $this->razonamientos->contains($razonamiento);
+    }
+
+    /**
+     * Añade el razonamiento a la solucion
+     *
+     * @param Razonamiento $razonamiento
+     * @return Solucion
+     */
+    public function addRazonamiento(Razonamiento $razonamiento): Solucion
+    {
+        if ($this->razonamientos->contains($razonamiento)) {
+            return $this;
+        }
+
+        $this->razonamientos->add($razonamiento);
+        return $this;
+    }
+
+    /**
+     * Elimina el razonamiento identificada por $razonamiento de la razonamiento
+     *
+     * @param Razonamiento $razonamiento
+     * @return Solucion|null La solucion o nulo, si la solucion no contiene el razonamiento
+     */
+    public function removeRazonamiento(Razonamiento $razonamiento): ?Solucion
+    {
+        if (!$this->razonamientos->contains($razonamiento)) {
+            return null;
+        }
+
+        $this->razonamientos->removeElement($razonamiento);
+        return $this;
+    }
+
+    /**
+     * Get an array with the solution identifiers
+     *
+     * @return array
+     */
+    private function getIdsRazonamiento(): array
+    {
+        /** @var ArrayCollection $cod_soluciones */
+        $cod_razonamientos = $this->getRazonamientos()->isEmpty()
+            ? new ArrayCollection()
+            : $this->getRazonamientos()->map(
+                function (Razonamiento $razonamiento) {
+                    return $razonamiento->getIdRazonamiento();
+                }
+            );
+
+        return $cod_razonamientos->getValues();
+    }
+
+    /**
+     * @return Collection
+     */
+
+    public function getPropuestaRazonamientos(): Collection
+    {
+        return $this->propuestaRazonamientos;
+    }
+
+    /**
+     * @param PropuestaRazonamiento $propuestaRazonamiento
+     * @return bool
+     */
+    public function containsPropuestaRazonamiento(PropuestaRazonamiento $propuestaRazonamiento): bool
+    {
+        return $this->propuestaRazonamientos->contains($propuestaRazonamiento);
+    }
+
+    /**
+     * Añade la propuesta razonamiento a la solucion
+     *
+     * @param PropuestaRazonamiento $propuestaRazonamiento
+     * @return Cuestion
+     */
+    public function addPropuestaRazonamiento(PropuestaRazonamiento $propuestaRazonamiento): Solucion
+    {
+        if ($this->propuestaRazonamientos->contains($propuestaRazonamiento)) {
+            return $this;
+        }
+
+        $this->propuestaRazonamientos->add($propuestaRazonamiento);
+        return $this;
+    }
+
+    /**
+     * Elimina la solucion identificada por $solucion de la cuestión
+     *
+     * @param PropuestaRazonamiento $propuestaRazonamiento
+     * @return PropuestaRazonamiento|null La cuestión o nulo, si la cuestión no contiene la propuesta solucion
+     */
+    public function removePropuestaRazonamientos(PropuestaRazonamiento $propuestaRazonamiento): ?Solucion
+    {
+        if (!$this->propuestaRazonamientos->contains($propuestaRazonamiento)) {
+            return null;
+        }
+
+        $this->propuestaRazonamientos->removeElement($propuestaRazonamiento);
+        return $this;
+    }
+
+    /**
+     * Get an array with the proposal solution identifiers
+     *
+     * @return array
+     */
+    private function getIdsPropuestaRazonamientos(): array
+    {
+        /** @var ArrayCollection $cod_soluciones */
+        $cod_propuesta_razonamientos = $this->getPropuestaRazonamientos()->isEmpty()
+            ? new ArrayCollection()
+            : $this->getPropuestaRazonamientos()->map(
+                function (PropuestaRazonamiento $propuestaRazonamiento) {
+                    return $propuestaRazonamiento->getIdPropuestaRazonamiento();
+                }
+            );
+
+        return $cod_propuesta_razonamientos->getValues();
+    }
+
+    /**
      * The __toString method allows a class to decide how it will react when it is converted to a string.
      *
      * @return string
      * @link http://php.net/manual/en/language.oop5.magic.php#language.oop5.magic.tostring
      */
+
     public function __toString()
     {
+        $cod_razonamientos= $this->getIdsRazonamiento();
+        $txt_razonamientos = '[ ' . implode(', ', $cod_razonamientos) . ' ]';
+        $cod_propuesta_razonamientos= $this->getPropuestaRazonamientos();
+        $txt_propuesta_razonamientos = '[ ' . implode(', ', $cod_propuesta_razonamientos) . ' ]';
         return '[ solucion ' .
             '(id=' . $this->getIdSolucion() . ', ' .
             'textoSolucion="' . $this->getTextoSolucion() . ', ' .
             'solucionCorrecta=' . (int) $this->isSolucionCorrecta() . ', ' .
             'cuestion=' . ($this->getCuestion()) . ', ' .
+            'razonamientos=' . $txt_razonamientos .
+            'propuestaRazonamientos=' . $txt_propuesta_razonamientos .
             ') ]';
     }
 
@@ -204,6 +364,8 @@ class Solucion implements \JsonSerializable
                 'textoSolucion' => $this->getTextoSolucion(),
                 'solucionCorrecta' => $this->isSolucionCorrecta(),
                 'cuestion' => $this->getCuestion()->getIdCuestion(),
+                'razonamientos' => $this->getIdsRazonamiento(),
+                'propuestaRazonamientos' => $this->getPropuestaRazonamientos()
             ]
         ];
     }

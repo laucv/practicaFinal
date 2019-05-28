@@ -108,7 +108,9 @@ class LoginController
         $json_web_token = Utils::getToken(
             $user->getId(),
             $user->getUsername(),
-            $user->isAdmin()
+            $user->isEnabled(),
+            $user->isAdmin(),
+            $user->isMaestro()
         );
         $this->logger->info(
             $request->getMethod() . ' ' . $request->getUri()->getPath(),

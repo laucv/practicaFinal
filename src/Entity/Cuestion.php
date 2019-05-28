@@ -27,10 +27,6 @@ use OpenApi\Annotations as OA;
  */
 class Cuestion implements \JsonSerializable
 {
-    public const CUESTION_ABIERTA = 'abierta';
-    public const CUESTION_CERRADA = 'cerrada';
-
-    public const CUESTION_ESTADOS = [ self::CUESTION_ABIERTA, self::CUESTION_CERRADA ];
 
     /**
      * @var int $idCuestion
@@ -85,28 +81,6 @@ class Cuestion implements \JsonSerializable
      */
     protected $creador;
 
-    /**
-     * @var string $estado
-     *
-     * @ORM\Column(
-     *     name="estado",
-     *     type="string",
-     *     length=7,
-     *     options={ "default"=Cuestion::CUESTION_CERRADA }
-     * )
-     */
-    protected $estado = Cuestion::CUESTION_CERRADA;
-
-    /**
-     * @var ArrayCollection|Categoria[]
-     *
-     * @ORM\ManyToMany(
-     *     targetEntity="Categoria",
-     *     mappedBy="cuestiones"
-     * )
-     * @ORM\OrderBy({ "idCategoria" = "ASC" })
-     */
-    protected $categorias;
 
     /**
      * @var ArrayCollection $soluciones
@@ -119,6 +93,18 @@ class Cuestion implements \JsonSerializable
      * )
      */
     protected $soluciones;
+
+    /**
+     * @var ArrayCollection $propuestaSoluciones
+     *
+     * @ORM\OneToMany(
+     *     targetEntity="PropuestaSolucion",
+     *     mappedBy="cuestion",
+     *     cascade={ "merge", "remove" },
+     *     orphanRemoval=true
+     * )
+     */
+    protected $propuestaSoluciones;
 
     /**
      * Cuestion constructor.
@@ -140,9 +126,8 @@ class Cuestion implements \JsonSerializable
             ? $this->setCreador($creador)
             : null;
         $this->enunciadoDisponible = $enunciadoDisponible;
-        $this->estado = self::CUESTION_CERRADA;
-        $this->categorias = new ArrayCollection();
         $this->soluciones = new ArrayCollection();
+        $this->propuestaSoluciones = new ArrayCollection();
 
     }
 
@@ -210,100 +195,6 @@ class Cuestion implements \JsonSerializable
         }
         $this->creador = $creador;
         return $this;
-    }
-
-    /**
-     * @return string
-     */
-    public function getEstado(): string
-    {
-        return $this->estado;
-    }
-
-    /**
-     * @return Cuestion
-     */
-    public function abrirCuestion(): Cuestion
-    {
-        $this->estado = self::CUESTION_ABIERTA;
-        return $this;
-    }
-
-    /**
-     * @return Cuestion
-     */
-    public function cerrarCuestion(): Cuestion
-    {
-        $this->estado = self::CUESTION_CERRADA;
-        return $this;
-    }
-
-    /**
-     * @return Collection
-     */
-    public function getCategorias(): Collection
-    {
-        return $this->categorias;
-    }
-
-    /**
-     * @param Categoria $categoria
-     * @return bool
-     */
-    public function containsCategoria(Categoria $categoria): bool
-    {
-        return $this->categorias->contains($categoria);
-    }
-
-    /**
-     * Añade la categoría a la cuestión
-     *
-     * @param Categoria $categoria
-     * @return Cuestion
-     */
-    public function addCategoria(Categoria $categoria): Cuestion
-    {
-        if ($this->categorias->contains($categoria)) {
-            return $this;
-        }
-
-        $this->categorias->add($categoria);
-        return $this;
-    }
-
-    /**
-     * Elimina la categoría identificado por $categoria de la cuestión
-     *
-     * @param Categoria $categoria
-     * @return Cuestion|null La cuestión o nulo, si la cuestión no contiene la categoría
-     */
-    public function removeCategoria(Categoria $categoria): ?Cuestion
-    {
-        if (!$this->categorias->contains($categoria)) {
-            return null;
-        }
-
-        $this->categorias->removeElement($categoria);
-        return $this;
-    }
-
-    /**
-     * Get an array with the categories identifiers
-     *
-     * @return array
-     */
-    private function getIdsCategorias(): array
-    {
-        /** @var ArrayCollection $cod_categorias */
-        $cod_categorias = $this->getCategorias()->isEmpty()
-            ? new ArrayCollection()
-            : $this->getCategorias()->map(
-                function (Categoria $categoria) {
-                    return $categoria->getId();
-                }
-            );
-
-        return $cod_categorias->getValues();
     }
 
     /**
@@ -376,6 +267,75 @@ class Cuestion implements \JsonSerializable
     }
 
     /**
+     * @return Collection
+     */
+
+    public function getPropuestaSoluciones(): Collection
+    {
+        return $this->propuestaSoluciones;
+    }
+
+    /**
+     * @param PropuestaSolucion $propuestaSolucion
+     * @return bool
+     */
+    public function containsPropuesstaSolucion(PropuestaSolucion $propuestaSolucion): bool
+    {
+        return $this->propuestaSoluciones->contains($propuestaSolucion);
+    }
+
+    /**
+     * Añade la propuesta solucion a la cuestión
+     *
+     * @param PropuestaSolucion $propuestaSolucion
+     * @return Cuestion
+     */
+    public function addPropuestaSolucion(PropuestaSolucion $propuestaSolucion): Cuestion
+    {
+        if ($this->propuestaSoluciones->contains($propuestaSolucion)) {
+            return $this;
+        }
+
+        $this->propuestaSoluciones->add($propuestaSolucion);
+        return $this;
+    }
+
+    /**
+     * Elimina la solucion identificada por $solucion de la cuestión
+     *
+     * @param PropuestaSolucion $propuestaSolucion
+     * @return PropuestaSolucion|null La cuestión o nulo, si la cuestión no contiene la propuesta solucion
+     */
+    public function removePropuestaSolucion(PropuestaSolucion $propuestaSolucion): ?Cuestion
+    {
+        if (!$this->propuestaSoluciones->contains($propuestaSolucion)) {
+            return null;
+        }
+
+        $this->propuestaSoluciones->removeElement($propuestaSolucion);
+        return $this;
+    }
+
+    /**
+     * Get an array with the proposal solution identifiers
+     *
+     * @return array
+     */
+    private function getIdsPropuestaSoluciones(): array
+    {
+        /** @var ArrayCollection $cod_soluciones */
+        $cod_propuesta_soluciones = $this->getPropuestaSoluciones()->isEmpty()
+            ? new ArrayCollection()
+            : $this->getPropuestaSoluciones()->map(
+                function (PropuestaSolucion $propuestaSolucion) {
+                    return $propuestaSolucion->getIdPropuestaSolucion();
+                }
+            );
+
+        return $cod_propuesta_soluciones->getValues();
+    }
+
+    /**
      * The __toString method allows a class to decide how it will react when it is converted to a string.
      *
      * @return string
@@ -383,18 +343,18 @@ class Cuestion implements \JsonSerializable
      */
     public function __toString()
     {
-        $cod_categorias = $this->getIdsCategorias();
-        $txt_categorias = '[ ' . implode(', ', $cod_categorias) . ' ]';
+
         $cod_soluciones = $this->getIdsSoluciones();
         $txt_soluciones = '[ ' . implode(', ', $cod_soluciones) . ' ]';
+        $cod_propuesta_soluciones = $this->getIdsPropuestaSoluciones();
+        $txt_propuesta_soluciones = '[ ' . implode(', ', $cod_propuesta_soluciones) . ' ]';
         return '[ cuestion ' .
             '(id=' . $this->getIdCuestion() . ', ' .
             'enunciadoDescripcion="' . $this->getEnunciadoDescripcion() . '", ' .
             'enunciadoDisponible=' . (int) $this->isEnunciadoDisponible() . ', ' .
             'creador=' . ($this->getCreador() ?? 0) . ', ' .
-            'estado="' . $this->getEstado() . '" ' .
-            'categorias=' . $txt_categorias .
             'soluciones=' . $txt_soluciones .
+            'propuestaSoluciones=' . $txt_propuesta_soluciones .
             ') ]';
     }
 
@@ -413,9 +373,8 @@ class Cuestion implements \JsonSerializable
                 'enunciadoDescripcion' => $this->getEnunciadoDescripcion(),
                 'enunciadoDisponible' => $this->isEnunciadoDisponible(),
                 'creador' => $this->getCreador() ? $this->getCreador()->getId() : null,
-                'estado' => $this->getEstado(),
-                'categorias' => $this->getIdsCategorias(),
                 'soluciones' => $this->getIdsSoluciones(),
+                'propuestaSoluciones' => $this->getIdsPropuestaSoluciones()
             ]
         ];
     }
@@ -450,18 +409,12 @@ class Cuestion implements \JsonSerializable
  *          format      = "int64",
  *          type        = "integer"
  *      ),
- *      @OA\Property(
- *          property    = "estado",
- *          description = "Question's state",
- *          type        = "string"
- *      ),
  *      example = {
  *          "cuestion" = {
  *              "idCuestion"           = 805,
  *              "enunciadoDescripcion" = "Question description",
  *              "enunciadoDisponible"  = true,
- *              "creador"              = 7,
- *              "estado"               = "abierta"
+ *              "creador"              = 7
  *          }
  *     }
  * )
@@ -488,16 +441,10 @@ class Cuestion implements \JsonSerializable
  *          format      = "int64",
  *          type        = "integer"
  *      ),
- *      @OA\Property(
- *          property    = "estado",
- *          description = "Question status",
- *          type        = "string"
- *      ),
  *      example = {
  *          "enunciadoDescripcion" = "Question description",
  *          "enunciadoDisponible"  = true,
- *          "creador"              = 501,
- *          "estado"               = "abierta"
+ *          "creador"              = 501
  *      }
  * )
  */

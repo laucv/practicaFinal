@@ -118,7 +118,8 @@ trait Utils
         string $username,
         string $email,
         string $password,
-        bool $isAdmin = false
+        bool $isAdmin = false,
+        bool $isMaestro = false
     ): int {
         $user = new Usuario(
             $username,
@@ -126,7 +127,7 @@ trait Utils
             $password,
             true,
             $isAdmin,
-            $isAdmin
+            $isMaestro
         );
         try {
             $e_manager = self::getEntityManager();
@@ -171,7 +172,10 @@ trait Utils
     public static function getToken(
         int     $userId,
         string  $username,
-        bool    $isAdmin = false
+        bool    $enabled = false,
+        bool    $isAdmin = false,
+        bool    $isMaestro = false
+
     ): string {
 
         $current_time = time();
@@ -180,9 +184,9 @@ trait Utils
             'exp'       => $current_time + 3600,    // expires in 60 minutes
             'user_id'   => $userId,                 // user id.
             'username'  => $username,               // user name
-            'enabled'   => true,
+            'enabled'   => $enabled,
             'isAdmin'   => $isAdmin,                // is admin?
-            'isMaestro' => $isAdmin,                // is Maestro?
+            'isMaestro' => $isMaestro,                // is Maestro?
             // 'scope' => ['read', 'write', 'delete']
         ];
 

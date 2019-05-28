@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+          integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <link rel="stylesheet" href="css/style.css">
+    <script type="text/javascript" src="js/modificarUsuario.js"></script>
+    <title>Modificar usuario</title>
+</head>
+<body onload="cargarDatos();">
+<h1>Modificar usuario</h1>
+<a href="administracion.html" class="btn btn-danger" role="button">Volver</a>
+<hr>
+<div>
+    <p>
+        Recuerde que el nombre de usuario es único en todo el sistema y no se puede cambiar
+    </p>
+    <p>
+        Nombre de usuario: <p id="username"></p>
+    </p>
+    <hr>
+    <p>
+        <label for="enabled">Disponible</label>
+        <input onchange="actualizarDisponible();" type="checkbox" id="enabled"><br>
+    </p>
+    <p>
+        <label for="isMaestro">Maestro</label>
+        <input onchange="actualizarMaestro();" type="checkbox" id="isMaestro"><br>
+    </p>
+    <p>
+        <label for="isAdmin">Administrador</label>
+        <input onchange="actualizarAdministrador();" type="checkbox" id="isAdmin"><br>
+    </p>
+    <hr>
+    <p>
+        E-mail: <textarea cols="50" id="email"></textarea>
+    </p>
+    <div>
+        <a class="btn btn-success" onclick="actualizarUser();" role="button">Actualizar e-mail</a>
+    </div>
+    <hr>
+    <p>
+        Nombre: <textarea cols="50" id="name"></textarea>
+    </p>
+    <p>
+        Apellidos: <textarea cols="50" id="surname"></textarea>
+    </p>
+    <p>
+        Número de teléfono: <textarea cols="50" id="phoneNumber"></textarea>
+    </p>
+    <div>
+        <a class="btn btn-success" onclick="actualizarPerfil();" role="button">Actualizar datos</a>
+    </div>
+    <hr>
+    La contraseña está codificada codificada para mayor seguridad
+
+    <p>
+        Contraseña: <textarea cols="50" id="password"></textarea>
+    </p>
+    <div>
+        <a class="btn btn-success" onclick="actualizarPassword();" role="button">Actualizar contraseña</a>
+    </div>
+</div>
+</body>
+</html>

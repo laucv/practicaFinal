@@ -8,10 +8,12 @@ use Slim\Http\Request;
 use Slim\Http\Response;
 use Slim\Http\StatusCode;
 use TDW\GCuest\Controller\CuestionController;
+use TDW\GCuest\Controller\SolutionController;
 use TDW\GCuest\Controller\LoginController;
 use TDW\GCuest\Controller\UsuarioController;
-use TDW\GCuest\Controller\SolutionController;
+use TDW\GCuest\Controller\PropuestaSolucionController;
 use TDW\GCuest\Controller\RazonamientoController;
+use TDW\GCuest\Controller\PropuestaRazonamientoController;
 
 /**
  * @var \Slim\App $app
@@ -210,3 +212,86 @@ $app->put(
     $_ENV['RUTA_API'] . '/reasons/{id:[0-9]+}',
     RazonamientoController::class . ':put'
 )->setName('tdw_put_reasons');
+
+/**
+ * ############################################################
+ * Propuesta Solucion routes
+ * ############################################################
+ */
+
+// CGET: Returns all solutions
+$app->get(
+    $_ENV['RUTA_API'] . '/solutionsProposal',
+    PropuestaSolucionController::class . ':cget'
+)->setName('tdw_cget_solutionsProposal');
+
+// GET: Returns a solution based on a single ID
+$app->get(
+    $_ENV['RUTA_API'] . '/solutionsProposal/{id:[0-9]+}',
+    PropuestaSolucionController::class . ':get'
+)->setName('tdw_get_solutionsProposal');
+
+// DELETE: Deletes a solution
+$app->delete(
+    $_ENV['RUTA_API'] . '/solutionsProposal/{id:[0-9]+}',
+    PropuestaSolucionController::class . ':delete'
+)->setName('tdw_delete_solutionsProposal');
+
+// OPTIONS: Provides the list of HTTP supported methods
+$app->options(
+    $_ENV['RUTA_API'] . '/solutionsProposal[/{id:[0-9]+}]',
+    PropuestaSolucionController::class . ':options'
+)->setName('tdw_options_solutionsProposal');
+
+// POST: Creates a new solution
+$app->post(
+    $_ENV['RUTA_API'] . '/solutionsProposal',
+    PropuestaSolucionController::class . ':post'
+)->setName('tdw_post_solutionsProposal');
+
+// PUT: Updates a solution
+$app->put(
+    $_ENV['RUTA_API'] . '/solutionsProposal/{id:[0-9]+}',
+    PropuestaSolucionController::class . ':put'
+)->setName('tdw_put_solutionsProposal');
+/**
+ * ############################################################
+ * Propuesta Razonamiento routes
+ * ############################################################
+ */
+
+// CGET: Returns all reasons
+$app->get(
+    $_ENV['RUTA_API'] . '/reasonsProposal',
+    PropuestaRazonamientoController::class . ':cget'
+)->setName('tdw_cget_reasonsProposal');
+
+// GET: Returns a reason based on a single ID
+$app->get(
+    $_ENV['RUTA_API'] . '/reasonsProposal/{id:[0-9]+}',
+    PropuestaRazonamientoController::class . ':get'
+)->setName('tdw_get_reasonsProposal');
+
+// DELETE: Deletes a reason
+$app->delete(
+    $_ENV['RUTA_API'] . '/reasonsProposal/{id:[0-9]+}',
+    PropuestaRazonamientoController::class . ':delete'
+)->setName('tdw_delete_reasonsProposal');
+
+// OPTIONS: Provides the list of HTTP supported methods
+$app->options(
+    $_ENV['RUTA_API'] . '/reasonsProposal[/{id:[0-9]+}]',
+    PropuestaRazonamientoController::class . ':options'
+)->setName('tdw_options_reasonsProposal');
+
+// POST: Creates a new reason
+$app->post(
+    $_ENV['RUTA_API'] . '/reasonsProposal',
+    PropuestaRazonamientoController::class . ':post'
+)->setName('tdw_post_reasonsProposal');
+
+// PUT: Updates a reason
+$app->put(
+    $_ENV['RUTA_API'] . '/reasonsProposal/{id:[0-9]+}',
+    PropuestaRazonamientoController::class . ':put'
+)->setName('tdw_put_reasonsProposal');

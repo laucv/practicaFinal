@@ -6,6 +6,7 @@
 
 namespace TDW\GCuest\Entity;
 
+use Composer\Package\Package;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -139,32 +140,105 @@ class Usuario implements \JsonSerializable
      */
     protected $cuestiones;
 
+
+    /**
+     * @var ArrayCollection $propuestaSoluciones
+     *
+     * @ORM\OneToMany(
+     *     targetEntity="PropuestaSolucion",
+     *     mappedBy="user",
+     *     cascade={ "merge", "remove" },
+     *     orphanRemoval=true
+     * )
+     */
+    protected $propuestaSoluciones;
+
+    /**
+     * @var ArrayCollection $propuestaRazonamientos
+     *
+     * @ORM\OneToMany(
+     *     targetEntity="PropuestaRazonamiento",
+     *     mappedBy="user",
+     *     cascade={ "merge", "remove" },
+     *     orphanRemoval=true
+     * )
+     */
+    protected $propuestaRazonamientos;
+
+    /**
+     * @var string|null $name
+     *
+     * @ORM\Column(
+     *     name="name",
+     *     type="string",
+     *     length=255,
+     *     nullable=true
+     * )
+     */
+
+    protected $name;
+    /**
+     * @var string|null $surname
+     *
+     * @ORM\Column(
+     *     name="surname",
+     *     type="string",
+     *     length=255,
+     *     nullable=true
+     * )
+     */
+    protected $surname;
+
+    /**
+     * @var string|null $phone_number
+     *
+     * @ORM\Column(
+     *     name="phone_number",
+     *     type="string",
+     *     length=255,
+     *     nullable=true
+     * )
+     */
+
+    protected $phone_number;
+
     /**
      * User constructor.
      *
-     * @param string $username username
+     * @param string $username phone_number
      * @param string $email email
      * @param string $password password
      * @param bool $enabled enabled
      * @param bool $isMaestro isMaestro
      * @param bool $isAdmin isAdmin
+     * @param string $name
+     * @param string $surname
+     * @param string $phone_number
      */
     public function __construct(
         string $username = '',
+        string $name = '',
+        string $surname = '',
+        string $phone_number = '',
         string $email = '',
         string $password = '',
         bool   $enabled = true,
-        bool   $isMaestro = false,
-        bool   $isAdmin = false
+        bool   $isMaestro = true,
+        bool   $isAdmin = true
     ) {
         $this->id       = 0;
         $this->username = $username;
+        $this->name = $name;
+        $this->surname = $surname;
+        $this->phone_number = $phone_number;
         $this->email    = $email;
         $this->setPassword($password);
         $this->enabled  = $enabled;
         $this->isMaestro = $isMaestro;
         $this->isAdmin  = $isAdmin;
         $this->cuestiones = new ArrayCollection();
+        $this->propuestaSoluciones = new ArrayCollection();
+        $this->propuestaRazonamientos = new ArrayCollection();
     }
 
     /**
@@ -342,6 +416,192 @@ class Usuario implements \JsonSerializable
 
         return $id_cuestiones->getValues();
     }
+    /**
+     * @return Collection
+     */
+
+    public function getPropuestaSoluciones(): Collection
+    {
+        return $this->propuestaSoluciones;
+    }
+
+    /**
+     * @param PropuestaSolucion $propuestaSolucion
+     * @return bool
+     */
+    public function containsPropuestaSolucion(PropuestaSolucion $propuestaSolucion): bool
+    {
+        return $this->propuestaSoluciones->contains($propuestaSolucion);
+    }
+
+    /**
+     * Añade la propuesta solucion a la cuestión
+     *
+     * @param PropuestaSolucion $propuestaSolucion
+     * @return Cuestion
+     */
+    public function addPropuestaSolucion(PropuestaSolucion $propuestaSolucion): PropuestaSolucion
+    {
+        if ($this->propuestaSoluciones->contains($propuestaSolucion)) {
+            return $this;
+        }
+
+        $this->propuestaSoluciones->add($propuestaSolucion);
+        return $this;
+    }
+
+    /**
+     * Elimina la solucion identificada por $solucion de la cuestión
+     *
+     * @param PropuestaSolucion $propuestaSolucion
+     * @return PropuestaSolucion|null La cuestión o nulo, si la cuestión no contiene la propuesta solucion
+     */
+    public function removePropuestaSolucion(PropuestaSolucion $propuestaSolucion): ?PropuestaSolucion
+    {
+        if (!$this->propuestaSoluciones->contains($propuestaSolucion)) {
+            return null;
+        }
+
+        $this->propuestaSoluciones->removeElement($propuestaSolucion);
+        return $this;
+    }
+
+    /**
+     * Get an array with the proposal solution identifiers
+     *
+     * @return array
+     */
+    private function getIdsPropuestaSoluciones(): array
+    {
+        /** @var ArrayCollection $cod_soluciones */
+        $cod_propuesta_soluciones = $this->getPropuestaSoluciones()->isEmpty()
+            ? new ArrayCollection()
+            : $this->getPropuestaSoluciones()->map(
+                function (PropuestaSolucion $propuestaSolucion) {
+                    return $propuestaSolucion->getIdPropuestaSolucion();
+                }
+            );
+
+        return $cod_propuesta_soluciones->getValues();
+    }
+
+    /**
+     * @return Collection
+     */
+
+    public function getPropuestaRazonamientos(): Collection
+    {
+        return $this->propuestaRazonamientos;
+    }
+
+    /**
+     * @param PropuestaRazonamiento $propuestaRazonamientos
+     * @return bool
+     */
+    public function containsPropuestaRazonamientos(PropuestaRazonamiento $propuestaRazonamientos): bool
+    {
+        return $this->propuestaRazonamientos->contains($propuestaRazonamientos);
+    }
+
+
+    /**
+     * Añade la propuesta solucion a la cuestión
+     *
+     * @param PropuestaRazonamiento $propuestaRazonamiento
+     * @return Cuestion
+     */
+    public function addPropuestaRazonamiento(PropuestaRazonamiento $propuestaRazonamiento): PropuestaRazonamiento
+    {
+        if ($this->propuestaRazonamientos->contains($propuestaRazonamiento)) {
+            return $this;
+        }
+
+        $this->propuestaRazonamientos->add($propuestaRazonamiento);
+        return $this;
+    }
+
+    /**
+     * Elimina la solucion identificada por $solucion de la cuestión
+     *
+     * @param PropuestaRazonamiento $propuestaRazonamiento
+     * @return PropuestaRazonamiento|null La cuestión o nulo, si la cuestión no contiene la propuesta solucion
+     */
+    public function removePropuestaRazonamiento(PropuestaRazonamiento $propuestaRazonamiento): ?PropuestaRazonamiento
+    {
+        if (!$this->propuestaRazonamientos->contains($propuestaRazonamiento)) {
+            return null;
+        }
+
+        $this->propuestaRazonamientos->removeElement($propuestaRazonamiento);
+        return $this;
+    }
+
+    /**
+     * Get an array with the proposal solution identifiers
+     *
+     * @return array
+     */
+    private function getIdsPropuestaRazonamientos(): array
+    {
+        /** @var ArrayCollection $cod_soluciones */
+        $cod_propuesta_Razonamientos = $this->getPropuestaRazonamientos()->isEmpty()
+            ? new ArrayCollection()
+            : $this->getPropuestaRazonamientos()->map(
+                function (PropuestaRazonamiento $propuestaRazonamientos) {
+                    return $propuestaRazonamientos->getIdPropuestaRazonamiento();
+                }
+            );
+
+        return $cod_propuesta_Razonamientos->getValues();
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getName(): ?string
+    {
+        return $this->name;
+    }
+
+    /**
+     * @param string|null $name
+     */
+    public function setName(?string $name): void
+    {
+        $this->name = $name;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getSurname(): ?string
+    {
+        return $this->surname;
+    }
+
+    /**
+     * @param string|null $surname
+     */
+    public function setSurname(?string $surname): void
+    {
+        $this->surname = $surname;
+    }
+
+    /**
+     * @return int|null
+     */
+    public function getPhoneNumber(): ?string
+    {
+        return $this->phone_number;
+    }
+
+    /**
+     * @param int|null $phone_number
+     */
+    public function setPhoneNumber(string $phone_number): void
+    {
+        $this->phone_number = $phone_number;
+    }
 
     /**
      * The __toString method allows a class to decide how it will react when it is converted to a string.
@@ -353,14 +613,24 @@ class Usuario implements \JsonSerializable
     {
         $id_cuestiones = $this->getIdsCuestiones();
         $txt_cuestiones = '[ ' . implode(', ', $id_cuestiones) . ' ]';
+        $cod_propuesta_soluciones = $this->getIdsPropuestaSoluciones();
+        $txt_propuesta_soluciones = '[ ' . implode(', ', $cod_propuesta_soluciones) . ' ]';
+        $cod_propuesta_razonamientos = $this->getIdsPropuestaRazonamientos();
+        $txt_propuesta_razonamientos = '[ ' . implode(', ', $cod_propuesta_razonamientos) . ' ]';
         return '[ usuario ' .
             '(id=' . $this->getId() . ', ' .
             'username="' . $this->getUsername() . '", ' .
+            'name="' . $this->getName() . '", ' .
+            'surname="' . $this->getUsername() . '", ' .
+            'PhoneNumer="' . $this->getPhoneNumber() . '", ' .
             'email="' . $this->getEmail() . '", ' .
+            'password="' . $this->getPassword() . '", ' .
             'enabled="' . (int) $this->isEnabled() . '", ' .
             'isMaestro="' . (int) $this->isMaestro() . '", ' .
             'isAdmin="' . (int) $this->isAdmin() . '", ' .
             'cuestiones=' . $txt_cuestiones .
+            'propuestaSoluciones=' . $txt_propuesta_soluciones .
+            'propuestaRazonamientos=' . $txt_propuesta_razonamientos .
             ') ]';
     }
 
@@ -377,11 +647,17 @@ class Usuario implements \JsonSerializable
             'usuario' => [
                 'id' => $this->getId(),
                 'username' => $this->getUsername(),
+                'name' => $this->getName(),
+                'surname' => $this->getSurname(),
+                'phoneNumber' => $this->getPhoneNumber(),
                 'email' => $this->getEmail(),
+                'password' => $this->getPassword(),
                 'enabled' => $this->isEnabled(),
                 'maestro' => $this->isMaestro(),
                 'admin' => $this->isAdmin(),
-                'cuestiones' => $this->getIdsCuestiones()
+                'cuestiones' => $this->getIdsCuestiones(),
+                'propuestaSoluciones' => $this->getIdsPropuestaSoluciones(),
+                'propuestaRazonamientos' => $this->getIdsPropuestaRazonamientos()
             ]
         ];
     }
@@ -403,6 +679,21 @@ class Usuario implements \JsonSerializable
  *      @OA\Property(
  *          property    = "username",
  *          description = "User name",
+ *          type        = "string"
+ *      ),
+ *      @OA\Property(
+ *          property    = "name",
+ *          description = "User's name",
+ *          type        = "string"
+ *      ),
+ *     @OA\Property(
+ *          property    = "surname",
+ *          description = "User's surname",
+ *          type        = "string"
+ *      ),
+ *     @OA\Property(
+ *          property    = "phone_number",
+ *          description = "User's phone number",
  *          type        = "string"
  *      ),
  *      @OA\Property(
@@ -429,6 +720,9 @@ class Usuario implements \JsonSerializable
  *          "usuario" = {
  *              "id"       = 1508,
  *              "username" = "User name",
+ *              "name"     = "April",
+ *              "surname"  = "Avery",
+ *              "phoneNumber" = "666777888",
  *              "email"    = "User email",
  *              "enabled"  = true,
  *              "maestro"  = false,
@@ -454,6 +748,21 @@ class Usuario implements \JsonSerializable
  *          type        = "string"
  *      ),
  *      @OA\Property(
+ *          property    = "name",
+ *          description = "User's name",
+ *          type        = "string"
+ *      ),
+ *     @OA\Property(
+ *          property    = "surname",
+ *          description = "User's surname",
+ *          type        = "string"
+ *      ),
+ *     @OA\Property(
+ *          property    = "phone_number",
+ *          description = "User's phone number",
+ *          type        = "string"
+ *      ),
+ *      @OA\Property(
  *          property    = "password",
  *          description = "User password",
  *          type        = "string",
@@ -476,6 +785,9 @@ class Usuario implements \JsonSerializable
  *      ),
  *      example = {
  *          "username"  = "User_name",
+ *          "name"     = "April",
+ *          "surname"  = "Avery",
+ *          "phoneNumber" = "666777888",
  *          "email"     = "User_email@example.com",
  *          "password"  = "User_password",
  *          "enabled"   = true,

@@ -82,11 +82,8 @@ class RazonamientoController{
             return Error::error($this->container, $request, $response, StatusCode::HTTP_FORBIDDEN);
         }
         $entity_manager = Utils::getEntityManager();
-        $razonamientos = $this->jwt->isAdmin
-            ? $entity_manager->getRepository(Razonamiento::class)
-                ->findAll()
-            : $entity_manager->getRepository(Razonamiento::class)
-                ->findBy([ 'id' => $this->jwt->user_id ]);
+        $razonamientos = $entity_manager->getRepository(Razonamiento::class)
+                ->findAll();
 
         if (0 === count($razonamientos)) {    // 404
             return Error::error($this->container, $request, $response, StatusCode::HTTP_NOT_FOUND);
@@ -108,7 +105,7 @@ class RazonamientoController{
      * Summary: Returns a reason based on a single ID
      *
      * @OA\Get(
-     *     path        = "/reasons/{reasonsId}",
+     *     path        = "/reasons/{reasonId}",
      *     tags        = { "Reasons" },
      *     summary     = "Returns a reason based on a single ID",
      *     description = "Returns the reason identified by `solutionId`.",
@@ -372,7 +369,7 @@ class RazonamientoController{
             $req_data['textoRazonamiento'],
             $solucion,
             $req_data['razonamientoJustificado'] ?? false,
-            $req_data['textoError']
+            $req_data['error']
         );
         $entity_manager->persist($razonamiento);
         $entity_manager->flush();
@@ -396,7 +393,7 @@ class RazonamientoController{
      *     tags        = { "Reasons" },
      *     summary     = "Updates a reason",
      *     description = "Updates the reason identified by `reasonId`.",
-     *     operationId = "tdw_put_solutions",
+     *     operationId = "tdw_put_reasons",
      *     @OA\Parameter(
      *          ref    = "#/components/parameters/reasonId"
      *     ),
@@ -461,7 +458,7 @@ class RazonamientoController{
         if (null === $razonamiento) {    // 404
             return Error::error($this->container, $request, $response, StatusCode::HTTP_NOT_FOUND);
         }
-        if (isset($req_data['textoRazonamiento'])) {///////
+        if (isset($req_data['textoRazonamiento'])) {
             $razonamiento->setTextoRazonamiento($req_data['textoRazonamiento']);
         }
         if (isset($req_data['razonamientoJustificado'])) {
@@ -473,7 +470,7 @@ class RazonamientoController{
             if(null === $solucion){ //cuestion no existe
                 return Error::error($this->container, $request, $response, StatusCode::HTTP_CONFLICT);
             }
-            $solucion->setSolucion($solucion);
+            $razonamiento->setSolucion($solucion);
         }
         if (isset($req_data['textoError'])) {///////
             $razonamiento->setTextoError($req_data['textoError']);
