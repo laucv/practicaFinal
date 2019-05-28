@@ -64,28 +64,12 @@ A continuación se describe el contenido y estructura del proyecto:
     - `index.php` es el controlador frontal de la aplicación. Inicializa la aplicación
     Slim, incluye las rutas especificadas en `/src/routes.php` y lanza la aplicación.
     - Subdirectorio `api-docs`: cliente [Swagger][swagger] y especificación de la API.
+    - Subdirectorio `frontend`: todas las páginas del frontend.
 * Directorio `vendor`:
     - Componentes desarrollados por terceros (Slim, Doctrine, JWT, Monolog, Dotenv, Swagger, etc.)
 * Directorio `tests`:
     - Conjunto de scripts para la ejecución de test con PHPUnit.
 
-## Ejecución de pruebas
-
-La aplicación incorpora un conjunto de herramientas para la ejecución de pruebas 
-unitarias y de integración con [PHPUnit][phpunit]. Empleando este conjunto de herramientas es posible
-comprobar de manera automática el correcto funcionamiento de la API completa
-sin la necesidad de herramientas adicionales.
-
-Para configurar el entorno de pruebas se debe crear una copia del fichero `./phpunit.xml.dist`
-y renombrarla como `./phpunit.xml`. A continuación se debe editar dicho fichero y modificar los
-mismos parámetros que en la fase de instalación con los valores apropiados. Para lanzar la suite de pruebas se debe ejecutar:
-```
-$ composer test
-```
-o bien:
-```
-$ ./bin/phpunit [--testdox]
-```
 
 [dataMapper]: http://martinfowler.com/eaaCatalog/dataMapper.html
 [doctrine]: http://docs.doctrine-project.org/projects/doctrine-orm/en/latest/
