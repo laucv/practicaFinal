@@ -144,7 +144,7 @@ class Razonamiento implements \JsonSerializable
      * @param bool $correcta
      * @return Solucion
      */
-    public function setRazonamientoJustificado(bool $justificado): Solucion
+    public function setRazonamientoJustificado(bool $justificado): Razonamiento
     {
         $this->razonamientoJustificado = $justificado;
         return $this;

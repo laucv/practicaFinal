@@ -1,8 +1,34 @@
 var claveSolucion = 0;
+getCuestiones();
+
+function getCuestiones() {
+  'use strict';
+
+  function trataRespuesta() {
+    var respuesta;
+    if (request.status == 200) {
+      respuesta = request.response;
+      let string_cuestiones = JSON.stringify(respuesta);
+      let cuestiones = JSON.parse(string_cuestiones);
+      window.sessionStorage.setItem("cuestiones", JSON.stringify(cuestiones));
+    } else {
+      console.log("No se han encontrado cuestiones");
+    }
+  }
+
+  var request = new XMLHttpRequest();
+  let token = window.sessionStorage.getItem("token");
+  request.open('GET', 'http://localhost:8000/api/v1/questions', true);
+  request.setRequestHeader("Authorization", "Bearer " + token);
+  request.responseType = 'json';
+  request.onload = trataRespuesta;
+  request.send();
+
+}
 
 function nextQuestionValue() {
   var datos = JSON.parse(window.sessionStorage.getItem("cuestiones"));
-  if (datos.cuestiones.length === 0) {
+  if (datos === null) {
     return 0;
   } else {
     return datos.cuestiones.length;
@@ -118,57 +144,8 @@ function addSolution() {
 
   claveSolucion++;
 }
-/*
-function addQuestion() {
-  var datos = JSON.parse(window.localStorage.getItem("datos"));
-  var clave = nextQuestionValue();
-  var pregunta = document.getElementById("pregunta-" + clave).value;
-  var disponible = document.getElementById("disponible-" + clave).checked;
 
-  if (pregunta === "") {
-    alert("El campo de la pregunta no puede estar vacío");
-  } else {
-    datos.cuestiones.push({
-      clave: clave,
-      pregunta: pregunta,
-      propuestaSolucion: [],
-      disponible: disponible,
-      soluciones: [{
-        clave: -1
-    }]
-
-    });
-    datos.cuestiones[clave].soluciones.pop();
-    window.localStorage.setItem("datos", JSON.stringify(datos));
-
-    addSolutionData(clave);
-    location.replace("modificarPregunta.html?clave=" + clave);
-    alert("Por favor, rellene los campos de razonamiento y error si es necesario");
-  }
-}
-
-function addSolutionData(clave) {
-  var datos = JSON.parse(window.localStorage.getItem("datos"));
-  var i;
-
-  for (i = 0; i < claveSolucion; i++) {
-    var solucion = document.getElementById("solucion-" + i).value;
-    var correcta = document.getElementById("correcta-" + i).checked;
-
-    datos.cuestiones[clave].soluciones.push({
-      clave: i,
-      solucion: solucion,
-      propuestaRazonamiento: [],
-      correcta: correcta,
-      razonamientos: [{
-        clave: -1
-      }]
-    });
-  }
-}
-*/
 function deleteSolution(clave) {
-
   var claveSol = claveSolucion - 1;
   if (clave === claveSol) {
     var divSolucion = document.getElementById("divSolucion-" + clave);
@@ -184,7 +161,6 @@ function deleteSolution(clave) {
     var boton = document.getElementById("botonPregunta");
     divBotonPregunta.removeChild(boton);
   }
-
 }
 
 function postCuestion() {
@@ -225,12 +201,10 @@ function codifica_query_string_cuestion() {
   return JSON.stringify(datos);
 }
 function codifica_query_string_solucion(idCuestion) {
-  //Crear funcion para obtener el idCuestion
   let valorSolucion = 0;
 
   var textoSolucion = document.getElementById("solucion-" + valorSolucion).value;
   var solucionCorrecta = document.getElementById("correcta-" + valorSolucion).checked;
-  //Crear una función que saque el idCuestion de la que se va introducir ahora
   var cuestion = idCuestion;
 
   let datos = {

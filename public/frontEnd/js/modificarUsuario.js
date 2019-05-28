@@ -121,6 +121,8 @@ function actualizarUser() {
             let usuario = JSON.parse(string_usuario);
             window.sessionStorage.setItem("usuario", JSON.stringify(usuario));
             location.href = "modificarUsuario.html?id=" + user_id;
+        } else if (request.status === 400) {
+            alert("El e-mail introducido ya se encuentra en el sistema, no se puede realizar el cambio");
         } else {
             alert("No se ha encontrado el usuario");
         }

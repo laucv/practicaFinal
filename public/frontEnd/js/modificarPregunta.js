@@ -148,107 +148,108 @@ function modificarCuestion() {
         }
         var razonamientos = JSON.parse(window.sessionStorage.getItem("razonamientos"));
 
-        for (let j = 0; j < razonamientos.razonamientos.length; j++) {
+        if (razonamientos !== null) {
+            for (let j = 0; j < razonamientos.razonamientos.length; j++) {
 
-            if (parseInt(razonamientos.razonamientos[j].razonamiento.solucion) === idSolucion) {
+                if (parseInt(razonamientos.razonamientos[j].razonamiento.solucion) === idSolucion) {
 
-                let idRazonamiento = razonamientos.razonamientos[j].razonamiento.idRazonamiento;
-                let jus = razonamientos.razonamientos[j];
+                    let idRazonamiento = razonamientos.razonamientos[j].razonamiento.idRazonamiento;
+                    let jus = razonamientos.razonamientos[j];
 
-                var divJustificacion = document.createElement("div");
-                divJustificacion.setAttribute("id", "divJustificacion-" + idSolucion + "-" + idRazonamiento);
-                divRespuesta.appendChild(divJustificacion);
+                    var divJustificacion = document.createElement("div");
+                    divJustificacion.setAttribute("id", "divJustificacion-" + idSolucion + "-" + idRazonamiento);
+                    divRespuesta.appendChild(divJustificacion);
 
-                var h4 = document.createElement("h4");
-                h4.innerHTML = "Razonamiento";
-                divJustificacion.appendChild(h4);
+                    var h4 = document.createElement("h4");
+                    h4.innerHTML = "Razonamiento";
+                    divJustificacion.appendChild(h4);
 
-                var editarRazonamiento = document.createElement("button");
-                editarRazonamiento.setAttribute("class", "btn btn-normal");
-                editarRazonamiento.setAttribute("onclick", "putRazonamiento(" + idSolucion + ", " + idRazonamiento + ");");
-                editarRazonamiento.innerHTML = "Editar razonamiento";
-                divJustificacion.appendChild(editarRazonamiento);
+                    var editarRazonamiento = document.createElement("button");
+                    editarRazonamiento.setAttribute("class", "btn btn-normal");
+                    editarRazonamiento.setAttribute("onclick", "putRazonamiento(" + idSolucion + ", " + idRazonamiento + ");");
+                    editarRazonamiento.innerHTML = "Editar razonamiento";
+                    divJustificacion.appendChild(editarRazonamiento);
 
-                var eliminarRazonamiento = document.createElement("button");
-                eliminarRazonamiento.setAttribute("class", "btn btn-danger");
-                eliminarRazonamiento.setAttribute("onclick", "deleteRazonamiento(" + idRazonamiento + ");");
-                eliminarRazonamiento.innerHTML = "Eliminar razonamiento";
-                divJustificacion.appendChild(eliminarRazonamiento);
+                    var eliminarRazonamiento = document.createElement("button");
+                    eliminarRazonamiento.setAttribute("class", "btn btn-danger");
+                    eliminarRazonamiento.setAttribute("onclick", "deleteRazonamiento(" + idRazonamiento + ");");
+                    eliminarRazonamiento.innerHTML = "Eliminar razonamiento";
+                    divJustificacion.appendChild(eliminarRazonamiento);
 
-                var pJ = document.createElement("div");
-                pJ.setAttribute("id", "pJustificacion-" + idSolucion + "-" + idRazonamiento);
-                divJustificacion.appendChild(pJ);
+                    var pJ = document.createElement("div");
+                    pJ.setAttribute("id", "pJustificacion-" + idSolucion + "-" + idRazonamiento);
+                    divJustificacion.appendChild(pJ);
 
-                var spanJ = document.createElement("textarea");
-                spanJ.setAttribute("cols", "45");
-                spanJ.setAttribute("id", "sJustificacion-" + idSolucion + "-" + idRazonamiento);
-                spanJ.innerHTML = jus.razonamiento.textoRazonamiento;
-                pJ.appendChild(spanJ);
+                    var spanJ = document.createElement("textarea");
+                    spanJ.setAttribute("cols", "45");
+                    spanJ.setAttribute("id", "sJustificacion-" + idSolucion + "-" + idRazonamiento);
+                    spanJ.innerHTML = jus.razonamiento.textoRazonamiento;
+                    pJ.appendChild(spanJ);
 
-                var inputR = document.createElement("input");
-                inputR.setAttribute("type", "checkbox");
-                inputR.setAttribute("id", "justificado-" + idSolucion + "-" + idRazonamiento);
-                inputR.checked = jus.razonamiento.razonamientoJustificado;
-                divJustificacion.appendChild(inputR);
+                    var inputR = document.createElement("input");
+                    inputR.setAttribute("type", "checkbox");
+                    inputR.setAttribute("id", "justificado-" + idSolucion + "-" + idRazonamiento);
+                    inputR.checked = jus.razonamiento.razonamientoJustificado;
+                    divJustificacion.appendChild(inputR);
 
-                var labelR = document.createElement("label");
-                labelR.setAttribute("for", "justificado-" + idSolucion + "-" + idRazonamiento);
-                labelR.innerHTML = "Razonamiento justificado";
-                divJustificacion.appendChild(labelR);
+                    var labelR = document.createElement("label");
+                    labelR.setAttribute("for", "justificado-" + idSolucion + "-" + idRazonamiento);
+                    labelR.innerHTML = "Razonamiento justificado";
+                    divJustificacion.appendChild(labelR);
 
-                claveRazonamiento++;
+                    claveRazonamiento++;
 
-                if (jus.razonamiento.razonamientoJustificado === false) {
+                    if (jus.razonamiento.razonamientoJustificado === false) {
 
-                    if (jus.razonamiento.textoError !== "Error description") {
+                        if (jus.razonamiento.textoError !== "Error description") {
 
-                        var error = document.createElement("div");
-                        error.setAttribute("id", "error-" + idSolucion + "-" + idRazonamiento);
-                        divJustificacion.appendChild(error);
+                            var error = document.createElement("div");
+                            error.setAttribute("id", "error-" + idSolucion + "-" + idRazonamiento);
+                            divJustificacion.appendChild(error);
 
-                        var h5 = document.createElement("h4");
-                        h5.innerHTML = "Error";
-                        error.appendChild(h5);
+                            var h5 = document.createElement("h4");
+                            h5.innerHTML = "Error";
+                            error.appendChild(h5);
 
-                        var editarError = document.createElement("button");
-                        editarError.setAttribute("class", "btn btn-normal");
-                        editarError.setAttribute("onclick", "putError(" + idSolucion + ", " + idRazonamiento + ");");
-                        editarError.innerHTML = "Editar error";
-                        error.appendChild(editarError);
+                            var editarError = document.createElement("button");
+                            editarError.setAttribute("class", "btn btn-normal");
+                            editarError.setAttribute("onclick", "putError(" + idSolucion + ", " + idRazonamiento + ");");
+                            editarError.innerHTML = "Editar error";
+                            error.appendChild(editarError);
 
-                        var eliminarError = document.createElement("button");
-                        eliminarError.setAttribute("class", "btn btn-danger");
-                        eliminarError.setAttribute("onclick", "deleteError(" + idSolucion + ", " + idRazonamiento + ");");
-                        eliminarError.innerHTML = "Eliminar error";
-                        error.appendChild(eliminarError);
+                            var eliminarError = document.createElement("button");
+                            eliminarError.setAttribute("class", "btn btn-danger");
+                            eliminarError.setAttribute("onclick", "deleteError(" + idSolucion + ", " + idRazonamiento + ");");
+                            eliminarError.innerHTML = "Eliminar error";
+                            error.appendChild(eliminarError);
 
-                        var pE = document.createElement("div");
-                        pE.setAttribute("id", "pError-" + idSolucion + "-" + idRazonamiento);
-                        error.appendChild(pE);
+                            var pE = document.createElement("div");
+                            pE.setAttribute("id", "pError-" + idSolucion + "-" + idRazonamiento);
+                            error.appendChild(pE);
 
-                        var spanE = document.createElement("textarea");
-                        spanE.setAttribute("id", "sError-" + idSolucion + "-" + idRazonamiento);
-                        spanE.setAttribute("cols", "45");
-                        spanE.innerHTML = jus.razonamiento.textoError;
-                        pE.appendChild(spanE);
+                            var spanE = document.createElement("textarea");
+                            spanE.setAttribute("id", "sError-" + idSolucion + "-" + idRazonamiento);
+                            spanE.setAttribute("cols", "45");
+                            spanE.innerHTML = jus.razonamiento.textoError;
+                            pE.appendChild(spanE);
 
-                    } else {
+                        } else {
 
-                        var estilo = document.createElement("br");
-                        divJustificacion.appendChild(estilo);
+                            var estilo = document.createElement("br");
+                            divJustificacion.appendChild(estilo);
 
-                        var botonError = document.createElement("button");
-                        botonError.setAttribute("id", "botonError-" + idSolucion + "-" + idRazonamiento);
-                        botonError.setAttribute("class", "btn btn-info");
-                        botonError.setAttribute("onclick", "addError(" + idCuestion + ", " + idSolucion + ", " + idRazonamiento + ");");
-                        botonError.innerHTML = "Añadir error";
-                        divJustificacion.appendChild(botonError);
+                            var botonError = document.createElement("button");
+                            botonError.setAttribute("id", "botonError-" + idSolucion + "-" + idRazonamiento);
+                            botonError.setAttribute("class", "btn btn-info");
+                            botonError.setAttribute("onclick", "addError(" + idCuestion + ", " + idSolucion + ", " + idRazonamiento + ");");
+                            botonError.innerHTML = "Añadir error";
+                            divJustificacion.appendChild(botonError);
 
+                        }
                     }
                 }
             }
         }
-
         imprimirPropuestaRazonamientos(idSolucion);
         var hr1 = document.createElement("hr");
         body.appendChild(hr1);
@@ -412,62 +413,65 @@ function imprimirPropuestaSoluciones() {
     var propuestaSolucion = JSON.parse(window.sessionStorage.getItem("propuesta_soluciones"));
     var i;
 
-    for (i = 0; i < propuestaSolucion.propuestaSoluciones.length; i++) {
+    if (propuestaSolucion !== null) {
 
-        if (propuestaSolucion.propuestaSoluciones[i].propuestaSolucion.corregida === false) {
-            var divPregunta = document.getElementById("divPregunta-" + claveCuestion);
-            var idPropuestaSolucion = propuestaSolucion.propuestaSoluciones[i].propuestaSolucion.idPropuestaSolucion;
+        for (i = 0; i < propuestaSolucion.propuestaSoluciones.length; i++) {
 
-            var divPropuestaSolucion = document.createElement("div");
-            divPropuestaSolucion.setAttribute("id", "divPropuestaSolucion-" + idPropuestaSolucion);
-            divPregunta.appendChild(divPropuestaSolucion);
+            if (propuestaSolucion.propuestaSoluciones[i].propuestaSolucion.corregida === false) {
+                var divPregunta = document.getElementById("divPregunta-" + claveCuestion);
+                var idPropuestaSolucion = propuestaSolucion.propuestaSoluciones[i].propuestaSolucion.idPropuestaSolucion;
 
-            var h4 = document.createElement("h4");
-            h4.innerHTML = "Propuesta solución";
-            divPropuestaSolucion.appendChild(h4);
+                var divPropuestaSolucion = document.createElement("div");
+                divPropuestaSolucion.setAttribute("id", "divPropuestaSolucion-" + idPropuestaSolucion);
+                divPregunta.appendChild(divPropuestaSolucion);
 
-            var pPropuestaSolucion = document.createElement("p");
-            divPropuestaSolucion.appendChild(pPropuestaSolucion);
+                var h4 = document.createElement("h4");
+                h4.innerHTML = "Propuesta solución";
+                divPropuestaSolucion.appendChild(h4);
 
-            var textPropuestaSolucion = document.createElement("textarea");
-            textPropuestaSolucion.setAttribute("id", "propuestaSolucion-" + idPropuestaSolucion);
-            textPropuestaSolucion.innerHTML = propuestaSolucion.propuestaSoluciones[i].propuestaSolucion.textoPropuestaSolucion;
-            pPropuestaSolucion.appendChild(textPropuestaSolucion);
+                var pPropuestaSolucion = document.createElement("p");
+                divPropuestaSolucion.appendChild(pPropuestaSolucion);
 
-            var inputS = document.createElement("input");
-            inputS.setAttribute("type", "checkbox");
-            inputS.setAttribute("id", "propuestaCorrecta-" + idPropuestaSolucion);
-            divPropuestaSolucion.appendChild(inputS);
+                var textPropuestaSolucion = document.createElement("textarea");
+                textPropuestaSolucion.setAttribute("id", "propuestaSolucion-" + idPropuestaSolucion);
+                textPropuestaSolucion.innerHTML = propuestaSolucion.propuestaSoluciones[i].propuestaSolucion.textoPropuestaSolucion;
+                pPropuestaSolucion.appendChild(textPropuestaSolucion);
 
-            var labelS = document.createElement("label");
-            labelS.setAttribute("for", "propuestaCorrecta-" + idPropuestaSolucion);
-            labelS.innerHTML = "Solución correcta";
-            divPropuestaSolucion.appendChild(labelS);
+                var inputS = document.createElement("input");
+                inputS.setAttribute("type", "checkbox");
+                inputS.setAttribute("id", "propuestaCorrecta-" + idPropuestaSolucion);
+                divPropuestaSolucion.appendChild(inputS);
 
-            var divBoton = document.createElement("div");
-            divBoton.setAttribute("class", "botones");
-            divPropuestaSolucion.appendChild(divBoton);
+                var labelS = document.createElement("label");
+                labelS.setAttribute("for", "propuestaCorrecta-" + idPropuestaSolucion);
+                labelS.innerHTML = "Solución correcta";
+                divPropuestaSolucion.appendChild(labelS);
 
-            var boton = document.createElement("button");
-            boton.setAttribute("onclick", "corregirPropuestaSolucion(" + idPropuestaSolucion + ");");
-            boton.setAttribute("class", "btn btn-success");
-            boton.innerHTML = "Corregir propuesta de solución";
-            divBoton.appendChild(boton);
+                var divBoton = document.createElement("div");
+                divBoton.setAttribute("class", "botones");
+                divPropuestaSolucion.appendChild(divBoton);
 
-            var modificar = document.createElement("button");
-            modificar.setAttribute("onclick", "modificarPropuestaSolucion(" + idPropuestaSolucion + ");");
-            modificar.setAttribute("class", "btn btn-warning");
-            modificar.innerHTML = "Modificar propuesta de solución";
-            divBoton.appendChild(modificar);
+                var boton = document.createElement("button");
+                boton.setAttribute("onclick", "corregirPropuestaSolucion(" + idPropuestaSolucion + ");");
+                boton.setAttribute("class", "btn btn-success");
+                boton.innerHTML = "Corregir propuesta de solución";
+                divBoton.appendChild(boton);
 
-            var eliminar = document.createElement("button");
-            eliminar.setAttribute("onclick", "eliminarPropuestaSolucion(" + idPropuestaSolucion + ");");
-            eliminar.setAttribute("class", "btn btn-danger");
-            eliminar.innerHTML = "Eliminar propuesta de solución";
-            divBoton.appendChild(eliminar);
+                var modificar = document.createElement("button");
+                modificar.setAttribute("onclick", "modificarPropuestaSolucion(" + idPropuestaSolucion + ");");
+                modificar.setAttribute("class", "btn btn-warning");
+                modificar.innerHTML = "Modificar propuesta de solución";
+                divBoton.appendChild(modificar);
 
-            var hr = document.createElement("hr");
-            divBoton.appendChild(hr);
+                var eliminar = document.createElement("button");
+                eliminar.setAttribute("onclick", "eliminarPropuestaSolucion(" + idPropuestaSolucion + ");");
+                eliminar.setAttribute("class", "btn btn-danger");
+                eliminar.innerHTML = "Eliminar propuesta de solución";
+                divBoton.appendChild(eliminar);
+
+                var hr = document.createElement("hr");
+                divBoton.appendChild(hr);
+            }
         }
     }
 }
@@ -499,8 +503,6 @@ function modificarPropuestaSolucion(idPropuestaSolucion) {
 function datos_enunciado_put_propuesta_solucion(idPropuestaSolucion) {
     let enunciado = document.getElementById("propuestaSolucion-" + idPropuestaSolucion).value;
 
-    console.log(enunciado);
-
     let datos = {
         "textoPropuestaSolucion": enunciado
     }
@@ -516,7 +518,6 @@ function modificarPropuestaRazonamiento(idSolucion, idPropuestaRazonamiento) {
             alert("Propuesta de razonamiento modificada");
         } else {
             let enunciado = document.getElementById("propuestaRazonamiento-" + idSolucion + "-" + idPropuestaRazonamiento).value;
-            console.log(enunciado.value);
             alert("No se ha podido modificar la propuesta razonamiento");
         }
     }
@@ -595,7 +596,7 @@ function eliminarPropuestaSolucion(idPropuestaSolucion) {
 
 
 function corregirPropuestaSolucion(claveS) {
-    var textoSolucion = document.getElementById("propuestaSolucion-" + claveS).innerText;
+    var textoSolucion = document.getElementById("propuestaSolucion-" + claveS).value;
     var correcta = document.getElementById("propuestaCorrecta-" + claveS).checked;
     putPropuestaSolucion(claveS, correcta);
     postSolucionPropuesta(textoSolucion, correcta);
@@ -606,72 +607,74 @@ function imprimirPropuestaRazonamientos(claveS) {
     var propuestaRazonamiento = JSON.parse(window.sessionStorage.getItem("propuesta_razonamientos"));
     var i;
 
-    for (i = 0; i < propuestaRazonamiento.propuestaRazonamientos.length; i++) {
+    if (propuestaRazonamiento !== null) {
+        for (i = 0; i < propuestaRazonamiento.propuestaRazonamientos.length; i++) {
 
-        if (propuestaRazonamiento.propuestaRazonamientos[i].propuestaRazonamiento.solucion === claveS) {
+            if (propuestaRazonamiento.propuestaRazonamientos[i].propuestaRazonamiento.solucion === claveS) {
 
-            if (propuestaRazonamiento.propuestaRazonamientos[i].propuestaRazonamiento.corregida === false) {
+                if (propuestaRazonamiento.propuestaRazonamientos[i].propuestaRazonamiento.corregida === false) {
 
-                var idPropuestaRazonamiento = propuestaRazonamiento.propuestaRazonamientos[i].propuestaRazonamiento.idPropuestaRazonamiento;
-                var divPregunta = document.getElementById("divSolucion-" + claveS);
+                    var idPropuestaRazonamiento = propuestaRazonamiento.propuestaRazonamientos[i].propuestaRazonamiento.idPropuestaRazonamiento;
+                    var divPregunta = document.getElementById("divSolucion-" + claveS);
 
-                var divPropuestaSolucion = document.createElement("div");
-                divPropuestaSolucion.setAttribute("id", "divPropuestaRazonamiento-" + claveS + "-" + idPropuestaRazonamiento);
-                divPregunta.appendChild(divPropuestaSolucion);
+                    var divPropuestaSolucion = document.createElement("div");
+                    divPropuestaSolucion.setAttribute("id", "divPropuestaRazonamiento-" + claveS + "-" + idPropuestaRazonamiento);
+                    divPregunta.appendChild(divPropuestaSolucion);
 
-                var h4 = document.createElement("h4");
-                h4.innerHTML = "Propuesta razonamiento";
-                divPropuestaSolucion.appendChild(h4);
+                    var h4 = document.createElement("h4");
+                    h4.innerHTML = "Propuesta razonamiento";
+                    divPropuestaSolucion.appendChild(h4);
 
-                var pPropuestaSolucion = document.createElement("p");
-                divPropuestaSolucion.appendChild(pPropuestaSolucion);
+                    var pPropuestaSolucion = document.createElement("p");
+                    divPropuestaSolucion.appendChild(pPropuestaSolucion);
 
-                var textPropuestaSolucion = document.createElement("textarea");
-                textPropuestaSolucion.setAttribute("id", "propuestaRazonamiento-" + claveS + "-" + idPropuestaRazonamiento);
-                textPropuestaSolucion.innerHTML = propuestaRazonamiento.propuestaRazonamientos[i].propuestaRazonamiento.textoPropuestaRazonamiento;
-                divPropuestaSolucion.appendChild(textPropuestaSolucion);
+                    var textPropuestaSolucion = document.createElement("textarea");
+                    textPropuestaSolucion.setAttribute("id", "propuestaRazonamiento-" + claveS + "-" + idPropuestaRazonamiento);
+                    textPropuestaSolucion.innerHTML = propuestaRazonamiento.propuestaRazonamientos[i].propuestaRazonamiento.textoPropuestaRazonamiento;
+                    divPropuestaSolucion.appendChild(textPropuestaSolucion);
 
-                var inputS = document.createElement("input");
-                inputS.setAttribute("type", "checkbox");
-                inputS.setAttribute("id", "propuestaJustificado-" + claveS + "-" + idPropuestaRazonamiento);
-                divPropuestaSolucion.appendChild(inputS);
+                    var inputS = document.createElement("input");
+                    inputS.setAttribute("type", "checkbox");
+                    inputS.setAttribute("id", "propuestaJustificado-" + claveS + "-" + idPropuestaRazonamiento);
+                    divPropuestaSolucion.appendChild(inputS);
 
-                var labelS = document.createElement("label");
-                labelS.setAttribute("for", "propuestaJustificado-" + claveS + "-" + idPropuestaRazonamiento);
-                labelS.innerHTML = "Razonamiento justificado";
-                divPropuestaSolucion.appendChild(labelS);
+                    var labelS = document.createElement("label");
+                    labelS.setAttribute("for", "propuestaJustificado-" + claveS + "-" + idPropuestaRazonamiento);
+                    labelS.innerHTML = "Razonamiento justificado";
+                    divPropuestaSolucion.appendChild(labelS);
 
-                var divBoton = document.createElement("div");
-                divBoton.setAttribute("class", "botones");
-                divPropuestaSolucion.appendChild(divBoton);
+                    var divBoton = document.createElement("div");
+                    divBoton.setAttribute("class", "botones");
+                    divPropuestaSolucion.appendChild(divBoton);
 
-                var boton = document.createElement("button");
-                boton.setAttribute("onclick", "corregirPropuestaRazonamiento(" + claveS + ", " + idPropuestaRazonamiento + ");");
-                boton.setAttribute("class", "btn btn-success");
-                boton.innerHTML = "Corregir propuesta de razonamiento";
-                divBoton.appendChild(boton);
+                    var boton = document.createElement("button");
+                    boton.setAttribute("onclick", "corregirPropuestaRazonamiento(" + claveS + ", " + idPropuestaRazonamiento + ");");
+                    boton.setAttribute("class", "btn btn-success");
+                    boton.innerHTML = "Corregir propuesta de razonamiento";
+                    divBoton.appendChild(boton);
 
-                var modificar = document.createElement("button");
-                modificar.setAttribute("onclick", "modificarPropuestaRazonamiento(" + claveS + ", " + idPropuestaRazonamiento + ");");
-                modificar.setAttribute("class", "btn btn-warning");
-                modificar.innerHTML = "Modificar propuesta de razonamiento";
-                divBoton.appendChild(modificar);
+                    var modificar = document.createElement("button");
+                    modificar.setAttribute("onclick", "modificarPropuestaRazonamiento(" + claveS + ", " + idPropuestaRazonamiento + ");");
+                    modificar.setAttribute("class", "btn btn-warning");
+                    modificar.innerHTML = "Modificar propuesta de razonamiento";
+                    divBoton.appendChild(modificar);
 
-                var eliminar = document.createElement("button");
-                eliminar.setAttribute("onclick", "eliminarPropuestaRazonamiento(" + idPropuestaRazonamiento + ");");
-                eliminar.setAttribute("class", "btn btn-danger");
-                eliminar.innerHTML = "Eliminar propuesta de razonamiento";
-                divBoton.appendChild(eliminar);
+                    var eliminar = document.createElement("button");
+                    eliminar.setAttribute("onclick", "eliminarPropuestaRazonamiento(" + idPropuestaRazonamiento + ");");
+                    eliminar.setAttribute("class", "btn btn-danger");
+                    eliminar.innerHTML = "Eliminar propuesta de razonamiento";
+                    divBoton.appendChild(eliminar);
 
-                var hr = document.createElement("hr");
-                divBoton.appendChild(hr);
+                    var hr = document.createElement("hr");
+                    divBoton.appendChild(hr);
+                }
             }
         }
     }
 }
 
 function corregirPropuestaRazonamiento(claveS, claveR) {
-    var propuestaRazonamiento = document.getElementById("propuestaRazonamiento-" + claveS + "-" + claveR).innerText;
+    var propuestaRazonamiento = document.getElementById("propuestaRazonamiento-" + claveS + "-" + claveR).value;
     var justificado = document.getElementById("propuestaJustificado-" + claveS + "-" + claveR).checked;
 
     putPropuestaRazonamiento(claveR, justificado);
@@ -752,11 +755,11 @@ function postSolucion(idCuestion, idSolucion) {
     function trataRespuesta() {
         var respuesta;
         if (request.status == 201) {
-            alert("Pregunta añadida")
+            alert("Solución añadida")
             location.reload();
             location.reload();
         } else {
-            alert("No se ha podido añadir la pregunta");
+            alert("No se ha podido añadir la respuesta");
         }
     }
 
@@ -794,11 +797,11 @@ function postRazonamiento(idCuestion, idSolucion) {
     function trataRespuesta() {
         var respuesta;
         if (request.status == 201) {
-            alert("Pregunta añadida")
+            alert("Razonamiento añadido")
             location.reload();
             location.reload();
         } else {
-            alert("No se ha podido añadir la solucion");
+            alert("No se ha podido añadir el razonamiento");
         }
     }
 
@@ -1121,7 +1124,7 @@ function getPropuestaSolucion() {
             let propuesta_soluciones = JSON.parse(string_propuesta_soluciones);
             window.sessionStorage.setItem("propuesta_soluciones", JSON.stringify(propuesta_soluciones));
         } else {
-            alert("No se han encontrado propuestas de solucion");
+            console.log("No se han encontrado propuestas de solucion");
         }
     }
 
@@ -1145,7 +1148,7 @@ function getPropuestaRazonamiento() {
             let propuesta_razonamientos = JSON.parse(string_propuesta_razonamientos);
             window.sessionStorage.setItem("propuesta_razonamientos", JSON.stringify(propuesta_razonamientos));
         } else {
-            alert("No se han encontrado propuestas de razonamiento");
+            console.log("No se han encontrado propuestas de razonamiento");
         }
     }
 
@@ -1163,7 +1166,7 @@ function putPropuestaSolucion(idPropuestaSolucion, correcta) {
 
     function trataRespuesta() {
         if (request.status == 209) {
-            alert("Solucion modificada");
+            alert("Propuesta de solución modificada");
             location.reload();
         } else {
             alert("No se ha podido modificar la propuesta solucion");
@@ -1199,11 +1202,11 @@ function postSolucionPropuesta(textoSolucion, correcta) {
     function trataRespuesta() {
         var respuesta;
         if (request.status == 201) {
-            alert("Pregunta añadida")
+            alert("Nueva solución añadida");
             location.reload();
             location.reload();
         } else {
-            alert("No se ha podido añadir la pregunta");
+            alert("No se ha podido añadir la propuesta de solucion");
         }
     }
 
@@ -1271,7 +1274,7 @@ function postPropuestaRazonamiento(idSolucion, textoRazonamiento, justificado) {
     function trataRespuesta() {
         var respuesta;
         if (request.status == 201) {
-            alert("Pregunta añadida")
+            alert("Razonamiento añadido");
             location.reload();
             location.reload();
         } else {
@@ -1295,7 +1298,8 @@ function datos_post_razonamiento_propuesto(idSolucion, textoRazonamiento, justif
     let datos = {
         "textoRazonamiento": textoRazonamiento,
         "razonamientoJustificado": justificado,
-        "solucion": idSolucion
+        "solucion": idSolucion,
+        "error" : "Error description"
     }
 
     return JSON.stringify(datos);

@@ -458,7 +458,7 @@ class RazonamientoController{
         if (null === $razonamiento) {    // 404
             return Error::error($this->container, $request, $response, StatusCode::HTTP_NOT_FOUND);
         }
-        if (isset($req_data['textoRazonamiento'])) {///////
+        if (isset($req_data['textoRazonamiento'])) {
             $razonamiento->setTextoRazonamiento($req_data['textoRazonamiento']);
         }
         if (isset($req_data['razonamientoJustificado'])) {

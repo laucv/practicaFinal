@@ -111,41 +111,44 @@ function imprimirSoluciones() {
     var body = document.body;
     var soluciones = JSON.parse(window.sessionStorage.getItem("soluciones"));
 
-    for (let i = 0; i < soluciones.soluciones.length; i++) {
+    if (soluciones !== null) {
 
-        if (parseInt(soluciones.soluciones[i].solucion.cuestion) === parseInt(getIdCuestion())) {
+        for (let i = 0; i < soluciones.soluciones.length; i++) {
 
-            var divRespuesta = document.createElement("div");
-            divRespuesta.setAttribute("class", "respuesta-" + parseInt(soluciones.soluciones[i].solucion.idSolucion));
-            divRespuesta.setAttribute("id", "respuesta-" + parseInt(soluciones.soluciones[i].solucion.idSolucion));
-            body.appendChild(divRespuesta);
+            if (parseInt(soluciones.soluciones[i].solucion.cuestion) === parseInt(getIdCuestion())) {
 
-            var h3 = document.createElement("h3");
-            h3.innerHTML = "Solución";
-            divRespuesta.appendChild(h3);
-            var pS = document.createElement("p");
-            pS.innerHTML = soluciones.soluciones[i].solucion.textoSolucion;
+                var divRespuesta = document.createElement("div");
+                divRespuesta.setAttribute("class", "respuesta-" + parseInt(soluciones.soluciones[i].solucion.idSolucion));
+                divRespuesta.setAttribute("id", "respuesta-" + parseInt(soluciones.soluciones[i].solucion.idSolucion));
+                body.appendChild(divRespuesta);
 
-            divRespuesta.appendChild(pS);
+                var h3 = document.createElement("h3");
+                h3.innerHTML = "Solución";
+                divRespuesta.appendChild(h3);
+                var pS = document.createElement("p");
+                pS.innerHTML = soluciones.soluciones[i].solucion.textoSolucion;
 
-            var inputS = document.createElement("input");
-            inputS.setAttribute("type", "checkbox");
-            inputS.setAttribute("id", "correcta-" + parseInt(soluciones.soluciones[i].solucion.idSolucion));
-            inputS.checked = soluciones.soluciones[i].solucion.solucionCorrecta;
-            divRespuesta.appendChild(inputS);
+                divRespuesta.appendChild(pS);
 
-            var labelS = document.createElement("label");
-            labelS.setAttribute("for", "correcta-" + parseInt(soluciones.soluciones[i].solucion.idSolucion));
-            labelS.innerHTML = "Solución correcta";
-            divRespuesta.appendChild(labelS);
+                var inputS = document.createElement("input");
+                inputS.setAttribute("type", "checkbox");
+                inputS.setAttribute("id", "correcta-" + parseInt(soluciones.soluciones[i].solucion.idSolucion));
+                inputS.checked = soluciones.soluciones[i].solucion.solucionCorrecta;
+                divRespuesta.appendChild(inputS);
 
-            if(soluciones.soluciones[i].solucion.solucionCorrecta === false){
-                imprimirRazonamientos(parseInt(soluciones.soluciones[i].solucion.idSolucion));
+                var labelS = document.createElement("label");
+                labelS.setAttribute("for", "correcta-" + parseInt(soluciones.soluciones[i].solucion.idSolucion));
+                labelS.innerHTML = "Solución correcta";
+                divRespuesta.appendChild(labelS);
 
+                if (soluciones.soluciones[i].solucion.solucionCorrecta === false) {
+                    imprimirRazonamientos(parseInt(soluciones.soluciones[i].solucion.idSolucion));
+
+                }
+
+                var hr1 = document.createElement("hr");
+                body.appendChild(hr1);
             }
-
-            var hr1 = document.createElement("hr");
-            body.appendChild(hr1);
         }
     }
 }
@@ -155,49 +158,52 @@ function imprimirRazonamientos(idSolucion) {
     let razonamientos = JSON.parse(window.sessionStorage.getItem("razonamientos"));
     let divRespuesta = document.getElementById("respuesta-" + idSolucion);
 
-    for (let j = 0; j < razonamientos.razonamientos.length; j++) {
-        if (parseInt(razonamientos.razonamientos[j].razonamiento.solucion) === idSolucion) {
+    if (razonamientos !== null) {
 
-            var divJustificacion = document.createElement("div");
-            divJustificacion.setAttribute("class", "justificacion-" + j);
-            divRespuesta.appendChild(divJustificacion);
+        for (let j = 0; j < razonamientos.razonamientos.length; j++) {
+            if (parseInt(razonamientos.razonamientos[j].razonamiento.solucion) === idSolucion) {
 
-            var h4 = document.createElement("h4");
-            h4.innerHTML = "Razonamiento";
-            divJustificacion.appendChild(h4);
+                var divJustificacion = document.createElement("div");
+                divJustificacion.setAttribute("class", "justificacion-" + j);
+                divRespuesta.appendChild(divJustificacion);
 
-            var pJ = document.createElement("p");
-            pJ.innerHTML = razonamientos.razonamientos[j].razonamiento.textoRazonamiento;
-            divJustificacion.appendChild(pJ);
+                var h4 = document.createElement("h4");
+                h4.innerHTML = "Razonamiento";
+                divJustificacion.appendChild(h4);
 
-            var inputR = document.createElement("input");
-            inputR.setAttribute("type", "checkbox");
-            inputR.setAttribute("id", "justificado-" + j);
-            inputR.checked = razonamientos.razonamientos[j].razonamiento.razonamientoJustificado;
-            divJustificacion.appendChild(inputR);
+                var pJ = document.createElement("p");
+                pJ.innerHTML = razonamientos.razonamientos[j].razonamiento.textoRazonamiento;
+                divJustificacion.appendChild(pJ);
 
-            var labelR = document.createElement("label");
-            labelR.setAttribute("for", "correcta-" + j);
-            labelR.innerHTML = "Razonamiento justificado";
-            divJustificacion.appendChild(labelR);
+                var inputR = document.createElement("input");
+                inputR.setAttribute("type", "checkbox");
+                inputR.setAttribute("id", "justificado-" + j);
+                inputR.checked = razonamientos.razonamientos[j].razonamiento.razonamientoJustificado;
+                divJustificacion.appendChild(inputR);
 
-            if (razonamientos.razonamientos[j].razonamiento.razonamientoJustificado !== true) {
+                var labelR = document.createElement("label");
+                labelR.setAttribute("for", "correcta-" + j);
+                labelR.innerHTML = "Razonamiento justificado";
+                divJustificacion.appendChild(labelR);
 
-                var error = document.createElement("div");
-                error.setAttribute("id", "error-" + j);
-                divJustificacion.appendChild(error);
+                if (razonamientos.razonamientos[j].razonamiento.razonamientoJustificado !== true) {
 
-                var h5 = document.createElement("h4");
-                h5.innerHTML = "Error";
-                error.appendChild(h5);
+                    var error = document.createElement("div");
+                    error.setAttribute("id", "error-" + j);
+                    divJustificacion.appendChild(error);
+
+                    var h5 = document.createElement("h4");
+                    h5.innerHTML = "Error";
+                    error.appendChild(h5);
 
 
-                var pE = document.createElement("p");
-                pE.innerHTML = razonamientos.razonamientos[j].razonamiento.textoError;
-                error.appendChild(pE);
+                    var pE = document.createElement("p");
+                    pE.innerHTML = razonamientos.razonamientos[j].razonamiento.textoError;
+                    error.appendChild(pE);
 
+                }
+                j++;
             }
-            j++;
         }
     }
 }

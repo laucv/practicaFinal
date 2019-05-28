@@ -217,11 +217,11 @@ class Usuario implements \JsonSerializable
      */
     public function __construct(
         string $username = '',
-        string $email = '',
-        string $password = '',
         string $name = '',
         string $surname = '',
         string $phone_number = '',
+        string $email = '',
+        string $password = '',
         bool   $enabled = true,
         bool   $isMaestro = true,
         bool   $isAdmin = true
