@@ -54,3 +54,6 @@ img {
     align-content: center;
     margin: auto;
 }
+.enunciadoDescripcion , .textoSolucion{
+    font-style: italic;
+}

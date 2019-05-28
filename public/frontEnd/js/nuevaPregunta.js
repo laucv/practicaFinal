@@ -100,9 +100,12 @@ function addSolution() {
     botonPregunta.setAttribute("class", "btn btn-info");
     botonPregunta.setAttribute("onclick", "  postCuestion();");
     botonPregunta.innerHTML = "Añadir pregunta";
-    botonPregunta.innerHTML = "Añadir pregunta";
     divBotonPregunta.appendChild(botonPregunta);
   }
+
+  var divBotonAñadirSolucion = document.getElementById("divBotonSolucion");
+  var body = document.body;
+  body.removeChild(divBotonAñadirSolucion);
 
   var divSolucionCero = document.getElementById("divPregunta-" + nextQuestionValue());
 
@@ -161,6 +164,32 @@ function deleteSolution(clave) {
     var boton = document.getElementById("botonPregunta");
     divBotonPregunta.removeChild(boton);
   }
+
+  var body = document.body;
+
+  var divBotonSolucion = document.createElement("div");
+  divBotonSolucion.setAttribute("id", "divBotonSolucion");
+  body.appendChild(divBotonSolucion);
+
+  var botonSolucion = document.createElement("button");
+  botonSolucion.setAttribute("id", "botonSolucion");
+  botonSolucion.setAttribute("class", "btn btn-normal");
+  botonSolucion.setAttribute("onclick", "addSolution();");
+  botonSolucion.innerHTML = "Añadir solución";
+  divBotonSolucion.appendChild(botonSolucion);
+
+  var divBotonPregunta = document.getElementById("divBotonPregunta");
+  body.removeChild(divBotonPregunta);
+
+  var divBotonPregunta = document.createElement("div");
+  divBotonPregunta.setAttribute("id", "divBotonPregunta");
+  body.appendChild(divBotonPregunta);
+
+  var botonSalir = document.createElement("a");
+  botonSalir.setAttribute("class", "btn btn-danger");
+  botonSalir.setAttribute("href", "cuestionesMaestro.html");
+  botonSalir.innerHTML = "Volver";
+  divBotonPregunta.appendChild(botonSalir);
 }
 
 function postCuestion() {
