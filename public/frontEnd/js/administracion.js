@@ -54,6 +54,7 @@ function imprimirUsuarios() {
     let usuarios = JSON.parse(window.sessionStorage.getItem("usuarios"));
     let usuario;
     var lista = document.getElementById("zonaUsuario");
+    lista.setAttribute("id", "lista");
 
     for (usuario of usuarios.usuarios){
 
@@ -62,7 +63,7 @@ function imprimirUsuarios() {
         lista.appendChild(elementoLista);
 
         var div = document.createElement("div");
-        div.setAttribute("class", "boton");
+        div.setAttribute("class", "button");
         elementoLista.appendChild(div);
 
         var abrir = document.createElement("a");

@@ -70,3 +70,11 @@ img {
 .enunciadoDescripcion, .textoSolucion {
     font-style: italic;
 }
+
+.button {
+    align-content: center
+}
+
+#lista{
+    width: 100%;
+}
