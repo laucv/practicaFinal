@@ -10,11 +10,18 @@ function imprimirCuestion(cuestion) {
     elementoLista.appendChild(div);
 
     var abrir = document.createElement("a");
-    abrir.setAttribute("href", "modificarPregunta.html?idCuestion=" +cuestion.cuestion.idCuestion);
+    abrir.setAttribute("href", "abrirPregunta.html?idCuestion=" +cuestion.cuestion.idCuestion);
     abrir.setAttribute("class", "btn btn-info");
     abrir.setAttribute("role", "button");
     abrir.innerHTML = "Abrir pregunta";
     div.appendChild(abrir);
+
+    var modificar = document.createElement("a");
+    modificar.setAttribute("href", "modificarPregunta.html?idCuestion=" +cuestion.cuestion.idCuestion);
+    modificar.setAttribute("class", "btn btn-warning");
+    modificar.setAttribute("role", "button");
+    modificar.innerHTML = "Modificar pregunta";
+    div.appendChild(modificar);
 
     var eliminar = document.createElement("button");
     eliminar.setAttribute("class", "btn btn-danger");
@@ -27,9 +34,7 @@ function imprimirCuestion(cuestion) {
     pregunta.setAttribute("id", "pregunta-" + cuestion.cuestion.idCuestion);
     elementoLista.appendChild(pregunta);
 
-
-    var enlace = document.createElement("a");
-    enlace.setAttribute("href", "abrirPregunta.html?idCuestion=" +cuestion.cuestion.idCuestion);
+    var enlace = document.createElement("p");
     enlace.innerHTML = cuestion.cuestion.enunciadoDescripcion;
     pregunta.appendChild(enlace);
 }

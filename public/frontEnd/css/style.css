@@ -1,59 +1,72 @@
-div{
+div {
     width: 100%;
     padding: 5px;
     align-content: center;
     margin: auto;
     text-align: center;
 }
-body{
+
+body {
     font: 15px Verdana;
     text-align: center;
 }
-h1{
+
+h1 {
     font: 50px Verdana;
     text-align: center;
     padding: 50px;
 }
-h2{
+
+h2 {
     text-align: center;
     font: 35px Verdana;
     padding: 25px;
 }
 
-.botones{
-    float: right;
+.botones {
+    position: fixed;
 }
-.preguntas{
+
+.preguntas {
     padding: 5px;
     text-align: justify;
 }
-.btn btn-info{
+
+.btn btn-info {
     padding: 5px;
 }
-ul{
-    padding: 5px;
+
+ul {
+    padding: 10px;
+    width: 40%;
 }
-li{
+
+li {
     padding: 10px;
 }
+
 img {
     width: 93%;
 }
 
-.preguntas{
+.preguntas {
     width: 75%;
 }
+
 .correcta {
-    color : limegreen;
+    color: limegreen;
 }
+
 .incorrecta {
     color: red;
 }
-#login{
+
+#login {
     width: 50%;
     align-content: center;
     margin: auto;
 }
-.enunciadoDescripcion , .textoSolucion{
+
+.enunciadoDescripcion, .textoSolucion {
     font-style: italic;
 }

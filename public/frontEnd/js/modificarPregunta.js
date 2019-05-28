@@ -1,10 +1,13 @@
 getCuestiones();
 getSoluciones();
 getRazonamientos();
+getPropuestaSolucion();
+getPropuestaRazonamiento();
 
 var datos = JSON.parse(window.sessionStorage.getItem("cuestiones"));
 var soluciones = JSON.parse(window.sessionStorage.getItem("soluciones"));
 var claveRazonamiento = 0;
+var idCuestion = getIdCuestion();
 
 function getIdCuestion() {
     'use strict';
@@ -24,16 +27,18 @@ function getIdCuestion() {
 
 function getSolucion(idSolucion) {
 
-    for (let r = 0; r < soluciones.soluciones.length; r++) {
-        if (soluciones.soluciones[r].solucion.idSolucion === idSolucion) {
-            return soluciones.soluciones[r];
+    if (soluciones !== null) {
+        for (let r = 0; r < soluciones.soluciones.length; r++) {
+            if (soluciones.soluciones[r].solucion.idSolucion === idSolucion) {
+                return soluciones.soluciones[r];
+            }
         }
     }
 }
 
 function modificarCuestion() {
     'use strict';
-    var idCuestion = getIdCuestion();
+
     var cuestion = JSON.parse(window.sessionStorage.getItem("cuestion"));
     var claveSolucion = cuestion.cuestion.soluciones.length;
 
@@ -92,61 +97,61 @@ function modificarCuestion() {
 
         sol = getSolucion(cuestion.cuestion.soluciones[i]);
 
-            idSolucion = sol.solucion.idSolucion;
-            var divRespuesta = document.createElement("div");
+        idSolucion = sol.solucion.idSolucion;
+        var divRespuesta = document.createElement("div");
 
-            divRespuesta.setAttribute("id", "divSolucion-" + idSolucion);
-            divRespuesta.setAttribute("class", "respuesta-" + idSolucion);
-            body.appendChild(divRespuesta);
+        divRespuesta.setAttribute("id", "divSolucion-" + idSolucion);
+        divRespuesta.setAttribute("class", "respuesta-" + idSolucion);
+        body.appendChild(divRespuesta);
 
-            var h3 = document.createElement("h3");
-            h3.innerHTML = "Solución";
-            divRespuesta.appendChild(h3);
+        var h3 = document.createElement("h3");
+        h3.innerHTML = "Solución";
+        divRespuesta.appendChild(h3);
 
-            var editarSolucion = document.createElement("button");
-            editarSolucion.setAttribute("class", "btn btn-normal");
-            editarSolucion.setAttribute("onclick", "putSolucion(" + idSolucion + ");");
-            editarSolucion.innerHTML = "Editar solución";
-            divRespuesta.appendChild(editarSolucion);
+        var editarSolucion = document.createElement("button");
+        editarSolucion.setAttribute("class", "btn btn-normal");
+        editarSolucion.setAttribute("onclick", "putSolucion(" + idSolucion + ");");
+        editarSolucion.innerHTML = "Editar solución";
+        divRespuesta.appendChild(editarSolucion);
 
-            var eliminarSolucion = document.createElement("button");
-            eliminarSolucion.setAttribute("class", "btn btn-danger");
-            eliminarSolucion.setAttribute("onclick", "deleteSolucion(" + idSolucion + ");");
-            eliminarSolucion.innerHTML = "Eliminar solución";
-            divRespuesta.appendChild(eliminarSolucion);
+        var eliminarSolucion = document.createElement("button");
+        eliminarSolucion.setAttribute("class", "btn btn-danger");
+        eliminarSolucion.setAttribute("onclick", "deleteSolucion(" + idSolucion + ");");
+        eliminarSolucion.innerHTML = "Eliminar solución";
+        divRespuesta.appendChild(eliminarSolucion);
 
-            var pS = document.createElement("div");
-            pS.setAttribute("id", "pSolucion-" + idSolucion);
-            divRespuesta.appendChild(pS);
+        var pS = document.createElement("div");
+        pS.setAttribute("id", "pSolucion-" + idSolucion);
+        divRespuesta.appendChild(pS);
 
-            var spanS = document.createElement("textarea");
-            spanS.setAttribute("cols", "45");
-            spanS.setAttribute("id", "sSolucion-" + idSolucion);
-            spanS.innerHTML = sol.solucion.textoSolucion;
-            pS.appendChild(spanS);
+        var spanS = document.createElement("textarea");
+        spanS.setAttribute("cols", "45");
+        spanS.setAttribute("id", "sSolucion-" + idSolucion);
+        spanS.innerHTML = sol.solucion.textoSolucion;
+        pS.appendChild(spanS);
 
-            var inputS = document.createElement("input");
-            inputS.setAttribute("type", "checkbox");
-            inputS.setAttribute("id", "correcta-" + idSolucion);
-            inputS.checked = sol.solucion.solucionCorrecta;
-            divRespuesta.appendChild(inputS);
+        var inputS = document.createElement("input");
+        inputS.setAttribute("type", "checkbox");
+        inputS.setAttribute("id", "correcta-" + idSolucion);
+        inputS.checked = sol.solucion.solucionCorrecta;
+        divRespuesta.appendChild(inputS);
 
-            var labelS = document.createElement("label");
-            labelS.setAttribute("for", "correcta-" + idSolucion);
-            labelS.innerHTML = "Solución correcta";
-            divRespuesta.appendChild(labelS);
+        var labelS = document.createElement("label");
+        labelS.setAttribute("for", "correcta-" + idSolucion);
+        labelS.innerHTML = "Solución correcta";
+        divRespuesta.appendChild(labelS);
 
-            var br = document.createElement("br");
-            divRespuesta.appendChild(br);
+        var br = document.createElement("br");
+        divRespuesta.appendChild(br);
 
-            if (sol.solucion.solucionCorrecta === false) {
-                var botonRazonamiento = document.createElement("button");
-                botonRazonamiento.setAttribute("id", "botonRazonamiento-" + idSolucion);
-                botonRazonamiento.setAttribute("class", "btn btn-info");
-                botonRazonamiento.setAttribute("onclick", "addJustification(" + idCuestion + ", " + idSolucion + ");");
-                botonRazonamiento.innerHTML = "Añadir razonamiento";
-                divRespuesta.appendChild(botonRazonamiento);
-            }
+        if (sol.solucion.solucionCorrecta === false) {
+            var botonRazonamiento = document.createElement("button");
+            botonRazonamiento.setAttribute("id", "botonRazonamiento-" + idSolucion);
+            botonRazonamiento.setAttribute("class", "btn btn-info");
+            botonRazonamiento.setAttribute("onclick", "addJustification(" + idCuestion + ", " + idSolucion + ");");
+            botonRazonamiento.innerHTML = "Añadir razonamiento";
+            divRespuesta.appendChild(botonRazonamiento);
+        }
 
         if (sol.solucion.solucionCorrecta === false) {
             var razonamientos = JSON.parse(window.sessionStorage.getItem("razonamientos"));
@@ -189,16 +194,19 @@ function modificarCuestion() {
                         spanJ.innerHTML = jus.razonamiento.textoRazonamiento;
                         pJ.appendChild(spanJ);
 
+                        var saltar = document.createElement("br");
+                        pJ.appendChild(saltar);
+
                         var inputR = document.createElement("input");
                         inputR.setAttribute("type", "checkbox");
                         inputR.setAttribute("id", "justificado-" + idSolucion + "-" + idRazonamiento);
                         inputR.checked = jus.razonamiento.razonamientoJustificado;
-                        divJustificacion.appendChild(inputR);
+                        pJ.appendChild(inputR);
 
                         var labelR = document.createElement("label");
                         labelR.setAttribute("for", "justificado-" + idSolucion + "-" + idRazonamiento);
                         labelR.innerHTML = "Razonamiento justificado";
-                        divJustificacion.appendChild(labelR);
+                        pJ.appendChild(labelR);
 
                         claveRazonamiento++;
 
@@ -375,7 +383,7 @@ function deleteSolution(clave) {
     var divSolucion = document.getElementById("divSolucion-" + clave);
     var divPregunta = divSolucion.parentElement;
     divPregunta.removeChild(divSolucion);
-    location.reload();
+    window.location.href = window.location.href;
 
 }
 
@@ -413,7 +421,6 @@ function addError(claveCuestion, claveSol, claveJus) {
 
 function imprimirPropuestaSoluciones() {
     var claveCuestion = getIdCuestion();
-    getPropuestaSolucion();
     var propuestaSolucion = JSON.parse(window.sessionStorage.getItem("propuesta_soluciones"));
     var i;
 
@@ -421,60 +428,63 @@ function imprimirPropuestaSoluciones() {
 
         for (i = 0; i < propuestaSolucion.propuestaSoluciones.length; i++) {
 
-            if (propuestaSolucion.propuestaSoluciones[i].propuestaSolucion.corregida === false) {
-                var divPregunta = document.getElementById("divPregunta-" + claveCuestion);
-                var idPropuestaSolucion = propuestaSolucion.propuestaSoluciones[i].propuestaSolucion.idPropuestaSolucion;
+            if (propuestaSolucion.propuestaSoluciones[i].propuestaSolucion.cuestion === idCuestion) {
+                if (propuestaSolucion.propuestaSoluciones[i].propuestaSolucion.corregida === false) {
+                    var divPregunta = document.getElementById("divPregunta-" + claveCuestion);
+                    var idPropuestaSolucion = propuestaSolucion.propuestaSoluciones[i].propuestaSolucion.idPropuestaSolucion;
 
-                var divPropuestaSolucion = document.createElement("div");
-                divPropuestaSolucion.setAttribute("id", "divPropuestaSolucion-" + idPropuestaSolucion);
-                divPregunta.appendChild(divPropuestaSolucion);
+                    var divPropuestaSolucion = document.createElement("div");
+                    divPropuestaSolucion.setAttribute("id", "divPropuestaSolucion-" + idPropuestaSolucion);
+                    divPregunta.appendChild(divPropuestaSolucion);
 
-                var h4 = document.createElement("h4");
-                h4.innerHTML = "Propuesta solución";
-                divPropuestaSolucion.appendChild(h4);
+                    var h4 = document.createElement("h4");
+                    h4.innerHTML = "Propuesta solución";
+                    divPropuestaSolucion.appendChild(h4);
 
-                var pPropuestaSolucion = document.createElement("p");
-                divPropuestaSolucion.appendChild(pPropuestaSolucion);
+                    var pPropuestaSolucion = document.createElement("p");
+                    divPropuestaSolucion.appendChild(pPropuestaSolucion);
 
-                var textPropuestaSolucion = document.createElement("textarea");
-                textPropuestaSolucion.setAttribute("id", "propuestaSolucion-" + idPropuestaSolucion);
-                textPropuestaSolucion.innerHTML = propuestaSolucion.propuestaSoluciones[i].propuestaSolucion.textoPropuestaSolucion;
-                pPropuestaSolucion.appendChild(textPropuestaSolucion);
+                    var textPropuestaSolucion = document.createElement("textarea");
+                    textPropuestaSolucion.setAttribute("id", "propuestaSolucion-" + idPropuestaSolucion);
+                    textPropuestaSolucion.setAttribute("cols", "50");
+                    textPropuestaSolucion.innerHTML = propuestaSolucion.propuestaSoluciones[i].propuestaSolucion.textoPropuestaSolucion;
+                    pPropuestaSolucion.appendChild(textPropuestaSolucion);
 
-                var inputS = document.createElement("input");
-                inputS.setAttribute("type", "checkbox");
-                inputS.setAttribute("id", "propuestaCorrecta-" + idPropuestaSolucion);
-                divPropuestaSolucion.appendChild(inputS);
+                    var inputS = document.createElement("input");
+                    inputS.setAttribute("type", "checkbox");
+                    inputS.setAttribute("id", "propuestaCorrecta-" + idPropuestaSolucion);
+                    divPropuestaSolucion.appendChild(inputS);
 
-                var labelS = document.createElement("label");
-                labelS.setAttribute("for", "propuestaCorrecta-" + idPropuestaSolucion);
-                labelS.innerHTML = "Solución correcta";
-                divPropuestaSolucion.appendChild(labelS);
+                    var labelS = document.createElement("label");
+                    labelS.setAttribute("for", "propuestaCorrecta-" + idPropuestaSolucion);
+                    labelS.innerHTML = "Solución correcta";
+                    divPropuestaSolucion.appendChild(labelS);
 
-                var divBoton = document.createElement("div");
-                divBoton.setAttribute("class", "botones");
-                divPropuestaSolucion.appendChild(divBoton);
+                    var divBoton = document.createElement("div");
+                    divBoton.setAttribute("class", "boton");
+                    divPropuestaSolucion.appendChild(divBoton);
 
-                var boton = document.createElement("button");
-                boton.setAttribute("onclick", "corregirPropuestaSolucion(" + idPropuestaSolucion + ");");
-                boton.setAttribute("class", "btn btn-success");
-                boton.innerHTML = "Corregir propuesta de solución";
-                divBoton.appendChild(boton);
+                    var boton = document.createElement("button");
+                    boton.setAttribute("onclick", "corregirPropuestaSolucion(" + idPropuestaSolucion + ");");
+                    boton.setAttribute("class", "btn btn-success");
+                    boton.innerHTML = "Corregir propuesta de solución";
+                    divBoton.appendChild(boton);
 
-                var modificar = document.createElement("button");
-                modificar.setAttribute("onclick", "modificarPropuestaSolucion(" + idPropuestaSolucion + ");");
-                modificar.setAttribute("class", "btn btn-warning");
-                modificar.innerHTML = "Modificar propuesta de solución";
-                divBoton.appendChild(modificar);
+                    var modificar = document.createElement("button");
+                    modificar.setAttribute("onclick", "modificarPropuestaSolucion(" + idPropuestaSolucion + ");");
+                    modificar.setAttribute("class", "btn btn-warning");
+                    modificar.innerHTML = "Modificar propuesta de solución";
+                    divBoton.appendChild(modificar);
 
-                var eliminar = document.createElement("button");
-                eliminar.setAttribute("onclick", "eliminarPropuestaSolucion(" + idPropuestaSolucion + ");");
-                eliminar.setAttribute("class", "btn btn-danger");
-                eliminar.innerHTML = "Eliminar propuesta de solución";
-                divBoton.appendChild(eliminar);
+                    var eliminar = document.createElement("button");
+                    eliminar.setAttribute("onclick", "eliminarPropuestaSolucion(" + idPropuestaSolucion + ");");
+                    eliminar.setAttribute("class", "btn btn-danger");
+                    eliminar.innerHTML = "Eliminar propuesta de solución";
+                    divBoton.appendChild(eliminar);
 
-                var hr = document.createElement("hr");
-                divBoton.appendChild(hr);
+                    var hr = document.createElement("hr");
+                    divBoton.appendChild(hr);
+                }
             }
         }
     }
@@ -486,6 +496,7 @@ function modificarPropuestaSolucion(idPropuestaSolucion) {
     function trataRespuesta() {
         if (request.status == 209) {
             alert("Propuesta de solucion modificada");
+            window.location.href = window.location.href;
         } else {
             alert("No se ha podido modificar la propuesta solucion");
         }
@@ -501,7 +512,7 @@ function modificarPropuestaSolucion(idPropuestaSolucion) {
     request.onload = trataRespuesta;
     let datos = datos_enunciado_put_propuesta_solucion(idPropuestaSolucion);
     request.send(datos);
-    location.reload();
+
 }
 
 function datos_enunciado_put_propuesta_solucion(idPropuestaSolucion) {
@@ -520,8 +531,9 @@ function modificarPropuestaRazonamiento(idSolucion, idPropuestaRazonamiento) {
     function trataRespuesta() {
         if (request.status == 209) {
             alert("Propuesta de razonamiento modificada");
+            window.location.href = window.location.href;
+
         } else {
-            let enunciado = document.getElementById("propuestaRazonamiento-" + idSolucion + "-" + idPropuestaRazonamiento).value;
             alert("No se ha podido modificar la propuesta razonamiento");
         }
     }
@@ -536,7 +548,6 @@ function modificarPropuestaRazonamiento(idSolucion, idPropuestaRazonamiento) {
     request.onload = trataRespuesta;
     let datos = datos_enunciado_put_propuesta_razonamiento(idSolucion, idPropuestaRazonamiento);
     request.send(datos);
-    location.reload();
 }
 
 function datos_enunciado_put_propuesta_razonamiento(idSolucion, idPropuestaRazonamiento) {
@@ -554,7 +565,7 @@ function eliminarPropuestaRazonamiento(idPropuestaRazonamiento) {
     function trataRespuesta() {
         if (request.status == 204) {
             alert("Propuesta de razonamiento eliminada");
-            location.reload();
+            window.location.href = window.location.href;
         } else {
             alert("No se ha podido eliminar la propuesta razonamiento");
         }
@@ -569,8 +580,6 @@ function eliminarPropuestaRazonamiento(idPropuestaRazonamiento) {
     request.responseType = 'json';
     request.onload = trataRespuesta;
     request.send();
-    location.reload();
-
 }
 
 function eliminarPropuestaSolucion(idPropuestaSolucion) {
@@ -579,7 +588,7 @@ function eliminarPropuestaSolucion(idPropuestaSolucion) {
     function trataRespuesta() {
         if (request.status == 204) {
             alert("Propuesta de solucion eliminada");
-            location.reload();
+            window.location.href = window.location.href;
         } else {
             alert("No se ha podido eliminar la propuesta solucion");
         }
@@ -594,8 +603,6 @@ function eliminarPropuestaSolucion(idPropuestaSolucion) {
     request.responseType = 'json';
     request.onload = trataRespuesta;
     request.send();
-    location.reload();
-
 }
 
 
@@ -607,7 +614,6 @@ function corregirPropuestaSolucion(claveS) {
 }
 
 function imprimirPropuestaRazonamientos(claveS) {
-    getPropuestaRazonamiento();
     var propuestaRazonamiento = JSON.parse(window.sessionStorage.getItem("propuesta_razonamientos"));
     var i;
 
@@ -634,8 +640,12 @@ function imprimirPropuestaRazonamientos(claveS) {
 
                     var textPropuestaSolucion = document.createElement("textarea");
                     textPropuestaSolucion.setAttribute("id", "propuestaRazonamiento-" + claveS + "-" + idPropuestaRazonamiento);
+                    textPropuestaSolucion.setAttribute("cols", "50");
                     textPropuestaSolucion.innerHTML = propuestaRazonamiento.propuestaRazonamientos[i].propuestaRazonamiento.textoPropuestaRazonamiento;
                     divPropuestaSolucion.appendChild(textPropuestaSolucion);
+
+                    var saltar = document.createElement("br");
+                    divPropuestaSolucion.appendChild(saltar);
 
                     var inputS = document.createElement("input");
                     inputS.setAttribute("type", "checkbox");
@@ -648,7 +658,7 @@ function imprimirPropuestaRazonamientos(claveS) {
                     divPropuestaSolucion.appendChild(labelS);
 
                     var divBoton = document.createElement("div");
-                    divBoton.setAttribute("class", "botones");
+                    divBoton.setAttribute("class", "boton");
                     divPropuestaSolucion.appendChild(divBoton);
 
                     var boton = document.createElement("button");
@@ -760,8 +770,8 @@ function postSolucion(idCuestion, idSolucion) {
         var respuesta;
         if (request.status == 201) {
             alert("Solución añadida")
-            location.reload();
-            location.reload();
+            window.location.href = window.location.href;
+
         } else {
             alert("No se ha podido añadir la respuesta");
         }
@@ -802,8 +812,7 @@ function postRazonamiento(idCuestion, idSolucion) {
         var respuesta;
         if (request.status == 201) {
             alert("Razonamiento añadido")
-            location.reload();
-            location.reload();
+            window.location.href = window.location.href;
         } else {
             alert("No se ha podido añadir el razonamiento");
         }
@@ -827,7 +836,7 @@ function postError(idSolucion, idRazonamiento) {
         var respuesta;
         if (request.status == 209) {
             alert("Error añadido")
-            location.reload();
+            window.location.href = window.location.href;
         } else {
             alert("No se ha podido añadir el error");
         }
@@ -880,7 +889,6 @@ function putCuestion() {
     request.onload = trataRespuesta;
     let datos = datos_put_cuestion();
     request.send(datos);
-    location.reload();
 }
 
 function datos_put_cuestion() {
@@ -904,6 +912,7 @@ function getCuestiones() {
             let string_cuestiones = JSON.stringify(respuesta);
             let cuestiones = JSON.parse(string_cuestiones);
             window.sessionStorage.setItem("cuestiones", JSON.stringify(cuestiones));
+
         } else {
             console.log("No se han encontrado cuestiones");
         }
@@ -925,7 +934,7 @@ function putSolucion(idSolucion) {
     function trataRespuesta() {
         if (request.status == 209) {
             alert("Solucion modificada");
-            location.reload();
+            window.location.href = window.location.href;
         } else {
             alert("No se ha podido modificar la solucion");
         }
@@ -941,7 +950,6 @@ function putSolucion(idSolucion) {
     request.onload = trataRespuesta;
     let datos = datos_put_solucion(idSolucion);
     request.send(datos);
-    location.reload();
 }
 
 function datos_put_solucion(idSolucion) {
@@ -964,7 +972,7 @@ function putRazonamiento(idSolucion, idRazonamiento) {
         var respuesta;
         if (request.status == 209) {
             alert("Razonamiento modificado");
-            location.reload();
+            window.location.href = window.location.href;
         } else {
             alert("No se ha podido modificar el razonamiento");
         }
@@ -980,7 +988,6 @@ function putRazonamiento(idSolucion, idRazonamiento) {
     request.onload = trataRespuesta;
     let datos = datos_put_razonamiento(idSolucion, idRazonamiento);
     request.send(datos);
-    location.reload();
 }
 
 function datos_put_razonamiento(idSolucion, idRazonamiento) {
@@ -1002,7 +1009,7 @@ function putError(idSolucion, idRazonamiento) {
         var respuesta;
         if (request.status == 209) {
             alert("Error modificado")
-            location.reload();
+            window.location.href = window.location.href;
         } else {
             alert("No se ha podido modificar el error");
         }
@@ -1039,7 +1046,7 @@ function deleteError(idSolucion, idRazonamiento) {
         var respuesta;
         if (request.status == 209) {
             alert("Error eliminado")
-            location.reload();
+            window.location.href = window.location.href;
         } else {
             alert("No se ha podido eliminar el error");
         }
@@ -1075,7 +1082,7 @@ function deleteSolucion(idSolucion) {
     function trataRespuesta() {
         if (request.status == 204) {
             alert("Solucion eliminada");
-            location.reload();
+            window.location.href = window.location.href;
         } else {
             alert("No se ha podido eliminar la solucion");
         }
@@ -1090,7 +1097,6 @@ function deleteSolucion(idSolucion) {
     request.responseType = 'json';
     request.onload = trataRespuesta;
     request.send();
-    location.reload();
 }
 
 function deleteRazonamiento(idRazonamiento) {
@@ -1099,7 +1105,7 @@ function deleteRazonamiento(idRazonamiento) {
     function trataRespuesta() {
         if (request.status == 204) {
             alert("Razonamiento eliminado");
-            location.reload();
+            window.location.href = window.location.href;
         } else {
             alert("No se ha podido eliminar el razonamiento");
         }
@@ -1114,7 +1120,6 @@ function deleteRazonamiento(idRazonamiento) {
     request.responseType = 'json';
     request.onload = trataRespuesta;
     request.send();
-    location.reload();
 }
 
 function getPropuestaSolucion() {
@@ -1171,7 +1176,7 @@ function putPropuestaSolucion(idPropuestaSolucion, correcta) {
     function trataRespuesta() {
         if (request.status == 209) {
             alert("Propuesta de solución modificada");
-            location.reload();
+            window.location.href = window.location.href;
         } else {
             alert("No se ha podido modificar la propuesta solucion");
         }
@@ -1187,7 +1192,7 @@ function putPropuestaSolucion(idPropuestaSolucion, correcta) {
     request.onload = trataRespuesta;
     let datos = datos_put_propuesta_solucion(correcta);
     request.send(datos);
-    location.reload();
+    window.location.href = window.location.href;
 }
 
 function datos_put_propuesta_solucion(solucionCorrecta) {
@@ -1207,8 +1212,7 @@ function postSolucionPropuesta(textoSolucion, correcta) {
         var respuesta;
         if (request.status == 201) {
             alert("Nueva solución añadida");
-            location.reload();
-            location.reload();
+            window.location.href = window.location.href;
         } else {
             alert("No se ha podido añadir la propuesta de solucion");
         }
@@ -1243,7 +1247,7 @@ function putPropuestaRazonamiento(idPropuestaRazonamiento, justificado) {
     function trataRespuesta() {
         if (request.status == 209) {
             alert("Razonamiento modificada");
-            location.reload();
+            window.location.href = window.location.href;
         } else {
             alert("No se ha podido modificar la propuesta razonamiento");
         }
@@ -1259,7 +1263,6 @@ function putPropuestaRazonamiento(idPropuestaRazonamiento, justificado) {
     request.onload = trataRespuesta;
     let datos = datos_put_propuesta_razonamiento(justificado);
     request.send(datos);
-    location.reload();
 }
 
 function datos_put_propuesta_razonamiento(razonamientoJustificado) {
@@ -1279,8 +1282,7 @@ function postPropuestaRazonamiento(idSolucion, textoRazonamiento, justificado) {
         var respuesta;
         if (request.status == 201) {
             alert("Razonamiento añadido");
-            location.reload();
-            location.reload();
+            window.location.href = window.location.href;
         } else {
             alert("No se ha podido añadir el razonamiento");
         }

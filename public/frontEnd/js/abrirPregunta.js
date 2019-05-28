@@ -72,7 +72,7 @@ function abrirCuestion(cuestion) {
     getSoluciones();
 
     var divBoton = document.createElement("div");
-    divBoton.setAttribute("class", "botones");
+    divBoton.setAttribute("class", "boton");
     body.appendChild(divBoton);
 
     var boton = document.createElement("a");

@@ -6,7 +6,7 @@ function imprimirCuestion(cuestion) {
   lista.appendChild(elementoLista);
 
   var div = document.createElement("div");
-  div.setAttribute("class", "botones");
+  div.setAttribute("class", "boton");
   elementoLista.appendChild(div);
 
   var pregunta = document.createElement("p");
