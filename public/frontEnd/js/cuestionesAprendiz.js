@@ -22,6 +22,9 @@ function imprimirCuestion(cuestion) {
 function listarPreguntas() {
   'use strict';
   var datos = JSON.parse(window.sessionStorage.getItem("cuestiones"));
+  window.sessionStorage.removeItem("propuestas_razonamiento");
+  window.sessionStorage.removeItem("propuestas_solucion");
+
   var cuestion;
   for (cuestion of datos.cuestiones) {
     if (cuestion.cuestion.enunciadoDisponible) {
